@@ -1,4 +1,4 @@
-package com.example.findapartment.request;
+package com.example.findapartment.clients;
 
 import org.json.JSONObject;
 
