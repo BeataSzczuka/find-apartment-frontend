@@ -31,9 +31,6 @@ public class ApartmentListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         setContentView(R.layout.activity_apartment_list);
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();

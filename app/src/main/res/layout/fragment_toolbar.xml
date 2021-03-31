@@ -33,21 +33,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/toolbar2"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_search" />
+            app:srcCompat="@drawable/searchbtn" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/showMenuButton"
             style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
-            android:adjustViewBounds="false"
+            android:clickable="true"
             android:tint="#9C3C3C"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/toolbar2"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+            app:srcCompat="@drawable/menuicon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
