@@ -66,12 +66,48 @@
         app:layout_constraintTop_toBottomOf="@id/aboutUser">
 
         <Button
+            android:id="@+id/allApartments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:onClick="navigateToAllApartments"
+            android:text="szukaj mieszkania"
+            android:textAllCaps="false"
+            android:textColor="#707070"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:text="zaloguj"
+            android:textAllCaps="false"
+            android:textColor="#707070"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/addUserBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:onClick="navigateToAddUser"
+            android:text="załóż konto"
+            android:textAllCaps="false"
+            android:textColor="#707070"
+            android:textSize="24sp" />
+
+        <Button
             android:id="@+id/addApartmentBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@android:color/transparent"
             android:text="dodaj ogłoszenie"
+            android:onClick="navigateToAddApartment"
             android:textAllCaps="false"
             android:textColor="#707070"
             android:textSize="24sp" />
