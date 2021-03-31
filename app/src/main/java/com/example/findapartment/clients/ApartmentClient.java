@@ -18,8 +18,8 @@ public class ApartmentClient {
     }
 
     // TODO getApartment by id
-//    public void getApartment(Context applicationContext, IRequestCallback iRequestCallback) {
-//        String API_APARTMENTS_URL = API_BASE_URL + "/apartments/";
-//        RequestService.makeGetRequest(API_APARTMENTS_URL, applicationContext, iRequestCallback);
-//    }
+    public void getApartment(Context applicationContext, String apartmentId, IRequestCallback iRequestCallback) {
+        String API_APARTMENTS_URL = API_BASE_URL + "/apartments/" + apartmentId;
+        RequestService.makeGetRequest(API_APARTMENTS_URL, applicationContext, iRequestCallback);
+    }
 }

@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.findapartment.R;
-import com.example.findapartment.adapters.ApartmentAdapter;
+import com.example.findapartment.adapters.ApartmentsAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.models.Apartment;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ApartmentListActivity extends AppCompatActivity {
     private ApartmentClient apartmentClient;
     private ListView lvApartments;
-    private ApartmentAdapter apartmentAdapter;
+    private ApartmentsAdapter apartmentsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class ApartmentListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apartment_list);
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
-        apartmentAdapter = new ApartmentAdapter(this, apartments);
-        lvApartments.setAdapter(apartmentAdapter);
+        apartmentsAdapter = new ApartmentsAdapter(this, apartments);
+        lvApartments.setAdapter(apartmentsAdapter);
         apartmentClient = new ApartmentClient();
         fetchApartments();
         setOrderSpinner();
@@ -62,12 +62,12 @@ public class ApartmentListActivity extends AppCompatActivity {
                     if (response != null) {
                         data = response.getJSONArray("data");
                         final ArrayList<Apartment> apartments = Apartment.fromJSON(data);
-                        apartmentAdapter.clear(); // remove all objects from adapter
+                        apartmentsAdapter.clear(); // remove all objects from adapter
                         // load fetched data into adapter
                         for (Apartment apartment: apartments){
-                            apartmentAdapter.add(apartment);
+                            apartmentsAdapter.add(apartment);
                         }
-                        apartmentAdapter.notifyDataSetChanged();
+                        apartmentsAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
