@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
@@ -34,6 +35,7 @@ public class MenuActivity extends AppCompatActivity {
         if (userSession.isLoggedIn()) {
             findViewById(R.id.menuLoginBtn).setVisibility(View.GONE);
             findViewById(R.id.menuAddUserBtn).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.menuHelloUserTV)).setText("Hello, "+userSession.getLoggedInUserEmail());
         } else {
             findViewById(R.id.menuLogoutBtn).setVisibility(View.GONE);
             findViewById(R.id.menuMyAccountBtn).setVisibility(View.GONE);

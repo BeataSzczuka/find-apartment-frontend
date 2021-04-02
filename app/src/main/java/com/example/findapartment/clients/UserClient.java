@@ -6,9 +6,9 @@ import org.json.JSONObject;
 
 public class UserClient {
 
-    public void login(Context applicationContext, IRequestCallback iRequestCallback) {
+    public void login( JSONObject loginData, Context applicationContext, IRequestCallback iRequestCallback) {
         String API_USERS_URL = "/users/login";
-        RequestService.makeGetRequest(API_USERS_URL, applicationContext, iRequestCallback);
+        RequestService.makePostRequest(API_USERS_URL, loginData, applicationContext, iRequestCallback);
     }
 
     public void logout(Context applicationContext, IRequestCallback iRequestCallback) {
