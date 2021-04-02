@@ -40,7 +40,6 @@ public class ApartmentActivity extends AppCompatActivity {
     }
 
     private void fetchApartment() {
-        Log.e("tag", "FETCH APARTMENTS");
         apartmentClient.getApartment(getApplicationContext(), apartmentId, new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
@@ -66,7 +65,7 @@ public class ApartmentActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                Log.e("tag", result);
+                Log.e("error", result);
             }
         });
     }

@@ -45,18 +45,6 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
             viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
             viewHolder.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);*/
             convertView.setTag(viewHolder);
-//            convertView.setOnClickListener(v -> {startActivity(v, NewEmployeeActivity.class);});
-//            convertView.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    // Code here executes on main thread after user presses button
-//                    Log.i("AAA", "CLICKED \n\n\n\n\n\n");
-//                    String text = (String) ((TextView) v.findViewById(R.id.tvPrice)).getText();
-//                    Log.i("BBB", text);
-//                    Intent i=new Intent(v, ApartmentAdapter.class);
-//                    startActivity(i);
-//
-//                }
-//            });
         } else {
             // Existing view
             viewHolder = (ViewHolder) convertView.getTag();

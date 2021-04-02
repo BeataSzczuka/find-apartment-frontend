@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.apartments.AddUserActivity">
+    tools:context=".activities.apartments.LoginActivity">
 
     <fragment
         android:id="@+id/menuFragment"
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Rejestracja"
+        android:text="Logowanie"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,32 +53,11 @@
                 android:text="email" />
 
             <EditText
-                android:id="@+id/addUserEmailET"
+                android:id="@+id/editTextTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="20dp">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="numer telefonu" />
-
-            <EditText
-                android:id="@+id/addUserPhoneET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="phone" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -94,41 +73,21 @@
                 android:text="hasło" />
 
             <EditText
-                android:id="@+id/addUserPasswordET"
+                android:id="@+id/editTextTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="40dp">
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="powtórz hasło" />
-
-            <EditText
-                android:id="@+id/addUserRepeatPasswordET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword" />
-
-        </LinearLayout>
 
         <Button
-            android:id="@+id/createAccountBtn"
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:text="załóż konto"
-            android:onClick="onAddUserClick"
+            android:text="zaloguj"
             android:textColor="@android:color/white"/>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

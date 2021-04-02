@@ -3,6 +3,7 @@ package com.example.findapartment.activities.apartments;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -27,11 +28,16 @@ public class ApartmentListActivity extends AppCompatActivity {
     private ListView lvApartments;
     private ApartmentsAdapter apartmentsAdapter;
 
+    private String userToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_apartment_list);
+
+        Intent intentNow = getIntent();
+        userToken =intentNow.getStringExtra("TOKEN");
+
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
         apartmentsAdapter = new ApartmentsAdapter(this, apartments);

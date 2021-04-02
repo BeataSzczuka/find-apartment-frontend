@@ -58,7 +58,7 @@ public class ToolbarFragment extends Fragment {
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MenuActivity.class); //TODO change MenuActivity to an activity with filters and searching
+                Intent intent = new Intent(getActivity(), FiltersActivity.class);
                 startActivity(intent);
 
             }
