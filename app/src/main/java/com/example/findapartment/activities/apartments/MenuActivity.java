@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
+import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 import com.example.findapartment.models.User;
 
@@ -52,11 +53,12 @@ public class MenuActivity extends AppCompatActivity {
                         userSession.deleteSession();
                         Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
                         startActivity(i);
+                        ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());
                 }
             }
             @Override
             public void onError(String result) throws Exception {
-                Log.e("error", result);
+                ToastService.showErrorMessage("Wystąpił błąd podczas wylogowywania.", getApplicationContext());
             }
         });
     }

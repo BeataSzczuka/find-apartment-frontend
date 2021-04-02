@@ -56,7 +56,6 @@ public class ApartmentListActivity extends AppCompatActivity {
     }
 
     private void fetchApartments() {
-        Log.e("tag", "FETCH APARTMENTS");
         apartmentClient.getApartments(getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {

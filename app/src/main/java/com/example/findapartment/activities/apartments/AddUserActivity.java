@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
+import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 import com.example.findapartment.models.Apartment;
 
@@ -44,7 +45,7 @@ public class AddUserActivity extends AppCompatActivity {
 
     public void onAddUserClick(View view) throws JSONException {
         if (!password.getText().toString().equals(repeatedPassword.getText().toString())) {
-            Log.e("tag", "passwords should be equal");
+            ToastService.showErrorMessage("Te hasła nie pasują do siebie. Spróbuj ponownie. ", getApplicationContext());
             return;
         }
         JSONObject newUser = new JSONObject();
@@ -60,8 +61,9 @@ public class AddUserActivity extends AppCompatActivity {
                         data = response.getJSONObject("data");
                         userSession.createSession(data.getString("email"), data.getString("accessToken"), data.getString("role"));
                         Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
-////                        i.putExtra("TOKEN", data.getString("accessToken"));
                         startActivity(i);
+
+                        ToastService.showSuccessMessage("Zostałeś zalogowany.", getApplicationContext());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -70,7 +72,8 @@ public class AddUserActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                Log.e("error", result);
+                ToastService.showErrorMessage("Nie można utworzyć konta. Spróbuj ponownie.", getApplicationContext());
+
             }
         });
     }
