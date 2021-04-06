@@ -44,16 +44,8 @@ public class ApartmentListActivity extends AppCompatActivity {
         lvApartments.setAdapter(apartmentsAdapter);
         apartmentClient = new ApartmentClient();
         fetchApartments();
-        setOrderSpinner();
     }
 
-    private void setOrderSpinner(){
-        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.orders_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-    }
 
     private void fetchApartments() {
         apartmentClient.getApartments(getApplicationContext(), new IRequestCallback(){

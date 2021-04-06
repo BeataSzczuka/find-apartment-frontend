@@ -9,14 +9,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApartmentClient {
+    String API_APARTMENTS_URL = "/apartments";
 
     public void getApartments(Context applicationContext, IRequestCallback iRequestCallback) {
-        String API_APARTMENTS_URL = "/apartments";
         RequestService.makeGetRequest(API_APARTMENTS_URL, applicationContext, iRequestCallback);
     }
 
     public void getApartment(Context applicationContext, String apartmentId, IRequestCallback iRequestCallback) {
-        String API_APARTMENTS_URL = "/apartments/" + apartmentId;
-        RequestService.makeGetRequest(API_APARTMENTS_URL, applicationContext, iRequestCallback);
+        RequestService.makeGetRequest(API_APARTMENTS_URL + "/" + apartmentId, applicationContext, iRequestCallback);
+    }
+
+    public void addApartment( JSONObject apartment, Context applicationContext, IRequestCallback iRequestCallback) {
+        RequestService.makePostRequest(API_APARTMENTS_URL, apartment, applicationContext, iRequestCallback);
     }
 }

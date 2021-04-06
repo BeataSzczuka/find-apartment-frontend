@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="70dp"
+    tools:context=".activities.apartments.UploadedImageFragment">
+
+
+    <ImageView
+        android:id="@+id/uploadedImageIV"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:maxWidth="70dp"
+        android:minWidth="50dp"
+        android:scaleType="fitCenter"
+        android:src="@android:drawable/ic_menu_report_image" />
+
+    <ImageButton
+        android:id="@+id/deleteUploadedImageBtn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="right|top"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_delete"
+        android:tint="@android:color/black" />
+
+</FrameLayout>

@@ -1,18 +1,44 @@
 package com.example.findapartment.models;
 
 
-import android.widget.TextView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.util.Base64;
 
-import com.example.findapartment.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class Apartment implements Serializable {
+    private static class ImageObject {
+
+        private byte[] data;
+
+        public ImageObject(byte[] data) {
+            this.data = data;
+        }
+
+        public byte[] getData() {
+            return data;
+        }
+
+        public void setData(byte[] data) {
+            this.data = data;
+        }
+
+    }
+
     private String id;
     private String transactionType;
     private Integer price;
@@ -22,6 +48,20 @@ public class Apartment implements Serializable {
     private String publicationDate;
     private String phoneNumber;
     private String email;
+    private List<ImageObject> images;
+
+    public List<ImageObject> getImages() {
+        return images;
+    }
+
+    public byte[] getImage(int i) {
+        return images.get(i).getData();
+    }
+
+    public void setImages(List<ImageObject> images) {
+        this.images = images;
+    }
+
 
     public String getId() {
         return id;
@@ -111,6 +151,25 @@ public class Apartment implements Serializable {
             apartment.publicationDate = jsonObj.optString("publicationDate");
             apartment.phoneNumber = jsonObj.optString("phoneNumber");
             apartment.email = jsonObj.optString("email");
+
+            JSONArray arr =  jsonObj.optJSONArray("images");
+            List<ImageObject> images = new ArrayList<ImageObject>();
+
+            String s = ((JSONObject) arr.get(0)).getString("data") .toString();
+
+
+            for (int i = 0; i < arr.length(); i++) {
+                String decoded = ((JSONObject) arr.get(i)).getJSONObject("data").getString("data");
+                Gson gson = new Gson();
+                Type bytesType = new TypeToken<byte[]>(){}.getType();
+                byte[] bytes = gson.fromJson(decoded, bytesType );
+
+//                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                ImageObject io = new ImageObject(bytes);
+                images.add(io);
+            }
+            apartment.images = images;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
