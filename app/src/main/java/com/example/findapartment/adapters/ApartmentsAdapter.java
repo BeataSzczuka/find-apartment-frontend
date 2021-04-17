@@ -17,15 +17,12 @@ import com.example.findapartment.R;
 import com.example.findapartment.activities.apartments.ApartmentActivity;
 import com.example.findapartment.models.Apartment;
 
-import org.json.JSONException;
-
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
 
     private Context c;
+
     private static class ViewHolder {
         public TextView tvTitle;
         public TextView tvPrice;
@@ -59,6 +56,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         viewHolder.ivImage.setImageBitmap(bm);
 
+
         RelativeLayout employeeItem = (RelativeLayout) convertView.findViewById(R.id.apartmentLayout);
         employeeItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +70,5 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
 
         return convertView;
     }
-
 
 }

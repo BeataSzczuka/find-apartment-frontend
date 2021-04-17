@@ -61,6 +61,8 @@ public class AddApartmentActivity extends AppCompatActivity {
     private EditText propertySizeEditText;
     private EditText locationEditText;
     private EditText descriptionEditText;
+    private EditText priceEditText;
+
 
     private ApartmentClient apartmentClient;
     private UserSession userSession;
@@ -82,6 +84,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         uploadedImagesListView.setAdapter(uploadedImagesAdapter);
 
         transactionTypeRadio = findViewById(R.id.transactionTypeRadio);
+        priceEditText = findViewById(R.id.priceEditText);
         propertySizeEditText = findViewById(R.id.propertySizeEditText);
         locationEditText = findViewById(R.id.locationEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
@@ -91,17 +94,12 @@ public class AddApartmentActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
-            // You can use the API that requires the permission.
             Log.e("E", "Permission granted");
         } else requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         Log.e("E", "after");
     }
 
     public void uploadImage(View view) {
-//        Intent i = new Intent();
-//        i.setType("image/*");
-//        i.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, 0);
@@ -110,67 +108,31 @@ public class AddApartmentActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (resultCode == RESULT_OK) {
-//            if (requestCode == SELECT_PICTURE) {
-                if (requestCode == 0 && resultCode == RESULT_OK && null != data) {
+            if (requestCode == 0 && resultCode == RESULT_OK && null != data) {
 
-                    Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
-                    uploadedImagesAdapter.add(selectedImageUri);
-                    uploadedImagesAdapter.notifyDataSetChanged();
+                Uri selectedImageUri = data.getData();
+            if (null != selectedImageUri) {
+                uploadedImagesAdapter.add(selectedImageUri);
+                uploadedImagesAdapter.notifyDataSetChanged();
 
 
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                    Cursor cursor = getContentResolver().query(selectedImageUri, filePathColumn, null, null, null);
-                    assert cursor != null;
-                    cursor.moveToFirst();
+                Cursor cursor = getContentResolver().query(selectedImageUri, filePathColumn, null, null, null);
+                assert cursor != null;
+                cursor.moveToFirst();
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    imagesPaths.add(cursor.getString(columnIndex));
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imagesPaths.add(cursor.getString(columnIndex));
 
-                    cursor.close();
+                cursor.close();
 
-                }
             }
-//        }
+        }
     }
 
     public void onAddApartmentClick(View view) throws JSONException {
         uploadMultipleFiles();
-//        JSONObject newApartment = new JSONObject();
-//        if (transactionTypeRadio.getCheckedRadioButtonId() == R.id.transactionSale) {
-//            newApartment.put("transactionType", "sale");
-//        } else {
-//            newApartment.put("transactionType", "rent");
-//        }
-//        newApartment.put("propertySize", propertySizeEditText.getText().toString());
-//        newApartment.put("location", locationEditText.getText().toString());
-//        newApartment.put("description", descriptionEditText.getText().toString());
-//
-//
-//        apartmentClient.addApartment(newApartment, getApplicationContext(), new IRequestCallback(){
-//            @Override
-//            public void onSuccess(JSONObject response) {
-//                JSONObject data = null;
-//                if (response != null) {
-//                    try {
-//                        data = response.getJSONObject("data");
-//                        Log.e("T", data.toString());
-//                        ToastService.showSuccessMessage("Ogłoszenie zostało dodane.", getApplicationContext());
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onError(String result) throws Exception {
-//                ToastService.showErrorMessage("Nie można dodać ogłoszenia. Spróbuj ponownie.", getApplicationContext());
-//
-//            }
-//        });
     }
 
 
@@ -197,6 +159,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         } else {
             newApartment.put("transactionType", "rent");
         }
+        newApartment.put("price", priceEditText.getText().toString());
         newApartment.put("propertySize", propertySizeEditText.getText().toString());
         newApartment.put("location", locationEditText.getText().toString());
         newApartment.put("description", descriptionEditText.getText().toString());

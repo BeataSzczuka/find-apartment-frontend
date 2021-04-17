@@ -100,6 +100,20 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/priceTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="cena" />
+
+                    <EditText
+                        android:id="@+id/priceEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="number" />
+
+                    <TextView
                         android:id="@+id/propertySizeTv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

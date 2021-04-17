@@ -11,6 +11,42 @@
         android:id="@+id/apartmentLayout"
         tools:context=".activities.apartments.ApartmentActivity">
 
+        <fragment
+            android:id="@+id/menuFragment"
+            android:name="com.example.findapartment.activities.apartments.ToolbarFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/relativeLayoutSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/menuFragment" >
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPagerImageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/circlesLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_alignLeft="@id/viewPagerImageSlider"
+                android:layout_alignRight="@id/viewPagerImageSlider"
+                android:layout_alignBottom="@id/viewPagerImageSlider"
+                android:gravity="center"
+                android:orientation="horizontal" />
+        </RelativeLayout>
+
         <ImageButton
             android:id="@+id/imageButton3"
             android:layout_width="40dp"
@@ -21,26 +57,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.272"
             app:layout_constraintStart_toEndOf="@+id/imageButton2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@id/relativeLayoutSlider"
             app:srcCompat="@android:drawable/ic_menu_edit" />
-
-        <fragment
-            android:id="@+id/menuFragment"
-            android:name="com.example.findapartment.activities.apartments.ToolbarFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="436dp"
-            android:layout_height="299dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuFragment"
-            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/priceTv"
@@ -53,7 +71,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.096"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@id/relativeLayoutSlider" />
 
         <TextView
             android:id="@+id/propertySizeTv"
@@ -234,9 +252,9 @@
             android:background="@android:color/transparent"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.415"
+            app:layout_constraintHorizontal_bias="0.396"
             app:layout_constraintStart_toEndOf="@+id/priceTv"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSlider"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
