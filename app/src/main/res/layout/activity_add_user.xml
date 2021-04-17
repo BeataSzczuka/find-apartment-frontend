@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.apartments.AddUserActivity">
+    tools:context=".activities.AddUserActivity">
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.findapartment.activities.apartments.ToolbarFragment"
+        android:name="com.example.findapartment.framents.ToolbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

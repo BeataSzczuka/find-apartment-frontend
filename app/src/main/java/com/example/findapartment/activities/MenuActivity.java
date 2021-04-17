@@ -1,10 +1,9 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,9 +12,7 @@ import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
-import com.example.findapartment.models.User;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MenuActivity extends AppCompatActivity {

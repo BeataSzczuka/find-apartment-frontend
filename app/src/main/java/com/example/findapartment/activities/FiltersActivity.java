@@ -1,4 +1,4 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -5,7 +5,7 @@
     android:id="@+id/menuActivity"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".activities.apartments.MenuActivity">
+    tools:context=".activities.MenuActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout"

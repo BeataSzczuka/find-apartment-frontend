@@ -1,25 +1,20 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.framents;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.findapartment.R;
-import com.example.findapartment.models.Apartment;
-
-import java.util.ArrayList;
+import com.example.findapartment.activities.FiltersActivity;
+import com.example.findapartment.activities.MenuActivity;
 
 
 public class ToolbarFragment extends Fragment {

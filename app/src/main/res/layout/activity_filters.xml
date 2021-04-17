@@ -5,11 +5,11 @@
     android:id="@+id/filtersActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.apartments.FiltersActivity">
+    tools:context=".activities.FiltersActivity">
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.example.findapartment.activities.apartments.ToolbarFragment"
+        android:name="com.example.findapartment.framents.ToolbarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

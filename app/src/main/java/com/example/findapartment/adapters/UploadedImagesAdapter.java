@@ -1,8 +1,6 @@
 package com.example.findapartment.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.findapartment.R;
-import com.example.findapartment.activities.apartments.ApartmentActivity;
-import com.example.findapartment.models.Apartment;
 
 import java.util.ArrayList;
 

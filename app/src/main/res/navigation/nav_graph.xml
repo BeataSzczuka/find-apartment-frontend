@@ -30,7 +30,7 @@
     </fragment>
     <activity
         android:id="@+id/apartmentListActivity"
-        android:name="com.example.findapartment.activities.apartments.ApartmentListActivity"
+        android:name="com.example.findapartment.activities.ApartmentListActivity"
         android:label="activity_apartment_list"
         tools:layout="@layout/activity_apartment_list" />
 </navigation>

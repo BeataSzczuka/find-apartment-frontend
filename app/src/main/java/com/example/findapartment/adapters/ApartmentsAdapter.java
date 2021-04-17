@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.findapartment.R;
-import com.example.findapartment.activities.apartments.ApartmentActivity;
+import com.example.findapartment.activities.ApartmentActivity;
 import com.example.findapartment.models.Apartment;
 
 import java.util.ArrayList;

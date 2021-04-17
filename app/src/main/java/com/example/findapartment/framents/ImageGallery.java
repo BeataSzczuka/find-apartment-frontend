@@ -1,20 +1,27 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.framents;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.findapartment.R;
+import com.example.findapartment.activities.MenuActivity;
 import com.example.findapartment.adapters.SliderAdapter;
 
 import java.util.ArrayList;
@@ -23,8 +30,8 @@ import java.util.List;
 
 public class ImageGallery extends Fragment {
     private ViewPager2 mViewPager;
-    SliderAdapter mViewPagerAdapter;
-    LinearLayout circlesLayout;
+    private SliderAdapter mViewPagerAdapter;
+    private LinearLayout circlesLayout;
 
     private int prevPosition = 0;
 
@@ -44,7 +51,6 @@ public class ImageGallery extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mViewPager = (ViewPager2) view.findViewById(R.id.viewPagerImageSlider);
         circlesLayout = (LinearLayout) view.findViewById(R.id.circlesLayout);
-
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -71,7 +77,6 @@ public class ImageGallery extends Fragment {
         });
     }
 
-
     public void showCircles(){
         for (int i = 0; i < mViewPagerAdapter.getItemCount(); i++) {
             ImageView iv = new ImageView(getActivity());
@@ -82,4 +87,5 @@ public class ImageGallery extends Fragment {
             circlesLayout.addView(iv);
         }
     }
+
 }

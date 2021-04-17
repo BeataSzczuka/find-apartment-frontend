@@ -1,4 +1,4 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,28 +14,18 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.HttpResponse;
 import com.example.findapartment.R;
-import com.example.findapartment.adapters.ApartmentsAdapter;
 import com.example.findapartment.adapters.UploadedImagesAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
-import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.ServerResponse;
-import com.example.findapartment.clients.UserClient;
-import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
-import com.example.findapartment.models.Apartment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

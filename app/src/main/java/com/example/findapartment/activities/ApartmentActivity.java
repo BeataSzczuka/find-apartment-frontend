@@ -1,22 +1,28 @@
-package com.example.findapartment.activities.apartments;
+package com.example.findapartment.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.findapartment.R;
 import com.example.findapartment.adapters.SliderAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
+import com.example.findapartment.framents.GalleryDialogFragment;
+import com.example.findapartment.framents.ImageGallery;
 import com.example.findapartment.models.Apartment;
 
 import org.json.JSONException;
@@ -29,16 +35,11 @@ public class ApartmentActivity extends AppCompatActivity {
 
     private ApartmentClient apartmentClient;
     private String apartmentId;
-    private ConstraintLayout apartmentLayout;
 
-    private ViewPager2 mViewPager;
     SliderAdapter mViewPagerAdapter;
-    LinearLayout circlesLayout;
     List<Bitmap> bitmaps;
 
     ImageGallery imageGallery;
-
-    private int prevPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,39 +48,27 @@ public class ApartmentActivity extends AppCompatActivity {
 
         Intent intentNow = getIntent();
         apartmentId = intentNow.getStringExtra("apartmentID");
-        apartmentLayout = findViewById(R.id.apartmentLayout);
         apartmentClient = new ApartmentClient();
 
         bitmaps = new ArrayList<Bitmap>();
 
+        mViewPagerAdapter = new SliderAdapter(bitmaps){
+            @Override
+            public void onBindViewHolder(@NonNull SliderAdapter.SliderViewHolder holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.findViewById(R.id.itemImageView).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogFragment newFragment = GalleryDialogFragment.newInstance(mViewPagerAdapter);
+                        newFragment.show(getSupportFragmentManager(), "newFragment");
+                    }
+                });
+            }
+        };
+
         FragmentManager fm = getSupportFragmentManager();
         imageGallery = (ImageGallery) fm.findFragmentById(R.id.apartmentGalleryFragment);
-        mViewPagerAdapter = new SliderAdapter(bitmaps);
         imageGallery.setImagesAdapter(mViewPagerAdapter);
-
-
-//
-//        mViewPager = (ViewPager2) findViewById(R.id.viewPagerImageSlider);
-//        circlesLayout = (LinearLayout) findViewById(R.id.circlesLayout);
-//        mViewPagerAdapter = new SliderAdapter(bitmaps);
-//        mViewPager.setAdapter(mViewPagerAdapter);
-//
-//
-//        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                super.onPageSelected(position);
-//
-//                ImageView prevCircle = (ImageView) circlesLayout.getChildAt(prevPosition);
-//                prevCircle.setColorFilter(null);
-//
-//                ImageView circle = (ImageView) circlesLayout.getChildAt(position);
-//                PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary),PorterDuff.Mode.MULTIPLY);
-//                circle.setColorFilter(porterDuffColorFilter);
-//
-//                prevPosition = position;
-//            }
-//        });
 
         fetchApartment();
     }
@@ -104,9 +93,6 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.descriptionTv)).setText(apartment.getDescription());
 
                         convertToBitmapAndDisplayImages(apartment);
-
-
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,15 +115,4 @@ public class ApartmentActivity extends AppCompatActivity {
         imageGallery.showCircles();
         mViewPagerAdapter.notifyDataSetChanged();
     }
-
-//    private void showCircles(){
-//        for (int i = 0; i < bitmaps.size(); i++) {
-//            ImageView iv = new ImageView(this);
-//            iv.setImageResource(R.drawable.circle_shadow);
-//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(70, 70);
-//            lp.setMargins(0,0,20,0);
-//            iv.setLayoutParams(lp);
-//            circlesLayout.addView(iv);
-//        }
-//    }
 }

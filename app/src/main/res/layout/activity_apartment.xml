@@ -9,53 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/apartmentLayout"
-        tools:context=".activities.apartments.ApartmentActivity">
+        tools:context=".activities.ApartmentActivity">
 
         <fragment
             android:id="@+id/menuFragment"
-            android:name="com.example.findapartment.activities.apartments.ToolbarFragment"
+            android:name="com.example.findapartment.framents.ToolbarFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <fragment
             android:id="@+id/apartmentGalleryFragment"
-            android:name="com.example.findapartment.activities.apartments.ImageGallery"
+            android:name="com.example.findapartment.framents.ImageGallery"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/menuFragment" />
-
-
-<!--        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--            android:id="@+id/relativeLayoutSlider"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/menuFragment" >-->
-
-
-<!--            <androidx.viewpager2.widget.ViewPager2-->
-<!--                android:id="@+id/viewPagerImageSlider"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="300dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"/>-->
-
-<!--            <LinearLayout-->
-<!--                android:id="@+id/circlesLayout"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="18dp"-->
-<!--                android:layout_alignLeft="@id/viewPagerImageSlider"-->
-<!--                android:layout_alignRight="@id/viewPagerImageSlider"-->
-<!--                android:layout_alignBottom="@id/viewPagerImageSlider"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="horizontal" />-->
-<!--        </RelativeLayout>-->
+            android:layout_height="300dp"
+            app:layout_constraintTop_toBottomOf="@id/menuFragment"/>
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/editApartmentButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
@@ -93,6 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/priceTv" />
 
         <LinearLayout
+            android:id="@+id/apartmentInfoLinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
