@@ -20,32 +20,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/relativeLayoutSlider"
+        <fragment
+            android:id="@+id/apartmentGalleryFragment"
+            android:name="com.example.findapartment.activities.apartments.ImageGallery"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/menuFragment" >
+            app:layout_constraintTop_toBottomOf="@id/menuFragment" />
 
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPagerImageSlider"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+<!--        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--            android:id="@+id/relativeLayoutSlider"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/menuFragment" >-->
 
-            <LinearLayout
-                android:id="@+id/circlesLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_alignLeft="@id/viewPagerImageSlider"
-                android:layout_alignRight="@id/viewPagerImageSlider"
-                android:layout_alignBottom="@id/viewPagerImageSlider"
-                android:gravity="center"
-                android:orientation="horizontal" />
-        </RelativeLayout>
+
+<!--            <androidx.viewpager2.widget.ViewPager2-->
+<!--                android:id="@+id/viewPagerImageSlider"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"/>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/circlesLayout"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="18dp"-->
+<!--                android:layout_alignLeft="@id/viewPagerImageSlider"-->
+<!--                android:layout_alignRight="@id/viewPagerImageSlider"-->
+<!--                android:layout_alignBottom="@id/viewPagerImageSlider"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="horizontal" />-->
+<!--        </RelativeLayout>-->
 
         <ImageButton
             android:id="@+id/imageButton3"
@@ -57,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.272"
             app:layout_constraintStart_toEndOf="@+id/imageButton2"
-            app:layout_constraintTop_toBottomOf="@id/relativeLayoutSlider"
+            app:layout_constraintTop_toBottomOf="@id/apartmentGalleryFragment"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <TextView
@@ -71,7 +78,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.096"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/relativeLayoutSlider" />
+            app:layout_constraintTop_toBottomOf="@id/apartmentGalleryFragment" />
 
         <TextView
             android:id="@+id/propertySizeTv"
@@ -254,7 +261,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.396"
             app:layout_constraintStart_toEndOf="@+id/priceTv"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayoutSlider"
+            app:layout_constraintTop_toBottomOf="@+id/apartmentGalleryFragment"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

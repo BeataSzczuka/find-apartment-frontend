@@ -1,25 +1,15 @@
 package com.example.findapartment.activities.apartments;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,6 +36,8 @@ public class ApartmentActivity extends AppCompatActivity {
     LinearLayout circlesLayout;
     List<Bitmap> bitmaps;
 
+    ImageGallery imageGallery;
+
     private int prevPosition = 0;
 
     @Override
@@ -59,27 +51,35 @@ public class ApartmentActivity extends AppCompatActivity {
         apartmentClient = new ApartmentClient();
 
         bitmaps = new ArrayList<Bitmap>();
-        mViewPager = (ViewPager2) findViewById(R.id.viewPagerImageSlider);
-        circlesLayout = (LinearLayout) findViewById(R.id.circlesLayout);
+
+        FragmentManager fm = getSupportFragmentManager();
+        imageGallery = (ImageGallery) fm.findFragmentById(R.id.apartmentGalleryFragment);
         mViewPagerAdapter = new SliderAdapter(bitmaps);
-        mViewPager.setAdapter(mViewPagerAdapter);
+        imageGallery.setImagesAdapter(mViewPagerAdapter);
 
 
-        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-
-                ImageView prevCircle = (ImageView) circlesLayout.getChildAt(prevPosition);
-                prevCircle.setColorFilter(null);
-
-                ImageView circle = (ImageView) circlesLayout.getChildAt(position);
-                PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary),PorterDuff.Mode.MULTIPLY);
-                circle.setColorFilter(porterDuffColorFilter);
-
-                prevPosition = position;
-            }
-        });
+//
+//        mViewPager = (ViewPager2) findViewById(R.id.viewPagerImageSlider);
+//        circlesLayout = (LinearLayout) findViewById(R.id.circlesLayout);
+//        mViewPagerAdapter = new SliderAdapter(bitmaps);
+//        mViewPager.setAdapter(mViewPagerAdapter);
+//
+//
+//        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//
+//                ImageView prevCircle = (ImageView) circlesLayout.getChildAt(prevPosition);
+//                prevCircle.setColorFilter(null);
+//
+//                ImageView circle = (ImageView) circlesLayout.getChildAt(position);
+//                PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(getResources().getColor(R.color.colorPrimary),PorterDuff.Mode.MULTIPLY);
+//                circle.setColorFilter(porterDuffColorFilter);
+//
+//                prevPosition = position;
+//            }
+//        });
 
         fetchApartment();
     }
@@ -126,18 +126,18 @@ public class ApartmentActivity extends AppCompatActivity {
             Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             bitmaps.add(bm);
         }
-        showCircles();
+        imageGallery.showCircles();
         mViewPagerAdapter.notifyDataSetChanged();
     }
 
-    private void showCircles(){
-        for (int i = 0; i < bitmaps.size(); i++) {
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.circle_shadow);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(70, 70);
-            lp.setMargins(0,0,20,0);
-            iv.setLayoutParams(lp);
-            circlesLayout.addView(iv);
-        }
-    }
+//    private void showCircles(){
+//        for (int i = 0; i < bitmaps.size(); i++) {
+//            ImageView iv = new ImageView(this);
+//            iv.setImageResource(R.drawable.circle_shadow);
+//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(70, 70);
+//            lp.setMargins(0,0,20,0);
+//            iv.setLayoutParams(lp);
+//            circlesLayout.addView(iv);
+//        }
+//    }
 }

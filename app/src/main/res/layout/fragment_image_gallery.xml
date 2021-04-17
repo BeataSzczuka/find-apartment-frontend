@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayoutSlider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.apartments.ImageGallery">
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerImageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
+    <LinearLayout
+        android:id="@+id/circlesLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignLeft="@id/viewPagerImageSlider"
+        android:layout_alignRight="@id/viewPagerImageSlider"
+        android:layout_alignBottom="@id/viewPagerImageSlider"
+        android:gravity="center"
+        android:orientation="horizontal" />
+</RelativeLayout>
