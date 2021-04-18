@@ -5,16 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -30,10 +25,8 @@ import com.example.findapartment.models.Apartment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,11 +93,12 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.locationTv)).setText(apartment.getLocation());
                         ((TextView) findViewById(R.id.transactionTextView)).setText(apartment.getTransactionType());
 
-                        String input = "2015-12-03T17:00:08Z";
-                        DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                        String str2 = df2.format(input);
+                        SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                        Date date1= fromFormat.parse(apartment.getPublicationDate());
+                        SimpleDateFormat targetFormat = new SimpleDateFormat("dd.MM.yyy HH:mm");
+                        String date2 = targetFormat.format(date1);
 
-                        ((TextView) findViewById(R.id.publicationDateTv)).setText(str2);
+                        ((TextView) findViewById(R.id.publicationDateTv)).setText(date2);
                         ((TextView) findViewById(R.id.phoneNumberTv)).setText(apartment.getPhoneNumber());
                         ((TextView) findViewById(R.id.emailTv)).setText(apartment.getEmail());
                         ((TextView) findViewById(R.id.descriptionTv)).setText(apartment.getDescription());
@@ -117,6 +111,8 @@ public class ApartmentActivity extends AppCompatActivity {
                         convertToBitmapAndDisplayImages(apartment);
                     }
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 } finally {
                     progressBar.setVisibility(View.INVISIBLE);

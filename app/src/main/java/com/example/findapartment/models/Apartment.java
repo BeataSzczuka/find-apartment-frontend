@@ -125,9 +125,6 @@ public class Apartment implements Serializable {
             JSONArray arr =  jsonObj.optJSONArray("images");
             List<ImageObject> images = new ArrayList<ImageObject>();
 
-            String s = ((JSONObject) arr.get(0)).getString("data") .toString();
-
-
             for (int i = 0; i < arr.length(); i++) {
                 String decoded = ((JSONObject) arr.get(i)).getJSONObject("data").getString("data");
                 Gson gson = new Gson();
