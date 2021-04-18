@@ -6,9 +6,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.findapartment.helpers.UserSession;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +43,7 @@ public class RequestService {
         }){
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                UserSession userSession = new UserSession(c);
-                params.put("authorization", userSession.getLoggedInUserToken());
-                return params;
+                return setAuthorizationHeader(c);
             }
         };
         RequestQueueController.getInstance(c).addToRequestQueue(newRequest);
@@ -68,12 +70,49 @@ public class RequestService {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                UserSession userSession = new UserSession(context);
-                params.put("authorization", userSession.getLoggedInUserToken());
-                return params;
+                return setAuthorizationHeader(context);
             }
         };
         RequestQueueController.getInstance(context).addToRequestQueue(newRequest);
+    }
+
+    public static void makeDeleteRequest(String url, Context context, IRequestCallback requestCallback) {
+
+        StringRequest newRequest = new StringRequest(Request.Method.DELETE, API_BASE_URL + url,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    JsonParser parser = new JsonParser();
+                    JsonObject jsonObject =(JsonObject) parser.parse(response);
+                    try {
+                        requestCallback.onSuccess(new JSONObject(jsonObject.toString()));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            try {
+                requestCallback.onError(error.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }) {
+        @Override
+        public Map<String, String> getHeaders() {
+           return setAuthorizationHeader(context);
+        }
+    };
+        RequestQueueController.getInstance(context).addToRequestQueue(newRequest);
+    }
+
+    private static Map<String, String> setAuthorizationHeader(Context context){
+        Map<String, String> params = new HashMap<String, String>();
+        UserSession userSession = new UserSession(context);
+        params.put("authorization", userSession.getLoggedInUserToken());
+        return params;
     }
 }

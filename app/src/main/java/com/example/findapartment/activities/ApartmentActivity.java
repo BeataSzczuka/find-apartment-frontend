@@ -136,4 +136,23 @@ public class ApartmentActivity extends AppCompatActivity {
         imageGallery.showCircles();
         mViewPagerAdapter.notifyDataSetChanged();
     }
+
+    public void onDeleteApartmentClick(View view) {
+        progressBar.setVisibility(View.VISIBLE);
+        apartmentClient.deleteApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
+                startActivity(i);
+                ToastService.showSuccessMessage("Ogłoszenie zostało usunięte", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+            @Override
+            public void onError(String result) throws Exception {
+                ToastService.showErrorMessage("Nie można usunąć ogłoszenia", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
 }

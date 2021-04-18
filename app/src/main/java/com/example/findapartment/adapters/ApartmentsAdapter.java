@@ -51,10 +51,11 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         }
         viewHolder.tvPrice.setText(Integer.toString(apartment.getPrice()));
 
-        byte[] bytes = apartment.getImage(0);
-        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        viewHolder.ivImage.setImageBitmap(bm);
-
+        if (apartment.getImages().size() > 0) {
+            byte[] bytes = apartment.getImage(0);
+            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            viewHolder.ivImage.setImageBitmap(bm);
+        }
 
         RelativeLayout employeeItem = (RelativeLayout) convertView.findViewById(R.id.apartmentLayout);
         employeeItem.setOnClickListener(new View.OnClickListener() {

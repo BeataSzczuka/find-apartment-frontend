@@ -19,7 +19,7 @@ public class ApartmentClient {
         RequestService.makeGetRequest(API_APARTMENTS_URL + "/" + apartmentId, applicationContext, iRequestCallback);
     }
 
-    public void addApartment( JSONObject apartment, Context applicationContext, IRequestCallback iRequestCallback) {
-        RequestService.makePostRequest(API_APARTMENTS_URL, apartment, applicationContext, iRequestCallback);
+    public void deleteApartment( String apartmentId, Context applicationContext, IRequestCallback iRequestCallback) {
+        RequestService.makeDeleteRequest(API_APARTMENTS_URL + "/" + apartmentId, applicationContext, iRequestCallback);
     }
 }
