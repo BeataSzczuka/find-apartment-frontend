@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.findapartment.R;
@@ -23,12 +24,19 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.framents.GalleryDialogFragment;
 import com.example.findapartment.framents.ImageGallery;
+import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.models.Apartment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ApartmentActivity extends AppCompatActivity {
@@ -40,6 +48,7 @@ public class ApartmentActivity extends AppCompatActivity {
     List<Bitmap> bitmaps;
 
     ImageGallery imageGallery;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +79,13 @@ public class ApartmentActivity extends AppCompatActivity {
         imageGallery = (ImageGallery) fm.findFragmentById(R.id.apartmentGalleryFragment);
         imageGallery.setImagesAdapter(mViewPagerAdapter);
 
+        progressBar = findViewById(R.id.apartmentActivityProgressBar);
+
         fetchApartment();
     }
 
     private void fetchApartment() {
+        progressBar.setVisibility(View.VISIBLE);
         apartmentClient.getApartment(getApplicationContext(), apartmentId, new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
@@ -87,20 +99,33 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.propertySizeTv)).setText(apartment.getPropertySize().toString() + " m2");
                         ((TextView) findViewById(R.id.locationTv)).setText(apartment.getLocation());
                         ((TextView) findViewById(R.id.transactionTextView)).setText(apartment.getTransactionType());
-                        ((TextView) findViewById(R.id.publicationDateTv)).setText(apartment.getPublicationDate());
+
+                        String input = "2015-12-03T17:00:08Z";
+                        DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                        String str2 = df2.format(input);
+
+                        ((TextView) findViewById(R.id.publicationDateTv)).setText(str2);
                         ((TextView) findViewById(R.id.phoneNumberTv)).setText(apartment.getPhoneNumber());
                         ((TextView) findViewById(R.id.emailTv)).setText(apartment.getEmail());
                         ((TextView) findViewById(R.id.descriptionTv)).setText(apartment.getDescription());
+
+                        if (apartment.getIsAuthor()) {
+                            findViewById(R.id.editApartmentButton).setVisibility(View.VISIBLE);
+                            findViewById(R.id.deleteApartmentButton).setVisibility(View.VISIBLE);
+                        }
 
                         convertToBitmapAndDisplayImages(apartment);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
             @Override
             public void onError(String result) throws Exception {
-                Log.e("error", result);
+                ToastService.showErrorMessage(result, getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

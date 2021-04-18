@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.findapartment.R;
@@ -19,6 +20,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private UserClient userClient;
     private UserSession userSession;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class MenuActivity extends AppCompatActivity {
         userSession = new UserSession(MenuActivity.this);
         userClient = new UserClient();
         hideButtons();
+        progressBar = findViewById(R.id.loginActivityProgressBar);
+
     }
 
     private void hideButtons() {
@@ -43,6 +47,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void onLogoutButtonClick(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         userClient.logout(getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
@@ -52,10 +57,12 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(i);
                         ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Wystąpił błąd podczas wylogowywania.", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

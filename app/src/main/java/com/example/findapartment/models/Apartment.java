@@ -21,6 +21,7 @@ import java.util.List;
 
 
 public class Apartment implements Serializable {
+
     private static class ImageObject {
 
         private byte[] data;
@@ -48,6 +49,7 @@ public class Apartment implements Serializable {
     private String publicationDate;
     private String phoneNumber;
     private String email;
+    private boolean isAuthor;
     private List<ImageObject> images;
 
     public List<ImageObject> getImages() {
@@ -57,11 +59,6 @@ public class Apartment implements Serializable {
     public byte[] getImage(int i) {
         return images.get(i).getData();
     }
-
-    public void setImages(List<ImageObject> images) {
-        this.images = images;
-    }
-
 
     public String getId() {
         return id;
@@ -93,50 +90,22 @@ public class Apartment implements Serializable {
         return transactionType;
     }
 
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public void setPropertySize(Integer propertySize) {
-        this.propertySize = propertySize;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPublicationDate() {
         return publicationDate;
-    }
-
-    public void setPublicationDate(String publicationDate) {
-        this.publicationDate = publicationDate;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
+    public boolean getIsAuthor() {
+        return isAuthor;
+    }
 
 
     public static Apartment fromJSON(JSONObject jsonObj) {
@@ -151,6 +120,7 @@ public class Apartment implements Serializable {
             apartment.publicationDate = jsonObj.optString("publicationDate");
             apartment.phoneNumber = jsonObj.optString("phoneNumber");
             apartment.email = jsonObj.optString("email");
+            apartment.isAuthor = jsonObj.optBoolean("isAuthor");
 
             JSONArray arr =  jsonObj.optJSONArray("images");
             List<ImageObject> images = new ArrayList<ImageObject>();
@@ -163,8 +133,6 @@ public class Apartment implements Serializable {
                 Gson gson = new Gson();
                 Type bytesType = new TypeToken<byte[]>(){}.getType();
                 byte[] bytes = gson.fromJson(decoded, bytesType );
-
-//                Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                 ImageObject io = new ImageObject(bytes);
                 images.add(io);

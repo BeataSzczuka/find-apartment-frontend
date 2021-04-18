@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
@@ -25,6 +26,7 @@ public class AddUserActivity extends AppCompatActivity {
     private EditText phoneNumber;
     private EditText password;
     private EditText repeatedPassword;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class AddUserActivity extends AppCompatActivity {
         phoneNumber = findViewById(R.id.addUserPhoneET);
         password = findViewById(R.id.addUserPasswordET);
         repeatedPassword = findViewById(R.id.addUserRepeatPasswordET);
+        progressBar = findViewById(R.id.addUserActivityProgressBar);
     }
 
     public void onAddUserClick(View view) throws JSONException {
@@ -45,6 +48,7 @@ public class AddUserActivity extends AppCompatActivity {
             ToastService.showErrorMessage("Te hasła nie pasują do siebie. Spróbuj ponownie. ", getApplicationContext());
             return;
         }
+        progressBar.setVisibility(View.VISIBLE);
         JSONObject newUser = new JSONObject();
         newUser.put("email", email.getText().toString());
         newUser.put("phoneNumber", phoneNumber.getText().toString());
@@ -66,10 +70,12 @@ public class AddUserActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie można utworzyć konta. Spróbuj ponownie.", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
 
             }
         });

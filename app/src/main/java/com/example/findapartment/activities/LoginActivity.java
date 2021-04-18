@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +36,11 @@ public class LoginActivity extends AppCompatActivity {
 
         email = findViewById(R.id.loginEmailET);
         password = findViewById(R.id.loginPasswordET);
+        progressBar = findViewById(R.id.loginActivityProgressBar);
     }
 
     public void onLoginClick(View view) throws JSONException {
+        progressBar.setVisibility(View.VISIBLE);
         JSONObject loginData = new JSONObject();
         loginData.put("email", email.getText().toString());
         loginData.put("password", password.getText().toString());
@@ -59,10 +63,12 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie zostałeś zalogowany. Spróbuj ponownie.", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }

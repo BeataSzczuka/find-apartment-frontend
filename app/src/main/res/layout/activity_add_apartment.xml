@@ -9,8 +9,6 @@
         android:layout_height="match_parent"
         tools:context=".activities.AddApartmentActivity">
 
-
-
         <fragment
             android:id="@+id/menuFragment"
             android:name="com.example.findapartment.framents.ToolbarFragment"
@@ -229,6 +227,14 @@
 
             </androidx.cardview.widget.CardView>
 
+            <ProgressBar
+                android:id="@+id/addApartmentActivityProgressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:paddingBottom="20dp"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/createAccountBtn"
                 android:onClick="onAddApartmentClick"
@@ -237,6 +243,8 @@
                 android:background="@color/colorPrimary"
                 android:text="dodaj ogłoszenie"
                 android:textColor="@android:color/white" />
+
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

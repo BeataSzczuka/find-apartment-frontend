@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
 import com.example.findapartment.clients.ServerResponse;
+import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
 import org.json.JSONException;
@@ -52,7 +54,7 @@ public class AddApartmentActivity extends AppCompatActivity {
     private EditText locationEditText;
     private EditText descriptionEditText;
     private EditText priceEditText;
-
+    private ProgressBar progressBar;
 
     private ApartmentClient apartmentClient;
     private UserSession userSession;
@@ -79,7 +81,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         locationEditText = findViewById(R.id.locationEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
 
-
+        progressBar = findViewById(R.id.addApartmentActivityProgressBar);
 
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
@@ -127,7 +129,7 @@ public class AddApartmentActivity extends AppCompatActivity {
 
 
     private void uploadMultipleFiles() throws JSONException {
-        // Map is used to multipart the file using okhttp3.RequestBody
+        progressBar.setVisibility(View.VISIBLE);
 
         MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[imagesPaths.size()];
 
@@ -139,9 +141,6 @@ public class AddApartmentActivity extends AppCompatActivity {
 
             surveyImagesParts[i] = fileToUpload1;
         }
-
-
-
 
         JSONObject newApartment = new JSONObject();
         if (transactionTypeRadio.getCheckedRadioButtonId() == R.id.transactionSale) {
@@ -171,10 +170,12 @@ public class AddApartmentActivity extends AppCompatActivity {
                 } else {
                     Log.v("Response", serverResponse.toString());
                 }
+                progressBar.setVisibility(View.GONE);
             }
             @Override
             public void onFailure(Call < ServerResponse > call, Throwable t) {
-                Log.e("ERROR", call.toString());
+                ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", getApplicationContext());
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
