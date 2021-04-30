@@ -23,7 +23,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
     private Context c;
 
     private static class ViewHolder {
-        public TextView tvTitle;
+        public TextView tvLocation;
         public TextView tvPrice;
         public ImageView ivImage;
     }
@@ -41,7 +41,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_apartment, parent, false);
-            viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+            viewHolder.tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
             viewHolder.tvPrice = (TextView) convertView.findViewById(R.id.tvPrice);
             viewHolder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
             convertView.setTag(viewHolder);
@@ -49,7 +49,8 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
             // Existing view
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvPrice.setText(Integer.toString(apartment.getPrice()));
+        viewHolder.tvPrice.setText(Integer.toString(apartment.getPrice()) + " zł");
+        viewHolder.tvLocation.setText(apartment.getLocation());
 
         if (apartment.getImages().size() > 0) {
             byte[] bytes = apartment.getImage(0);

@@ -48,15 +48,5 @@ public class ToolbarFragment extends Fragment {
 
             }
         });
-
-        searchBtn = (ImageButton) view.findViewById(R.id.searchButton);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FiltersActivity.class);
-                startActivity(intent);
-
-            }
-        });
     }
 }

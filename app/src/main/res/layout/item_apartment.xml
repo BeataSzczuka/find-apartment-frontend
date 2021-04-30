@@ -40,7 +40,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:shadowColor="@color/colorPrimaryDark"

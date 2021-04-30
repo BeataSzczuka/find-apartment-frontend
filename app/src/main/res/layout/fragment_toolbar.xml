@@ -23,19 +23,6 @@
         </androidx.appcompat.widget.Toolbar>
 
         <ImageButton
-            android:id="@+id/searchButton"
-            style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:tint="#9C3C3C"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/toolbar2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/searchbtn" />
-
-        <ImageButton
             android:id="@+id/showMenuButton"
             style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
             android:layout_width="42dp"

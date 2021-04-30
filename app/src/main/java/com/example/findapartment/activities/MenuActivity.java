@@ -29,7 +29,7 @@ public class MenuActivity extends AppCompatActivity {
         userSession = new UserSession(MenuActivity.this);
         userClient = new UserClient();
         hideButtons();
-        progressBar = findViewById(R.id.loginActivityProgressBar);
+        progressBar = findViewById(R.id.menuActivityProgressBar);
 
     }
 
@@ -48,11 +48,11 @@ public class MenuActivity extends AppCompatActivity {
 
     public void onLogoutButtonClick(View view) {
         progressBar.setVisibility(View.VISIBLE);
+        userSession.deleteSession();
         userClient.logout(getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
                 if (response != null) {
-                        userSession.deleteSession();
                         Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
                         startActivity(i);
                         ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());

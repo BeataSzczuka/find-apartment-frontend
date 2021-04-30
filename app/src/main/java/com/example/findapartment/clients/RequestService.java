@@ -20,11 +20,8 @@ import java.util.Map;
 
 public class RequestService {
 
-    private static  final String API_BASE_URL = "http://10.0.2.2:3000/api";
-
-
     public static void makeGetRequest(String url, final Context c, final IRequestCallback requestCallback) {
-        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, API_BASE_URL + url, null,
+        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, AppConfig.getBaseUrl() + url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -43,6 +40,7 @@ public class RequestService {
         }){
             @Override
             public Map<String, String> getHeaders() {
+
                 return setAuthorizationHeader(c);
             }
         };
@@ -51,7 +49,7 @@ public class RequestService {
 
 
     public static void makePostRequest(String url, JSONObject data, final Context context, final IRequestCallback requestCallback) {
-        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.POST, API_BASE_URL + url, data,
+        JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.POST, AppConfig.getBaseUrl() + url, data,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -78,7 +76,7 @@ public class RequestService {
 
     public static void makeDeleteRequest(String url, Context context, IRequestCallback requestCallback) {
 
-        StringRequest newRequest = new StringRequest(Request.Method.DELETE, API_BASE_URL + url,
+        StringRequest newRequest = new StringRequest(Request.Method.DELETE, AppConfig.getBaseUrl() + url,
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
