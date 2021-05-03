@@ -128,17 +128,6 @@
             android:textSize="24sp" />
 
         <Button
-            android:id="@+id/menuMyApartmentsBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@android:color/transparent"
-            android:text="moje ogłoszenia"
-            android:textAllCaps="false"
-            android:textColor="#707070"
-            android:textSize="24sp" />
-
-        <Button
             android:id="@+id/menuMyAccountBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

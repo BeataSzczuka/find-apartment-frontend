@@ -1,17 +1,16 @@
 package com.example.findapartment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -21,11 +20,10 @@ import com.example.findapartment.R;
 import com.example.findapartment.adapters.ApartmentsAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
+import com.example.findapartment.helpers.SortTypesEnum;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.models.Apartment;
-import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,10 +40,21 @@ public class ApartmentListActivity extends AppCompatActivity {
     private int pageSize = 3;
     private int totalPages = 1;
 
+    private String sortBy;
+    private String priceFrom;
+    private String priceTo;
+    private String propertySizeFrom;
+    private String propertySizeTo;
+    private String location;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_list);
+
+        getFilterParams();
 
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
@@ -53,7 +62,6 @@ public class ApartmentListActivity extends AppCompatActivity {
         lvApartments.setAdapter(apartmentsAdapter);
         apartmentClient = new ApartmentClient();
 
-//        progressBar = findViewById(R.id.apartmentListActivityProgressBar);
         noApartmentsTextView = findViewById(R.id.noApartmentsTextView);
 
         Button filtersBtn = (Button) findViewById(R.id.openFiltersBtn);
@@ -87,15 +95,59 @@ public class ApartmentListActivity extends AppCompatActivity {
                 footer.findViewById(R.id.pbFooterLoading);
         lvApartments.addFooterView(progressBar);
 
+        setOrderSpinner();
+    }
 
-        apartmentsAdapter.clear();
-        fetchApartments();
+    private void getFilterParams() {
+        Intent intentNow = getIntent();
+        priceFrom = intentNow.getStringExtra("priceFrom");
+        priceTo = intentNow.getStringExtra("priceTo");
+        propertySizeFrom = intentNow.getStringExtra("propertySizeFrom");
+        propertySizeTo = intentNow.getStringExtra("propertySizeTo");
+        location = intentNow.getStringExtra("location");
+    }
+
+    private void setOrderSpinner(){
+        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
+
+        ArrayAdapter<SortTypesEnum> adapter = new ArrayAdapter<SortTypesEnum>(this, android.R.layout.simple_spinner_item, SortTypesEnum.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                apartmentsAdapter.clear();
+                page = 0;
+                SortTypesEnum selected = SortTypesEnum.values()[position];
+                sortBy = selected.name();
+                fetchApartments();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
     private void fetchApartments() {
         progressBar.setVisibility(View.VISIBLE);
-        apartmentClient.getApartments(getApplicationContext(), String.valueOf(page), String.valueOf(pageSize), new IRequestCallback(){
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.appendQueryParameter("page", String.valueOf(page));
+        builder.appendQueryParameter("pageSize", String.valueOf(pageSize));
+        builder.appendQueryParameter("sort", sortBy);
+        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("priceFrom", priceFrom);
+        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("priceTo", priceTo);
+        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("propertySizeFrom", propertySizeFrom);
+        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("propertySizeTo", propertySizeTo);
+        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("location", location);
+        String queryParams =  builder.build().toString();
+
+
+        apartmentClient.getApartments(getApplicationContext(), queryParams, new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
                 try {
@@ -109,6 +161,8 @@ public class ApartmentListActivity extends AppCompatActivity {
                         }
                         apartmentsAdapter.notifyDataSetChanged();
                         if (apartments.size() == 0) {
+                            noApartmentsTextView.setVisibility(View.VISIBLE);
+                        } else {
                             noApartmentsTextView.setVisibility(View.GONE);
                         }
                     }

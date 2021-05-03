@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Sortuj wg" />
+            android:text="Sortuj" />
 
         <Spinner
             android:id="@+id/orderSpinner"

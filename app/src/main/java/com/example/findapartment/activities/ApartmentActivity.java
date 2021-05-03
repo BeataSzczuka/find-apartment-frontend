@@ -20,6 +20,7 @@ import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.framents.GalleryDialogFragment;
 import com.example.findapartment.framents.ImageGallery;
 import com.example.findapartment.helpers.ToastService;
+import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.models.Apartment;
 
 import org.json.JSONException;
@@ -91,7 +92,8 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.priceTv)).setText(apartment.getPrice().toString() + " zł");
                         ((TextView) findViewById(R.id.propertySizeTv)).setText(apartment.getPropertySize().toString() + " m2");
                         ((TextView) findViewById(R.id.locationTv)).setText(apartment.getLocation());
-                        ((TextView) findViewById(R.id.transactionTextView)).setText(apartment.getTransactionType());
+
+                        ((TextView) findViewById(R.id.transactionTextView)).setText(TransactionTypeEnum.getEnumValueByName(apartment.getTransactionType()));
 
                         SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                         Date date1= fromFormat.parse(apartment.getPublicationDate());

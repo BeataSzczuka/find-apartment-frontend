@@ -1,12 +1,16 @@
 package com.example.findapartment.clients;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.findapartment.activities.ApartmentListActivity;
+import com.example.findapartment.activities.MenuActivity;
+import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
 import org.json.JSONException;
@@ -20,6 +24,15 @@ import java.util.Map;
 
 public class RequestService {
 
+    private static boolean checkIfTokenExpired(VolleyError error, Context context) {
+        if (error.networkResponse != null && error.networkResponse.statusCode == 400){
+            UserSession userSession = new UserSession(context);
+            userSession.deleteSession();
+            return true;
+        }
+        return false;
+    }
+
     public static void makeGetRequest(String url, final Context c, final IRequestCallback requestCallback) {
         JsonObjectRequest newRequest = new JsonObjectRequest(Request.Method.GET, AppConfig.getBaseUrl() + url, null,
                 new Response.Listener<JSONObject>() {
@@ -32,7 +45,11 @@ public class RequestService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 try {
-                    requestCallback.onError(error.toString());
+                    String errorMessage = "Wystąpił błąd.";
+                    if (checkIfTokenExpired(error, c)) {
+                        errorMessage = "Sesja wygasła, zostałeś wylogowany.";
+                    }
+                    requestCallback.onError(errorMessage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -60,7 +77,11 @@ public class RequestService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 try {
-                    requestCallback.onError(error.toString());
+                    String errorMessage = "Wystąpił błąd.";
+                    if (checkIfTokenExpired(error, context)) {
+                        errorMessage = "Sesja wygasła, zostałeś wylogowany.";
+                    }
+                    requestCallback.onError(errorMessage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -93,7 +114,12 @@ public class RequestService {
         @Override
         public void onErrorResponse(VolleyError error) {
             try {
-                requestCallback.onError(error.toString());
+
+                String errorMessage = "Wystąpił błąd.";
+                if (checkIfTokenExpired(error, context)) {
+                    errorMessage = "Sesja wygasła, zostałeś wylogowany.";
+                }
+                requestCallback.onError(errorMessage);
             } catch (Exception e) {
                 e.printStackTrace();
             }

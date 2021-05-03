@@ -1,6 +1,7 @@
 package com.example.findapartment.clients;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -14,9 +15,8 @@ import java.util.Map;
 public class ApartmentClient {
     String API_APARTMENTS_URL = "apartments";
 
-    public void getApartments(Context applicationContext, String pageParam, String pageSizeParam, IRequestCallback iRequestCallback) {
-        String url = String.format(API_APARTMENTS_URL + "?page=%1$s&pageSize=%2$s", pageParam, pageSizeParam);
-        RequestService.makeGetRequest(url, applicationContext, iRequestCallback);
+    public void getApartments(Context applicationContext, String queryParams, IRequestCallback iRequestCallback) {
+        RequestService.makeGetRequest(API_APARTMENTS_URL + queryParams, applicationContext, iRequestCallback);
     }
 
     public void getApartment(Context applicationContext, String apartmentId, IRequestCallback iRequestCallback) {

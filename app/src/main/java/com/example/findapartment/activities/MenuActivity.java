@@ -41,7 +41,6 @@ public class MenuActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.menuLogoutBtn).setVisibility(View.GONE);
             findViewById(R.id.menuMyAccountBtn).setVisibility(View.GONE);
-            findViewById(R.id.menuMyApartmentsBtn).setVisibility(View.GONE);
             findViewById(R.id.menuAddApartmentBtn).setVisibility(View.GONE);
         }
     }

@@ -27,6 +27,7 @@ import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
 import com.example.findapartment.clients.ServerResponse;
 import com.example.findapartment.helpers.ToastService;
+import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.helpers.UserSession;
 
 import org.json.JSONException;
@@ -144,9 +145,9 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         JSONObject newApartment = new JSONObject();
         if (transactionTypeRadio.getCheckedRadioButtonId() == R.id.transactionSale) {
-            newApartment.put("transactionType", "sale");
+            newApartment.put("transactionType", TransactionTypeEnum.SALE);
         } else {
-            newApartment.put("transactionType", "rent");
+            newApartment.put("transactionType", TransactionTypeEnum.RENT);
         }
         newApartment.put("price", priceEditText.getText().toString());
         newApartment.put("propertySize", propertySizeEditText.getText().toString());
@@ -174,6 +175,7 @@ public class AddApartmentActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call < ServerResponse > call, Throwable t) {
+
                 ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", getApplicationContext());
                 progressBar.setVisibility(View.GONE);
             }
