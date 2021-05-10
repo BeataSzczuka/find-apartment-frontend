@@ -22,6 +22,7 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.helpers.SortTypesEnum;
 import com.example.findapartment.helpers.ToastService;
+import com.example.findapartment.helpers.UserSession;
 import com.example.findapartment.models.Apartment;
 
 import org.json.JSONException;
@@ -46,7 +47,10 @@ public class ApartmentListActivity extends AppCompatActivity {
     private String propertySizeFrom;
     private String propertySizeTo;
     private String location;
+    private String transactionType;
+    private Boolean onlyMy;
 
+    private UserSession userSession;
 
 
     @Override
@@ -54,6 +58,7 @@ public class ApartmentListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apartment_list);
 
+        userSession = new UserSession(ApartmentListActivity.this);
         getFilterParams();
 
         lvApartments = (ListView) findViewById(R.id.lvApartments);
@@ -63,6 +68,7 @@ public class ApartmentListActivity extends AppCompatActivity {
         apartmentClient = new ApartmentClient();
 
         noApartmentsTextView = findViewById(R.id.noApartmentsTextView);
+
 
         Button filtersBtn = (Button) findViewById(R.id.openFiltersBtn);
         filtersBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +111,8 @@ public class ApartmentListActivity extends AppCompatActivity {
         propertySizeFrom = intentNow.getStringExtra("propertySizeFrom");
         propertySizeTo = intentNow.getStringExtra("propertySizeTo");
         location = intentNow.getStringExtra("location");
+        transactionType = intentNow.getStringExtra("transactionType");
+        if (userSession.isLoggedIn()) onlyMy = intentNow.getBooleanExtra("onlyMy", false);
     }
 
     private void setOrderSpinner(){
@@ -140,10 +148,12 @@ public class ApartmentListActivity extends AppCompatActivity {
         builder.appendQueryParameter("pageSize", String.valueOf(pageSize));
         builder.appendQueryParameter("sort", sortBy);
         if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("priceFrom", priceFrom);
-        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("priceTo", priceTo);
-        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("propertySizeFrom", propertySizeFrom);
-        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("propertySizeTo", propertySizeTo);
-        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("location", location);
+        if (priceTo != null && priceTo.length() > 0) builder.appendQueryParameter("priceTo", priceTo);
+        if (propertySizeFrom != null && propertySizeFrom.length() > 0) builder.appendQueryParameter("propertySizeFrom", propertySizeFrom);
+        if (propertySizeTo != null && propertySizeTo.length() > 0) builder.appendQueryParameter("propertySizeTo", propertySizeTo);
+        if (location != null && location.length() > 0) builder.appendQueryParameter("location", location);
+        if (transactionType != null && transactionType.length() > 0) builder.appendQueryParameter("transactionType", transactionType);
+        if (onlyMy != null && onlyMy == true) builder.appendQueryParameter("onlyMy", "true");
         String queryParams =  builder.build().toString();
 
 
