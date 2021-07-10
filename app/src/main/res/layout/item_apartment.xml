@@ -4,44 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/apartmentLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="310dp">
 
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
-        android:layout_height="318dp"
+        android:layout_height="230dp"
         android:layout_centerHorizontal="true"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher"
         tools:srcCompat="@android:drawable/ic_menu_camera" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/ivImage"
-        android:layout_alignTop="@id/ivImage"
-        android:layout_alignRight="@id/ivImage"
-        android:layout_alignBottom="@id/ivImage"
-        android:layout_alignParentTop="false"
-        android:layout_marginTop="205dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvPrice"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:shadowColor="@color/colorPrimaryDark"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="TextView"
-            android:textColor="#F1EEEE"
-            android:textSize="30sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="182dp"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/colorPrimaryDark"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:text="TextView"
+                android:textColor="#F1EEEE"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPropertySize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvTransactionType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="TextView"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="match_parent"
+            android:layout_width="323dp"
             android:layout_height="wrap_content"
             android:shadowColor="@color/colorPrimaryDark"
             android:shadowDx="1"
@@ -49,7 +70,8 @@
             android:shadowRadius="2"
             android:text="TextView"
             android:textColor="#F1EEEE"
-            android:textSize="24sp" />
+            android:textSize="15sp" />
+
     </LinearLayout>
 
 

@@ -60,6 +60,8 @@ public class AddApartmentActivity extends AppCompatActivity {
     private ApartmentClient apartmentClient;
     private UserSession userSession;
 
+    private String editedApartmentId;
+
     List<String> imagesPaths = new ArrayList<String>();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -84,12 +86,29 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.addApartmentActivityProgressBar);
 
+        loadDataIfInEditMode();
+
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
-            Log.e("E", "Permission granted");
+           // Log.e("E", "Permission granted");
         } else requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-        Log.e("E", "after");
+    }
+
+    public void loadDataIfInEditMode() {
+        Intent intentNow = getIntent();
+        editedApartmentId = intentNow.getStringExtra("editedApartmentId");
+        if (editedApartmentId != null && editedApartmentId.length() > 0) {
+            propertySizeEditText.setText(intentNow.getStringExtra("propertySizeEditText"));
+            locationEditText.setText(intentNow.getStringExtra("locationEditText"));
+            descriptionEditText.setText(intentNow.getStringExtra("descriptionEditText"));
+            priceEditText.setText(intentNow.getStringExtra("priceEditText"));
+            if (intentNow.getStringExtra("transactionType") == TransactionTypeEnum.SALE.name()) {
+                transactionTypeRadio.check(R.id.transactionSale);
+            } else {
+                transactionTypeRadio.check(R.id.transactionRent);
+            }
+        }
     }
 
     public void uploadImage(View view) {
@@ -157,7 +176,13 @@ public class AddApartmentActivity extends AppCompatActivity {
         RequestBody name = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), newApartment.toString());
 
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
-        Call<ServerResponse> call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        Call<ServerResponse> call;
+        call = getResponse.updateApartment(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        if (editedApartmentId != null && editedApartmentId.length() > 0) {
+//            call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
+        } else {
+//            call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        }
         call.enqueue(new Callback< ServerResponse >() {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {
@@ -168,10 +193,11 @@ public class AddApartmentActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Log.v("Response", serverResponse.toString());
                 }
                 progressBar.setVisibility(View.GONE);
+
+                Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
+                startActivity(i);
             }
             @Override
             public void onFailure(Call < ServerResponse > call, Throwable t) {

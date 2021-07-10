@@ -22,8 +22,4 @@ public class UserClient {
         RequestService.makePostRequest(URL, newUser, applicationContext, iRequestCallback);
     }
 
-    public void getUser(Context applicationContext, String userId, IRequestCallback iRequestCallback) {
-        String URL = API_USERS_URL + userId;
-        RequestService.makeGetRequest(URL, applicationContext, iRequestCallback);
-    }
 }

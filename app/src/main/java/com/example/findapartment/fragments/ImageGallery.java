@@ -1,31 +1,20 @@
-package com.example.findapartment.framents;
+package com.example.findapartment.fragments;
 
-import android.app.Dialog;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.example.findapartment.R;
-import com.example.findapartment.activities.MenuActivity;
 import com.example.findapartment.adapters.SliderAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class ImageGallery extends Fragment {

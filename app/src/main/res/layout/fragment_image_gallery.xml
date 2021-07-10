@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    tools:context=".framents.ImageGallery">
+    tools:context=".fragments.ImageGallery">
 
 
     <androidx.viewpager2.widget.ViewPager2

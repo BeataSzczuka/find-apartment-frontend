@@ -1,8 +1,13 @@
 package com.example.findapartment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.Fragment;
+
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -20,6 +26,8 @@ import com.example.findapartment.R;
 import com.example.findapartment.adapters.ApartmentsAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
+import com.example.findapartment.fragments.FiltersFragment;
+import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.SortTypesEnum;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
@@ -36,6 +44,9 @@ public class ApartmentListActivity extends AppCompatActivity {
     private ApartmentsAdapter apartmentsAdapter;
     private ProgressBar progressBar;
     private TextView noApartmentsTextView;
+
+    private FiltersFragment filtersFragment;
+    private ToolbarFragment toolbarFragment;
 
     private int page = 0;
     private int pageSize = 3;
@@ -69,16 +80,21 @@ public class ApartmentListActivity extends AppCompatActivity {
 
         noApartmentsTextView = findViewById(R.id.noApartmentsTextView);
 
+        filtersFragment = new FiltersFragment();
 
-        Button filtersBtn = (Button) findViewById(R.id.openFiltersBtn);
-        filtersBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), FiltersActivity.class);
-                startActivity(intent);
+        toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint();
 
-            }
-        });
+
+//        Button filtersBtn = (Button) findViewById(R.id.openFiltersBtn);
+//        filtersBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getBaseContext(), FiltersActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
 
         lvApartments.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -101,7 +117,7 @@ public class ApartmentListActivity extends AppCompatActivity {
                 footer.findViewById(R.id.pbFooterLoading);
         lvApartments.addFooterView(progressBar);
 
-        setOrderSpinner();
+//        setOrderSpinner();
     }
 
     private void getFilterParams() {
@@ -115,30 +131,40 @@ public class ApartmentListActivity extends AppCompatActivity {
         if (userSession.isLoggedIn()) onlyMy = intentNow.getBooleanExtra("onlyMy", false);
     }
 
-    private void setOrderSpinner(){
-        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
+//    private void setOrderSpinner(){
+//        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
+//
+//        ArrayAdapter<SortTypesEnum> adapter = new ArrayAdapter<SortTypesEnum>(this, android.R.layout.simple_spinner_item, SortTypesEnum.values());
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
+//
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                apartmentsAdapter.clear();
+//                page = 0;
+//                SortTypesEnum selected = SortTypesEnum.values()[position];
+//                sortBy = selected.name();
+//                fetchApartments();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
-        ArrayAdapter<SortTypesEnum> adapter = new ArrayAdapter<SortTypesEnum>(this, android.R.layout.simple_spinner_item, SortTypesEnum.values());
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                apartmentsAdapter.clear();
-                page = 0;
-                SortTypesEnum selected = SortTypesEnum.values()[position];
-                sortBy = selected.name();
-                fetchApartments();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    public void onFiltersClick(View view) throws JSONException {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (filtersFragment.isAdded()) {
+            ft.remove(filtersFragment);
+        } else {
+            ft.add(R.id.filtersContainer, filtersFragment);
+        }
+        ft.commit();
     }
-
 
     private void fetchApartments() {
         progressBar.setVisibility(View.VISIBLE);
@@ -186,6 +212,7 @@ public class ApartmentListActivity extends AppCompatActivity {
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie można załadować ogłoszeń", getApplicationContext());
                 progressBar.setVisibility(View.INVISIBLE);
+                noApartmentsTextView.setVisibility(View.VISIBLE);
             }
         });
     }

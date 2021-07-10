@@ -7,11 +7,11 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-<!--    <string-array name="orders_array">-->
-<!--        <item>SortByEnum.</item>-->
-<!--        <item>cena malejąco</item>-->
-<!--        <item>najnowsze</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="orders_array">-->
+    <!--        <item>SortByEnum.</item>-->
+    <!--        <item>cena malejąco</item>-->
+    <!--        <item>najnowsze</item>-->
+    <!--    </string-array>-->
     <string name="title_activity_welcome">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

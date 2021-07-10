@@ -17,8 +17,8 @@ import com.example.findapartment.R;
 import com.example.findapartment.adapters.SliderAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
-import com.example.findapartment.framents.GalleryDialogFragment;
-import com.example.findapartment.framents.ImageGallery;
+import com.example.findapartment.fragments.GalleryDialogFragment;
+import com.example.findapartment.fragments.ImageGallery;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.models.Apartment;
@@ -28,7 +28,6 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +42,8 @@ public class ApartmentActivity extends AppCompatActivity {
 
     ImageGallery imageGallery;
     ProgressBar progressBar;
+
+    Apartment apartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class ApartmentActivity extends AppCompatActivity {
                     JSONObject data = null;
                     if (response != null) {
                         data = response.getJSONObject("data");
-                        final Apartment apartment = Apartment.fromJSON(data);
+                        apartment = Apartment.fromJSON(data);
 
                         ((TextView) findViewById(R.id.priceTv)).setText(apartment.getPrice().toString() + " zł");
                         ((TextView) findViewById(R.id.propertySizeTv)).setText(apartment.getPropertySize().toString() + " m2");
@@ -157,4 +158,16 @@ public class ApartmentActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onEditApartmentClick(View view) {
+        Intent i=new Intent(getBaseContext(), AddApartmentActivity.class);
+        i.putExtra("editedApartmentId", apartment.getId());
+        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
+        i.putExtra("locationEditText", apartment.getLocation());
+        i.putExtra("descriptionEditText", apartment.getDescription());
+        i.putExtra("priceEditText", apartment.getPrice().toString());
+        i.putExtra("transactionType", apartment.getTransactionType());
+        startActivity(i);
+    }
+
 }

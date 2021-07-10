@@ -1,12 +1,9 @@
-package com.example.findapartment.framents;
+package com.example.findapartment.fragments;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;

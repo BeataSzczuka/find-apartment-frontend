@@ -26,11 +26,4 @@ public class ApartmentClient {
     public void deleteApartment( String apartmentId, Context applicationContext, IRequestCallback iRequestCallback) {
         RequestService.makeDeleteRequest(API_APARTMENTS_URL + "/" + apartmentId, applicationContext, iRequestCallback);
     }
-
-    private Map<String, String> setQueryParams() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("page", "0");
-        params.put("pageSize", "5");
-        return params;
-    }
 }

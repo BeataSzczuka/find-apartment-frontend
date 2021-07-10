@@ -1,4 +1,4 @@
-package com.example.findapartment.framents;
+package com.example.findapartment.fragments;
 
 import android.os.Bundle;
 

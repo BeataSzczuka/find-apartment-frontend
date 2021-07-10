@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="70dp"
-    tools:context=".framents.UploadedImageFragment">
+    tools:context=".fragments.UploadedImageFragment">
 
 
     <ImageView
@@ -13,17 +13,18 @@
         android:layout_height="match_parent"
         android:maxWidth="70dp"
         android:minWidth="50dp"
+        android:padding="15dp"
         android:scaleType="fitCenter"
         android:src="@android:drawable/ic_menu_report_image" />
 
     <ImageButton
         android:id="@+id/deleteUploadedImageBtn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="right|top"
         android:background="@android:color/transparent"
+        android:padding="3dp"
         android:scaleType="centerCrop"
-        android:src="@android:drawable/ic_delete"
-        android:tint="@android:color/black" />
+        android:src="@drawable/removexbtn" />
 
 </FrameLayout>

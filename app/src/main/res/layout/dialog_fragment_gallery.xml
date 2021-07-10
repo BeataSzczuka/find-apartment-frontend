@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#302B2B"
-    tools:context="com.example.findapartment.framents.GalleryDialogFragment">
+    tools:context="com.example.findapartment.fragments.GalleryDialogFragment">
 
     <fragment
         android:id="@+id/galleryDialogFragment"
-        android:name="com.example.findapartment.framents.ImageGallery"
+        android:name="com.example.findapartment.fragments.ImageGallery"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
