@@ -1,5 +1,7 @@
 package com.example.findapartment.clients;
 
+import android.util.Log;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -8,10 +10,11 @@ public class AppConfig {
     private static String BASE_URL = "https://findapartmentserver.herokuapp.com/api/";
 
     public static String getBaseUrl() {
-        return BASE_URL_LOCAL;
+        return BASE_URL;
     }
 
     public static Retrofit getRetrofit() {
+        Log.d("a", getBaseUrl());
         return new Retrofit.Builder().baseUrl(AppConfig.getBaseUrl()).addConverterFactory(GsonConverterFactory.create()).build();
     }
 }

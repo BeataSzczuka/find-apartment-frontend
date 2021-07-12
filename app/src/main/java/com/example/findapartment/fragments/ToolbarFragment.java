@@ -19,6 +19,7 @@ import com.example.findapartment.R;
 import com.example.findapartment.activities.AddApartmentActivity;
 import com.example.findapartment.activities.AddUserActivity;
 import com.example.findapartment.activities.ApartmentListActivity;
+import com.example.findapartment.activities.LoginActivity;
 import com.example.findapartment.activities.MenuActivity;
 
 
@@ -70,7 +71,7 @@ public class ToolbarFragment extends Fragment {
         accountMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddUserActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
 
             }

@@ -7,11 +7,12 @@
     tools:context=".activities.LoginActivity">
 
     <fragment
-        android:id="@+id/menuFragment"
-        android:name="com.example.findapartment.fragments.ToolbarFragment"
-        android:layout_width="fill_parent"
+        android:id="@+id/navigationbar"
+        android:name="com.example.findapartment.fragments.NavigationbarFragment"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,37 +28,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.393" />
 
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menuFragment"
-        app:layout_constraintVertical_bias="0.0"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:padding="21dp"
-            android:tint="@color/colorPrimary"
-            app:srcCompat="@drawable/backarrow" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="63dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="11dp"
-            android:text="Logowanie"
-            android:textColor="@color/colorPrimary"
-            android:textSize="25sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/formLayout"
@@ -68,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintTop_toBottomOf="@+id/navigationbar"
         app:layout_constraintVertical_bias="0.01999998">
 
         <LinearLayout
@@ -148,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_marginTop="40dp"
+        android:paddingTop="50dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,10 +140,18 @@
         <Button
             android:id="@+id/navigateToCreateAccount"
             android:layout_width="match_parent"
+            android:onClick="navigateToCreateAccount"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:text="Załóż konto"
             android:textColor="@android:color/white" />
     </LinearLayout>
 
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.findapartment.fragments.ToolbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

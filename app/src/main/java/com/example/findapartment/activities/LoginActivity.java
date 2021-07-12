@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
+import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
 
         userClient = new UserClient();
         userSession = new UserSession(LoginActivity.this);
+        NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
+        navigationbarfragment.setTitle("Logowanie");
 
         email = findViewById(R.id.loginEmailET);
         password = findViewById(R.id.loginPasswordET);
@@ -71,5 +74,10 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    public void navigateToCreateAccount(View view) {
+        Intent i=new Intent(getBaseContext(), AddUserActivity.class);
+        startActivity(i);
     }
 }

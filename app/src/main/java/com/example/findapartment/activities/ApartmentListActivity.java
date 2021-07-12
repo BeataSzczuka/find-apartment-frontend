@@ -118,6 +118,7 @@ public class ApartmentListActivity extends AppCompatActivity {
         lvApartments.addFooterView(progressBar);
 
 //        setOrderSpinner();
+        fetchApartments();
     }
 
     private void getFilterParams() {

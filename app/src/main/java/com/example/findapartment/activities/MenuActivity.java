@@ -67,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void navigateToAddUser(View view) {
-        Intent i=new Intent(getBaseContext(),AddUserActivity.class);
+        Intent i=new Intent(getBaseContext(),LoginActivity.class);
         startActivity(i);
     }
     public void navigateToAllApartments(View view) {
