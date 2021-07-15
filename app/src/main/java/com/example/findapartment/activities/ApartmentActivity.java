@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -91,7 +92,7 @@ public class ApartmentActivity extends AppCompatActivity {
                         apartment = Apartment.fromJSON(data);
 
                         ((TextView) findViewById(R.id.priceTv)).setText(apartment.getPrice().toString() + " zł");
-                        ((TextView) findViewById(R.id.propertySizeTv)).setText(apartment.getPropertySize().toString() + " m2");
+                        ((TextView) findViewById(R.id.propertySizeTv)).setText(Html.fromHtml(apartment.getPropertySize()+ " " + getResources().getString(R.string.m2)));
                         ((TextView) findViewById(R.id.locationTv)).setText(apartment.getLocation());
 
                         ((TextView) findViewById(R.id.transactionTextView)).setText(TransactionTypeEnum.getEnumValueByName(apartment.getTransactionType()));
@@ -106,10 +107,6 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.emailTv)).setText(apartment.getEmail());
                         ((TextView) findViewById(R.id.descriptionTv)).setText(apartment.getDescription());
 
-                        if (apartment.getIsAuthor()) {
-                            findViewById(R.id.editApartmentButton).setVisibility(View.VISIBLE);
-                            findViewById(R.id.deleteApartmentButton).setVisibility(View.VISIBLE);
-                        }
 
                         convertToBitmapAndDisplayImages(apartment);
                     }

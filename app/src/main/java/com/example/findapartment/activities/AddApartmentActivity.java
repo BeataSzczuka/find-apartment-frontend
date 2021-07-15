@@ -26,6 +26,7 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
 import com.example.findapartment.clients.ServerResponse;
+import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.helpers.UserSession;
@@ -72,6 +73,10 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         this.apartmentClient = new ApartmentClient();
         this.userSession = new UserSession(AddApartmentActivity.this);
+
+
+        NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
+        navigationbarfragment.setTitle("Dodaj ogłoszenie");
 
         uploadedImagesListView = (GridView) findViewById(R.id.uploadedImagesListView);
         ArrayList<Uri> uploadedImages = new ArrayList<Uri>();
@@ -177,12 +182,12 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
         Call<ServerResponse> call;
-        call = getResponse.updateApartment(userSession.getLoggedInUserToken(), surveyImagesParts, name);
-        if (editedApartmentId != null && editedApartmentId.length() > 0) {
+         call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+//        if (editedApartmentId != null && editedApartmentId.length() > 0) {
 //            call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
-        } else {
+//        } else {
 //            call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
-        }
+//        }
         call.enqueue(new Callback< ServerResponse >() {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {

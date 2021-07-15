@@ -17,8 +17,8 @@ public interface ApiConfig {
     @POST("upload")
     Call < ServerResponse > updateApartment(@Header("Authorization") String authToken, @Part MultipartBody.Part[] uploads, @Part("upload") RequestBody name);
 
-//    @Multipart
-//    @POST("upload")
-//    Call < ServerResponse > uploadMulFile(@Header("Authorization") String authToken, @Part MultipartBody.Part[] uploads, @Part("upload") RequestBody name);
+    @Multipart
+    @POST("upload")
+    Call < ServerResponse > uploadMulFile(@Header("Authorization") String authToken, @Part MultipartBody.Part[] uploads, @Part("upload") RequestBody name);
 
 }

@@ -11,16 +11,17 @@
         android:id="@+id/apartmentLayout"
         tools:context=".activities.ApartmentActivity">
 
+
+
         <fragment
-            android:id="@+id/menuFragment"
-            android:name="com.example.findapartment.fragments.ToolbarFragment"
-            android:layout_width="fill_parent"
+            android:id="@+id/navigationbar"
+            android:name="com.example.findapartment.fragments.NavigationbarFragment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
         <ProgressBar
             android:id="@+id/apartmentActivityProgressBar"
             style="?android:attr/progressBarStyle"
@@ -31,29 +32,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.393" />
+            app:layout_constraintVertical_bias="0.303" />
 
         <fragment
             android:id="@+id/apartmentGalleryFragment"
             android:name="com.example.findapartment.fragments.ImageGallery"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            app:layout_constraintTop_toBottomOf="@id/menuFragment"/>
-
-        <ImageButton
-            android:id="@+id/editApartmentButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:visibility="gone"
-            android:onClick="onEditApartmentClick"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.68"
-            app:layout_constraintStart_toEndOf="@+id/deleteApartmentButton"
-            app:layout_constraintTop_toBottomOf="@id/apartmentGalleryFragment"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:layout_constraintTop_toBottomOf="@id/menuFragment"
+            tools:layout_editor_absoluteX="0dp" />
 
         <LinearLayout
             android:id="@+id/apartmentInfoLinearLayout"
@@ -61,14 +48,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
+            android:paddingBottom="50dp"
             android:clipToPadding="false"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editApartmentButton">
+            app:layout_constraintTop_toBottomOf="@+id/apartmentGalleryFragment">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -223,7 +211,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="opis"
+                android:text=""
                 android:textColor="#707070"
                 android:textSize="23sp" />
 
@@ -259,21 +247,16 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/deleteApartmentButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:visibility="gone"
-            android:onClick="onDeleteApartmentClick"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
-            app:layout_constraintStart_toEndOf="@+id/priceTv"
-            app:layout_constraintTop_toBottomOf="@+id/apartmentGalleryFragment"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
 
+
+        <fragment
+            android:id="@+id/menuFragment"
+            android:name="com.example.findapartment.fragments.ToolbarFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

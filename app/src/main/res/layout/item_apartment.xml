@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/apartmentLayout"
     android:layout_width="match_parent"
+    android:background="@drawable/shadowrectangle"
+    android:elevation="2dp"
     android:layout_height="310dp">
 
     <ImageView
@@ -30,13 +32,14 @@
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="182dp"
+                android:paddingBottom="10dp"
                 android:layout_height="wrap_content"
                 android:shadowColor="@color/colorPrimaryDark"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2"
-                android:text="TextView"
-                android:textColor="#F1EEEE"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="1"
+                android:text=""
+                android:textColor="#484848"
                 android:textSize="25sp"
                 android:textStyle="bold" />
 
@@ -45,8 +48,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:autoText="false"
                 android:gravity="center"
-                android:text="TextView"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="1"
+                android:text=""
+                android:textColor="#9E9999"
                 android:textSize="15sp" />
 
             <TextView
@@ -55,7 +63,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="TextView"
+                android:textColor="#9E9999"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="1"
+                android:text=""
                 android:textSize="15sp" />
 
         </LinearLayout>
@@ -65,11 +77,11 @@
             android:layout_width="323dp"
             android:layout_height="wrap_content"
             android:shadowColor="@color/colorPrimaryDark"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="TextView"
-            android:textColor="#F1EEEE"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="1"
+            android:text=""
+            android:textColor="#9E9999"
             android:textSize="15sp" />
 
     </LinearLayout>

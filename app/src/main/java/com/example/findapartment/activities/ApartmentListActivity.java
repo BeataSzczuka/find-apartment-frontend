@@ -74,7 +74,7 @@ public class ApartmentListActivity extends AppCompatActivity {
 
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
-        apartmentsAdapter = new ApartmentsAdapter(this, apartments);
+        apartmentsAdapter = new ApartmentsAdapter(this, apartments, R.layout.item_apartment);
         lvApartments.setAdapter(apartmentsAdapter);
         apartmentClient = new ApartmentClient();
 

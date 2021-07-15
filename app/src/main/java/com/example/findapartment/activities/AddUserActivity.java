@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
+import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -35,6 +36,10 @@ public class AddUserActivity extends AppCompatActivity {
 
         userClient = new UserClient();
         userSession = new UserSession(AddUserActivity.this);
+
+
+        NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
+        navigationbarfragment.setTitle("Załóż konto");
 
         email = findViewById(R.id.addUserEmailET);
         phoneNumber = findViewById(R.id.addUserPhoneET);
@@ -61,7 +66,7 @@ public class AddUserActivity extends AppCompatActivity {
                     try {
                         data = response.getJSONObject("data");
                         userSession.createSession(data.getString("email"), data.getString("accessToken"), data.getString("role"));
-                        Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
+                        Intent i=new Intent(getBaseContext(), MyAccountActivity.class);
                         startActivity(i);
 
                         ToastService.showSuccessMessage("Zostałeś zalogowany.", getApplicationContext());

@@ -21,7 +21,8 @@ import com.example.findapartment.activities.AddUserActivity;
 import com.example.findapartment.activities.ApartmentListActivity;
 import com.example.findapartment.activities.LoginActivity;
 import com.example.findapartment.activities.MenuActivity;
-
+import com.example.findapartment.activities.MyAccountActivity;
+import com.example.findapartment.helpers.UserSession;
 
 
 public class ToolbarFragment extends Fragment {
@@ -29,6 +30,8 @@ public class ToolbarFragment extends Fragment {
     private ImageButton startMenuBtn;
     private ImageButton addMenuBtn;
     private ImageButton accountMenuBtn;
+
+    private UserSession userSession;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class ToolbarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        userSession = new UserSession(getActivity());
 
         startMenuBtn = (ImageButton) view.findViewById(R.id.startMenuBtn);
         startMenuBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +76,14 @@ public class ToolbarFragment extends Fragment {
         accountMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent;
+                if (userSession.isLoggedIn()) {
+                    intent = new Intent(getActivity(), MyAccountActivity.class);
+                }
+                else {
+                    intent = new Intent(getActivity(), LoginActivity.class);
+                }
                 startActivity(intent);
-
             }
         });
     }

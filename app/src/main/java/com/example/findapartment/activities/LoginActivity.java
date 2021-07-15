@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         userClient = new UserClient();
         userSession = new UserSession(LoginActivity.this);
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
-        navigationbarfragment.setTitle("Logowanie");
+        navigationbarfragment.setTitle("Zaloguj się");
 
         email = findViewById(R.id.loginEmailET);
         password = findViewById(R.id.loginPasswordET);
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         userSession.createSession(user.getString("email"), data.getString("accessToken"), user.getString("role"));
 
                         // navigate to main activity
-                        Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
+                        Intent i=new Intent(getBaseContext(), MyAccountActivity.class);
                         startActivity(i);
                         ToastService.showSuccessMessage("Zostałeś zalogowany.", getApplicationContext());
 
