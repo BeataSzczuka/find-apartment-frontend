@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -12,6 +13,8 @@ import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
 import com.example.findapartment.fragments.NavigationbarFragment;
+import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -26,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private ProgressBar progressBar;
+    private Button createAccountBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
         navigationbarfragment.setTitle("Zaloguj się");
 
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.MY_ACCOUNT);
+
         email = findViewById(R.id.loginEmailET);
         password = findViewById(R.id.loginPasswordET);
         progressBar = findViewById(R.id.loginActivityProgressBar);
+        createAccountBtn = findViewById(R.id.navigateToCreateAccount);
     }
 
     public void onLoginClick(View view) throws JSONException {

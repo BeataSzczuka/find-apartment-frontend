@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -234,7 +235,34 @@
             </LinearLayout>
 
 
-                <LinearLayout
+            <LinearLayout
+                android:id="@+id/noResultsTryAgain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:scaleType="center"
+                    android:src="@android:drawable/ic_dialog_info"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:text="Nie znaleziono ogłoszeń spełniających kryteria. Spróbuj ponownie."
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"

@@ -234,8 +234,7 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
-                android:paddingBottom="20dp"
-                android:visibility="gone" />
+                android:paddingBottom="20dp"/>
 
             <Button
                 android:id="@+id/createAccountBtn"

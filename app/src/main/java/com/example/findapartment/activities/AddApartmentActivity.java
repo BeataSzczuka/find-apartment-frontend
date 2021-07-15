@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,6 +15,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -27,6 +30,8 @@ import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
 import com.example.findapartment.clients.ServerResponse;
 import com.example.findapartment.fragments.NavigationbarFragment;
+import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.helpers.UserSession;
@@ -57,9 +62,12 @@ public class AddApartmentActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private EditText priceEditText;
     private ProgressBar progressBar;
+    private Button createAccountBtn;
 
     private ApartmentClient apartmentClient;
     private UserSession userSession;
+
+    private ArrayList<Uri> uploadedImages;
 
     private String editedApartmentId;
 
@@ -74,20 +82,31 @@ public class AddApartmentActivity extends AppCompatActivity {
         this.apartmentClient = new ApartmentClient();
         this.userSession = new UserSession(AddApartmentActivity.this);
 
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.ADD_APARTMENT);
 
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
         navigationbarfragment.setTitle("Dodaj ogłoszenie");
 
         uploadedImagesListView = (GridView) findViewById(R.id.uploadedImagesListView);
-        ArrayList<Uri> uploadedImages = new ArrayList<Uri>();
+        uploadedImages = new ArrayList<Uri>();
         uploadedImagesAdapter = new UploadedImagesAdapter(this, uploadedImages);
         uploadedImagesListView.setAdapter(uploadedImagesAdapter);
+        uploadedImagesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                uploadedImages.remove(uploadedImagesAdapter.getItem(position));
+                imagesPaths.remove(position);
+                uploadedImagesAdapter.notifyDataSetChanged();
+            }
+        });
 
         transactionTypeRadio = findViewById(R.id.transactionTypeRadio);
         priceEditText = findViewById(R.id.priceEditText);
         propertySizeEditText = findViewById(R.id.propertySizeEditText);
         locationEditText = findViewById(R.id.locationEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
+        createAccountBtn = findViewById(R.id.createAccountBtn);
 
         progressBar = findViewById(R.id.addApartmentActivityProgressBar);
 
@@ -96,7 +115,6 @@ public class AddApartmentActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
-           // Log.e("E", "Permission granted");
         } else requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
     }
 
@@ -119,19 +137,34 @@ public class AddApartmentActivity extends AppCompatActivity {
     public void uploadImage(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, 0);
+        galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(galleryIntent, 1);
     }
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == 0 && resultCode == RESULT_OK && null != data) {
+        if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
+            ClipData clipData = data.getClipData();
+            if (clipData != null) {
+                for (int i = 0; i < clipData.getItemCount(); i++) {
+                    Uri selectedImageUri = clipData.getItemAt(i).getUri();
+                    uploadedImagesAdapter.add(selectedImageUri);
 
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getContentResolver().query(selectedImageUri, filePathColumn, null, null, null);
+                    assert cursor != null;
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imagesPaths.add(cursor.getString(columnIndex));
+
+                    cursor.close();
+                }
+            } else if(data.getData() != null) {
                 Uri selectedImageUri = data.getData();
-            if (null != selectedImageUri) {
                 uploadedImagesAdapter.add(selectedImageUri);
-                uploadedImagesAdapter.notifyDataSetChanged();
-
 
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -141,20 +174,14 @@ public class AddApartmentActivity extends AppCompatActivity {
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imagesPaths.add(cursor.getString(columnIndex));
-
                 cursor.close();
-
             }
         }
     }
 
     public void onAddApartmentClick(View view) throws JSONException {
-        uploadMultipleFiles();
-    }
-
-
-    private void uploadMultipleFiles() throws JSONException {
         progressBar.setVisibility(View.VISIBLE);
+        createAccountBtn.setEnabled(false);
 
         MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[imagesPaths.size()];
 
@@ -182,7 +209,7 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
         Call<ServerResponse> call;
-         call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
 //        if (editedApartmentId != null && editedApartmentId.length() > 0) {
 //            call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
 //        } else {
@@ -209,6 +236,7 @@ public class AddApartmentActivity extends AppCompatActivity {
 
                 ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", getApplicationContext());
                 progressBar.setVisibility(View.GONE);
+                createAccountBtn.setEnabled(true);
             }
         });
     }

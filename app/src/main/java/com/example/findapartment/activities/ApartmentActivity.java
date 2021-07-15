@@ -20,6 +20,8 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.fragments.GalleryDialogFragment;
 import com.example.findapartment.fragments.ImageGallery;
+import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.models.Apartment;
@@ -54,6 +56,9 @@ public class ApartmentActivity extends AppCompatActivity {
         Intent intentNow = getIntent();
         apartmentId = intentNow.getStringExtra("apartmentID");
         apartmentClient = new ApartmentClient();
+
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.APARTMENTS_LIST);
 
         bitmaps = new ArrayList<Bitmap>();
 

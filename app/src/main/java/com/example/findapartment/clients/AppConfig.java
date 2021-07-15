@@ -10,11 +10,10 @@ public class AppConfig {
     private static String BASE_URL = "https://findapartmentserver.herokuapp.com/api/";
 
     public static String getBaseUrl() {
-        return BASE_URL;
+        return BASE_URL_LOCAL;
     }
 
     public static Retrofit getRetrofit() {
-        Log.d("a", getBaseUrl());
         return new Retrofit.Builder().baseUrl(AppConfig.getBaseUrl()).addConverterFactory(GsonConverterFactory.create()).build();
     }
 }

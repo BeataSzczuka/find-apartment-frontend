@@ -1,16 +1,12 @@
 package com.example.findapartment.clients;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.example.findapartment.activities.ApartmentListActivity;
-import com.example.findapartment.activities.MenuActivity;
-import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
 import org.json.JSONException;

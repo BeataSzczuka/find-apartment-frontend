@@ -30,15 +30,6 @@
             android:tint="@color/colorPrimary"
             app:srcCompat="@drawable/filtersbtn" />
 
-<!--        <fragment-->
-<!--            android:id="@+id/filtersFragment"-->
-<!--            android:visibility="gone"-->
-<!--            android:name="com.example.findapartment.fragments.FiltersFragment"-->
-<!--            android:layout_width="fill_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent" />-->
-
         <FrameLayout
             android:id="@+id/filtersContainer"
             android:layout_width="match_parent"
@@ -54,6 +45,7 @@
         android:layout_margin="30dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="Brak wyników"
+        android:visibility="gone"
         android:textColor="@color/colorLightGray"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -12,6 +12,8 @@ import com.example.findapartment.R;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
 import com.example.findapartment.fragments.NavigationbarFragment;
+import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -37,6 +39,9 @@ public class AddUserActivity extends AppCompatActivity {
         userClient = new UserClient();
         userSession = new UserSession(AddUserActivity.this);
 
+
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.MY_ACCOUNT);
 
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
         navigationbarfragment.setTitle("Załóż konto");

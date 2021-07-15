@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -39,19 +40,18 @@ public class UploadedImagesAdapter extends ArrayAdapter<Uri> {
             viewHolder.uploadedImageIV = (ImageView) convertView.findViewById(R.id.uploadedImageIV);
             convertView.setTag(viewHolder);
         } else {
-            // Existing view
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.uploadedImageIV.setImageURI(uri);
 
-        ImageButton deleteImageBtn = (ImageButton) convertView.findViewById(R.id.deleteUploadedImageBtn);
-        deleteImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO delete uploaded
-
-            }
-        });
+//        FrameLayout deleteImageBtn = (FrameLayout) convertView.findViewById(R.id.deleteUploadedImageBtn);
+//        deleteImageBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                c .this.remove(getItem(position));
+//                UploadedImagesAdapter.this.notifyDataSetChanged();
+//            }
+//        });
 
         return convertView;
     }

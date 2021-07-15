@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -28,6 +30,7 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.fragments.FiltersFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.SortTypesEnum;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
@@ -36,17 +39,24 @@ import com.example.findapartment.models.Apartment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class ApartmentListActivity extends AppCompatActivity {
     private ApartmentClient apartmentClient;
     private ListView lvApartments;
     private ApartmentsAdapter apartmentsAdapter;
-    private ProgressBar progressBar;
+    private LinearLayout progressBarLayout;
     private TextView noApartmentsTextView;
 
     private FiltersFragment filtersFragment;
-    private ToolbarFragment toolbarFragment;
 
     private int page = 0;
     private int pageSize = 3;
@@ -63,6 +73,11 @@ public class ApartmentListActivity extends AppCompatActivity {
 
     private UserSession userSession;
 
+    private String queryParams = "";
+
+
+//    private final OkHttpClient client = new OkHttpClient();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +85,6 @@ public class ApartmentListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_apartment_list);
 
         userSession = new UserSession(ApartmentListActivity.this);
-        getFilterParams();
 
         lvApartments = (ListView) findViewById(R.id.lvApartments);
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
@@ -82,19 +96,9 @@ public class ApartmentListActivity extends AppCompatActivity {
 
         filtersFragment = new FiltersFragment();
 
-        toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
-        toolbarFragment.setImageTint();
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.APARTMENTS_LIST);
 
-
-//        Button filtersBtn = (Button) findViewById(R.id.openFiltersBtn);
-//        filtersBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getBaseContext(), FiltersActivity.class);
-//                startActivity(intent);
-//
-//            }
-//        });
 
         lvApartments.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -103,9 +107,9 @@ public class ApartmentListActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (totalItemCount != 0 && page < totalPages - 1 && firstVisibleItem + visibleItemCount == totalItemCount && progressBar.getVisibility() != View.VISIBLE) {
+                if (totalItemCount != 0 && page < totalPages - 1 && firstVisibleItem + visibleItemCount == totalItemCount && progressBarLayout.getVisibility() != View.VISIBLE) {
                     page++;
-                    fetchApartments();
+//                    fetchApartments();
                 }
             }
         });
@@ -113,24 +117,16 @@ public class ApartmentListActivity extends AppCompatActivity {
 
         View footer = getLayoutInflater().inflate(
                 R.layout.progress_footer, null);
-        progressBar = (ProgressBar)
+        progressBarLayout = (LinearLayout)
                 footer.findViewById(R.id.pbFooterLoading);
-        lvApartments.addFooterView(progressBar);
+        lvApartments.addFooterView(progressBarLayout);
 
 //        setOrderSpinner();
         fetchApartments();
+
+
     }
 
-    private void getFilterParams() {
-        Intent intentNow = getIntent();
-        priceFrom = intentNow.getStringExtra("priceFrom");
-        priceTo = intentNow.getStringExtra("priceTo");
-        propertySizeFrom = intentNow.getStringExtra("propertySizeFrom");
-        propertySizeTo = intentNow.getStringExtra("propertySizeTo");
-        location = intentNow.getStringExtra("location");
-        transactionType = intentNow.getStringExtra("transactionType");
-        if (userSession.isLoggedIn()) onlyMy = intentNow.getBooleanExtra("onlyMy", false);
-    }
 
 //    private void setOrderSpinner(){
 //        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
@@ -167,24 +163,24 @@ public class ApartmentListActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    public void setFilters(String filters) {
+        this.queryParams = filters;
+        fetchApartments();
+    }
+
     private void fetchApartments() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBarLayout.setVisibility(View.VISIBLE);
+        noApartmentsTextView.setVisibility(View.GONE);
 
         Uri.Builder builder = new Uri.Builder();
         builder.appendQueryParameter("page", String.valueOf(page));
         builder.appendQueryParameter("pageSize", String.valueOf(pageSize));
         builder.appendQueryParameter("sort", sortBy);
-        if (priceFrom != null && priceFrom.length() > 0) builder.appendQueryParameter("priceFrom", priceFrom);
-        if (priceTo != null && priceTo.length() > 0) builder.appendQueryParameter("priceTo", priceTo);
-        if (propertySizeFrom != null && propertySizeFrom.length() > 0) builder.appendQueryParameter("propertySizeFrom", propertySizeFrom);
-        if (propertySizeTo != null && propertySizeTo.length() > 0) builder.appendQueryParameter("propertySizeTo", propertySizeTo);
-        if (location != null && location.length() > 0) builder.appendQueryParameter("location", location);
-        if (transactionType != null && transactionType.length() > 0) builder.appendQueryParameter("transactionType", transactionType);
-        if (onlyMy != null && onlyMy == true) builder.appendQueryParameter("onlyMy", "true");
-        String queryParams =  builder.build().toString();
+//        builder.appendPath(queryParams);
+        String paginationParams =  builder.build().toString();
 
 
-        apartmentClient.getApartments(getApplicationContext(), queryParams, new IRequestCallback(){
+        apartmentClient.getApartments(getApplicationContext(), paginationParams, new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
                 try {
@@ -193,27 +189,48 @@ public class ApartmentListActivity extends AppCompatActivity {
                         data = response.getJSONObject("data");
                         totalPages = Integer.parseInt(data.getString("pages"));
                         final ArrayList<Apartment> apartments = Apartment.fromJSON(data.getJSONArray("apartments"));
-                        for (Apartment apartment: apartments){
-                            apartmentsAdapter.add(apartment);
-                        }
-                        apartmentsAdapter.notifyDataSetChanged();
-                        if (apartments.size() == 0) {
-                            noApartmentsTextView.setVisibility(View.VISIBLE);
-                        } else {
-                            noApartmentsTextView.setVisibility(View.GONE);
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                for (Apartment apartment: apartments){
+                                    apartmentsAdapter.add(apartment);
+                                }
+                                apartmentsAdapter.notifyDataSetChanged();
+
+                                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                                if (apartments.size() == 0) {
+                                    noApartmentsTextView.setVisibility(View.VISIBLE);
+                                    filtersFragment.showNoResultsMessage(true);
+                                } else {
+                                    noApartmentsTextView.setVisibility(View.GONE);
+                                    if (filtersFragment.isAdded()) {
+                                        ft.remove(filtersFragment);
+                                    }
+                                    filtersFragment.showNoResultsMessage(false);
+                                }
+                                ft.commit();
+                            }
+                        });
+                        progressBarLayout.setVisibility(View.GONE);
+
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBarLayout.setVisibility(View.GONE);
                 }
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie można załadować ogłoszeń", getApplicationContext());
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBarLayout.setVisibility(View.GONE);
                 noApartmentsTextView.setVisibility(View.VISIBLE);
+                if (filtersFragment.isAdded()) {
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.remove(filtersFragment);
+                    ft.commit();
+                }
             }
         });
     }

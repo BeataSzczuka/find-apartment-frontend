@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.findapartment.R;
 import com.example.findapartment.adapters.ApartmentsAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.UserClient;
+import com.example.findapartment.fragments.NavigationbarFragment;
+import com.example.findapartment.fragments.ToolbarFragment;
+import com.example.findapartment.helpers.AppViewNames;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 import com.example.findapartment.models.Apartment;
@@ -32,7 +37,10 @@ public class MyAccountActivity extends AppCompatActivity {
     private UserClient userClient;
     private UserSession userSession;
 
-    private ProgressBar progressBar;
+    private LinearLayout myAnnLoading;
+    private TextView myAnnEmpty;
+    private LinearLayout myAnnData;
+    private ProgressBar logoutProgressBar;
 
     private int page = 0;
     private int pageSize = 3;
@@ -43,7 +51,10 @@ public class MyAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
-        progressBar = findViewById(R.id.myAccountActivityProgressBar);
+        myAnnLoading = findViewById(R.id.myAnnLoading);
+        myAnnEmpty = findViewById(R.id.myAnnEmpty);
+        myAnnData = findViewById(R.id.myAnnData);
+        logoutProgressBar = findViewById(R.id.myAccountActivityProgressBar);
 
         userSession = new UserSession(MyAccountActivity.this);
         userClient = new UserClient();
@@ -54,11 +65,19 @@ public class MyAccountActivity extends AppCompatActivity {
         lvMyApartments.setAdapter(apartmentsAdapter);
         apartmentClient = new ApartmentClient();
         fetchMyApartments();
+
+        ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
+        toolbarFragment.setImageTint(AppViewNames.MY_ACCOUNT);
+
+        NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
+        navigationbarfragment.setTitle("Moje konto");
     }
 
 
     private void fetchMyApartments() {
-        progressBar.setVisibility(View.VISIBLE);
+        myAnnLoading.setVisibility(View.VISIBLE);
+        myAnnEmpty.setVisibility(View.GONE);
+        myAnnData.setVisibility(View.GONE);
 
         Uri.Builder builder = new Uri.Builder();
         builder.appendQueryParameter("page", String.valueOf(page));
@@ -80,29 +99,29 @@ public class MyAccountActivity extends AppCompatActivity {
                             apartmentsAdapter.add(apartment);
                         }
                         apartmentsAdapter.notifyDataSetChanged();
-//                        if (apartments.size() == 0) {
-//                            noApartmentsTextView.setVisibility(View.VISIBLE);
-//                        } else {
-//                            noApartmentsTextView.setVisibility(View.GONE);
-//                        }
+                        if (apartments.size() == 0) {
+                            myAnnEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            myAnnData.setVisibility(View.VISIBLE);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    myAnnLoading.setVisibility(View.GONE);
                 }
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie można załadować ogłoszeń", getApplicationContext());
-                progressBar.setVisibility(View.INVISIBLE);
-//                noApartmentsTextView.setVisibility(View.VISIBLE);
+                myAnnLoading.setVisibility(View.GONE);
+                myAnnEmpty.setVisibility(View.VISIBLE);
             }
         });
     }
 
     public void onLogoutButtonClick(View view) {
-        progressBar.setVisibility(View.VISIBLE);
+        logoutProgressBar.setVisibility(View.VISIBLE);
         userSession.deleteSession();
         userClient.logout(getApplicationContext(), new IRequestCallback(){
             @Override
@@ -112,12 +131,12 @@ public class MyAccountActivity extends AppCompatActivity {
                     startActivity(i);
                     ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());
                 }
-                progressBar.setVisibility(View.INVISIBLE);
+                logoutProgressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Wystąpił błąd podczas wylogowywania.", getApplicationContext());
-                progressBar.setVisibility(View.INVISIBLE);
+                logoutProgressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
