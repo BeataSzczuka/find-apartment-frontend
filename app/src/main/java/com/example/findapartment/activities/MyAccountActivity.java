@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -42,10 +43,11 @@ public class MyAccountActivity extends AppCompatActivity {
     private LinearLayout myAnnLoading;
     private TextView myAnnEmpty;
     private LinearLayout myAnnData;
-    private ProgressBar logoutProgressBar;
+    private ProgressBar progressBar;
+    private Button loadMoreMyApartments;
 
     private int page = 0;
-    private int pageSize = 20;
+    private int pageSize = 15;
     private int totalPages = 1;
 
     @Override
@@ -56,7 +58,7 @@ public class MyAccountActivity extends AppCompatActivity {
         myAnnLoading = findViewById(R.id.myAnnLoading);
         myAnnEmpty = findViewById(R.id.myAnnEmpty);
         myAnnData = findViewById(R.id.myAnnData);
-        logoutProgressBar = findViewById(R.id.myAccountActivityProgressBar);
+        progressBar = findViewById(R.id.myAccountActivityProgressBar);
 
         userSession = new UserSession(MyAccountActivity.this);
         userClient = new UserClient();
@@ -75,6 +77,20 @@ public class MyAccountActivity extends AppCompatActivity {
 
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
         navigationbarfragment.setTitle("Moje konto");
+
+        loadMoreMyApartments = findViewById(R.id.loadMoreMyApartments);
+        loadMoreMyApartments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (page < totalPages - 1 && myAnnLoading.getVisibility() != View.VISIBLE) {
+                    page++;
+                    fetchMyApartments();
+//                    if (page == totalPages - 1) {
+//                        loadMoreMyApartments.setVisibility(View.GONE);
+//                    }
+                }
+            }
+        });
     }
 
 
@@ -109,6 +125,10 @@ public class MyAccountActivity extends AppCompatActivity {
                         } else {
                             myAnnData.setVisibility(View.VISIBLE);
                         }
+
+                        if (page == totalPages - 1) {
+                            loadMoreMyApartments.setVisibility(View.GONE);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -126,7 +146,7 @@ public class MyAccountActivity extends AppCompatActivity {
     }
 
     public void onLogoutButtonClick(View view) {
-        logoutProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         userSession.deleteSession();
         userClient.logout(getApplicationContext(), new IRequestCallback(){
             @Override
@@ -136,28 +156,28 @@ public class MyAccountActivity extends AppCompatActivity {
                     startActivity(i);
                     ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());
                 }
-                logoutProgressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Wystąpił błąd podczas wylogowywania.", getApplicationContext());
-                logoutProgressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     public void onDeleteApartmentClick(String apartmentId) {
-        logoutProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         apartmentClient.deleteApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
                 ToastService.showSuccessMessage("Ogłoszenie zostało usunięte", getApplicationContext());
-                logoutProgressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
                 ToastService.showErrorMessage("Nie można usunąć ogłoszenia", getApplicationContext());
-                logoutProgressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -172,11 +192,12 @@ public class MyAccountActivity extends AppCompatActivity {
         if (apartmentsAdapter.getCount() > 0){
             View item = apartmentsAdapter.getView(0,null, lvMyApartments);
             item.measure(0,0);
-            totalHeight = (apartmentsAdapter.getCount() + 1 ) * (item.getMeasuredHeight() );
+            totalHeight = (apartmentsAdapter.getCount() ) * (item.getMeasuredHeight() );
         }
         ViewGroup.LayoutParams par = lvMyApartments.getLayoutParams();
         par.height = totalHeight + (lvMyApartments.getDividerHeight() * (apartmentsAdapter.getCount() ));
         lvMyApartments.setLayoutParams(par);
         lvMyApartments.requestLayout();
     }
+    
 }

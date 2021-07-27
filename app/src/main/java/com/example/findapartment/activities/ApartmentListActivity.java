@@ -59,7 +59,7 @@ public class ApartmentListActivity extends AppCompatActivity {
     private FiltersFragment filtersFragment;
 
     private int page = 0;
-    private int pageSize = 3;
+    private int pageSize = 20;
     private int totalPages = 1;
 
     private String sortBy;
@@ -106,7 +106,7 @@ public class ApartmentListActivity extends AppCompatActivity {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (totalItemCount != 0 && page < totalPages - 1 && firstVisibleItem + visibleItemCount == totalItemCount && progressBarLayout.getVisibility() != View.VISIBLE) {
                     page++;
-//                    fetchApartments();
+                    fetchApartments();
                 }
             }
         });

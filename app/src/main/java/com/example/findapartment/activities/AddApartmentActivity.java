@@ -94,7 +94,6 @@ public class AddApartmentActivity extends AppCompatActivity {
         toolbarFragment.setImageTint(AppViewNames.ADD_APARTMENT);
 
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
-        navigationbarfragment.setTitle("Dodaj ogłoszenie");
 
         addApartmentStep1Fragment = (AddApartmentStep1Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep1);
         addApartmentStep2Fragment = (AddApartmentStep2Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep2);
@@ -129,6 +128,13 @@ public class AddApartmentActivity extends AppCompatActivity {
 
 
         loadDataIfInEditMode();
+        if (editedApartmentId != null) {
+            navigationbarfragment.setTitle("Edytuj ogłoszenie");
+            addApartmentBtn.setText("Zapisz zmiany");
+
+        } else {
+            navigationbarfragment.setTitle("Dodaj ogłoszenie");
+        }
 
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
@@ -228,12 +234,12 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
         Call<ServerResponse> call;
-        call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
-//        if (editedApartmentId != null && editedApartmentId.length() > 0) {
-//            call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
-//        } else {
-//            call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
-//        }
+//        call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        if (editedApartmentId != null && editedApartmentId.length() > 0) {
+            call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
+        } else {
+            call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
+        }
         call.enqueue(new Callback< ServerResponse >() {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {

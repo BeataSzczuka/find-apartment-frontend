@@ -115,6 +115,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
                                 if (item.getTitle().equals("zobacz ogłoszenie")) {
                                     openApartmentDetails(apartment);
                                 } else if (item.getTitle().equals("edytuj ogłoszenie")) {
+                                    onEditApartmentClick(apartment);
                                 } else if (item.getTitle().equals("usuń ogłoszenie")) {
                                     ((MyAccountActivity) c).onDeleteApartmentClick(apartment.getId());
                                 }
@@ -130,15 +131,15 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
 
         return convertView;
     }
-//
-//    public void onEditApartmentClick(View view) {
-//        Intent i=new Intent(getBaseContext(), AddApartmentActivity.class);
-//        i.putExtra("editedApartmentId", apartment.getId());
-//        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
-//        i.putExtra("locationEditText", apartment.getLocation());
-//        i.putExtra("descriptionEditText", apartment.getDescription());
-//        i.putExtra("priceEditText", apartment.getPrice().toString());
-//        i.putExtra("transactionType", apartment.getTransactionType());
-//        startActivity(i);
-//    }
+
+    private void onEditApartmentClick(Apartment apartment) {
+        Intent i=new Intent(c, AddApartmentActivity.class);
+        i.putExtra("editedApartmentId", apartment.getId());
+        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
+        i.putExtra("locationEditText", apartment.getLocation());
+        i.putExtra("descriptionEditText", apartment.getDescription());
+        i.putExtra("priceEditText", apartment.getPrice().toString());
+        i.putExtra("transactionType", apartment.getTransactionType());
+        c.startActivity(i);
+    }
 }

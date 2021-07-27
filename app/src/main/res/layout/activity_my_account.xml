@@ -68,8 +68,7 @@
                 android:id="@+id/myAnnData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView14"
@@ -79,15 +78,23 @@
                     android:paddingBottom="20dp"
                     android:text="Oto Twoje ogłoszenia:"
                     android:textColor="@color/colorSecondary"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <ListView
                     android:id="@+id/lvMyApartments"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:paddingBottom="10dp">
+                    android:layout_height="fill_parent">
 
                 </ListView>
+
+                <Button
+                    android:id="@+id/loadMoreMyApartments"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/colorLightGray"
+                    android:text="Załaduj więcej ogłoszeń"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"></Button>
 
             </LinearLayout>
 
