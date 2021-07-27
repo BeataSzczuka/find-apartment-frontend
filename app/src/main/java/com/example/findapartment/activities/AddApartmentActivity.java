@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -29,6 +28,10 @@ import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
 import com.example.findapartment.clients.ServerResponse;
+import com.example.findapartment.fragments.AddApartmentStep1Fragment;
+import com.example.findapartment.fragments.AddApartmentStep2Fragment;
+import com.example.findapartment.fragments.AddApartmentStep3Fragment;
+import com.example.findapartment.fragments.AddApartmentStep4Fragment;
 import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.AppViewNames;
@@ -62,7 +65,12 @@ public class AddApartmentActivity extends AppCompatActivity {
     private EditText descriptionEditText;
     private EditText priceEditText;
     private ProgressBar progressBar;
-    private Button createAccountBtn;
+    private Button addApartmentBtn;
+
+    private AddApartmentStep1Fragment addApartmentStep1Fragment;
+    private AddApartmentStep2Fragment addApartmentStep2Fragment;
+    private AddApartmentStep3Fragment addApartmentStep3Fragment;
+    private AddApartmentStep4Fragment addApartmentStep4Fragment;
 
     private ApartmentClient apartmentClient;
     private UserSession userSession;
@@ -88,6 +96,14 @@ public class AddApartmentActivity extends AppCompatActivity {
         NavigationbarFragment navigationbarfragment = (NavigationbarFragment) getSupportFragmentManager().findFragmentById(R.id.navigationbar);
         navigationbarfragment.setTitle("Dodaj ogłoszenie");
 
+        addApartmentStep1Fragment = (AddApartmentStep1Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep1);
+        addApartmentStep2Fragment = (AddApartmentStep2Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep2);
+        getSupportFragmentManager().beginTransaction().hide(addApartmentStep2Fragment).commit();
+        addApartmentStep3Fragment = (AddApartmentStep3Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep3);
+        getSupportFragmentManager().beginTransaction().hide(addApartmentStep3Fragment).commit();
+        addApartmentStep4Fragment = (AddApartmentStep4Fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentStep4);
+        getSupportFragmentManager().beginTransaction().hide(addApartmentStep4Fragment).commit();
+
         uploadedImagesListView = (GridView) findViewById(R.id.uploadedImagesListView);
         uploadedImages = new ArrayList<Uri>();
         uploadedImagesAdapter = new UploadedImagesAdapter(this, uploadedImages);
@@ -106,9 +122,11 @@ public class AddApartmentActivity extends AppCompatActivity {
         propertySizeEditText = findViewById(R.id.propertySizeEditText);
         locationEditText = findViewById(R.id.locationEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
-        createAccountBtn = findViewById(R.id.createAccountBtn);
+        addApartmentBtn = findViewById(R.id.addApartmentBtn);
 
         progressBar = findViewById(R.id.addApartmentActivityProgressBar);
+
+
 
         loadDataIfInEditMode();
 
@@ -179,9 +197,9 @@ public class AddApartmentActivity extends AppCompatActivity {
         }
     }
 
-    public void onAddApartmentClick(View view) throws JSONException {
+    public void onAddApartmentClick() throws JSONException {
         progressBar.setVisibility(View.VISIBLE);
-        createAccountBtn.setEnabled(false);
+        addApartmentBtn.setEnabled(false);
 
         MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[imagesPaths.size()];
 
@@ -204,6 +222,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         newApartment.put("propertySize", propertySizeEditText.getText().toString());
         newApartment.put("location", locationEditText.getText().toString());
         newApartment.put("description", descriptionEditText.getText().toString());
+
 
         RequestBody name = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), newApartment.toString());
 
@@ -236,7 +255,7 @@ public class AddApartmentActivity extends AppCompatActivity {
 
                 ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", getApplicationContext());
                 progressBar.setVisibility(View.GONE);
-                createAccountBtn.setEnabled(true);
+//                addApartmentBtn.setEnabled(true);
             }
         });
     }

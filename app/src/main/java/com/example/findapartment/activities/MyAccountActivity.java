@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -43,7 +45,7 @@ public class MyAccountActivity extends AppCompatActivity {
     private ProgressBar logoutProgressBar;
 
     private int page = 0;
-    private int pageSize = 3;
+    private int pageSize = 20;
     private int totalPages = 1;
 
     @Override
@@ -60,6 +62,8 @@ public class MyAccountActivity extends AppCompatActivity {
         userClient = new UserClient();
 
         lvMyApartments = (ListView) findViewById(R.id.lvMyApartments);
+        lvMyApartments.setEnabled(false);
+
         ArrayList<Apartment> apartments = new ArrayList<Apartment>();
         apartmentsAdapter = new ApartmentsAdapter(this, apartments, R.layout.item_my_apartment);
         lvMyApartments.setAdapter(apartmentsAdapter);
@@ -99,6 +103,7 @@ public class MyAccountActivity extends AppCompatActivity {
                             apartmentsAdapter.add(apartment);
                         }
                         apartmentsAdapter.notifyDataSetChanged();
+                        setListViewHeight();
                         if (apartments.size() == 0) {
                             myAnnEmpty.setVisibility(View.VISIBLE);
                         } else {
@@ -139,5 +144,39 @@ public class MyAccountActivity extends AppCompatActivity {
                 logoutProgressBar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    public void onDeleteApartmentClick(String apartmentId) {
+        logoutProgressBar.setVisibility(View.VISIBLE);
+        apartmentClient.deleteApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                ToastService.showSuccessMessage("Ogłoszenie zostało usunięte", getApplicationContext());
+                logoutProgressBar.setVisibility(View.INVISIBLE);
+            }
+            @Override
+            public void onError(String result) throws Exception {
+                ToastService.showErrorMessage("Nie można usunąć ogłoszenia", getApplicationContext());
+                logoutProgressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
+
+    public void setListViewHeight () {
+        if (apartmentsAdapter == null) {
+            return;
+        }
+        ViewGroup vg = lvMyApartments;
+        int totalHeight = 0;
+        if (apartmentsAdapter.getCount() > 0){
+            View item = apartmentsAdapter.getView(0,null, lvMyApartments);
+            item.measure(0,0);
+            totalHeight = (apartmentsAdapter.getCount() + 1 ) * (item.getMeasuredHeight() );
+        }
+        ViewGroup.LayoutParams par = lvMyApartments.getLayoutParams();
+        par.height = totalHeight + (lvMyApartments.getDividerHeight() * (apartmentsAdapter.getCount() ));
+        lvMyApartments.setLayoutParams(par);
+        lvMyApartments.requestLayout();
     }
 }

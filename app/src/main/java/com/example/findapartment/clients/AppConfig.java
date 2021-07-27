@@ -6,7 +6,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppConfig {
-    private static String BASE_URL_LOCAL = "http://10.0.2.2:3000/api/";
+//    private static String BASE_URL_LOCAL = "http://10.0.2.2:3000/api/";
+//    private static String BASE_URL_LOCAL = "https://192.168.0.113:3000/api/";
+    private static String BASE_URL_LOCAL = "http://localhost:3000/api/";
     private static String BASE_URL = "https://findapartmentserver.herokuapp.com/api/";
 
     public static String getBaseUrl() {

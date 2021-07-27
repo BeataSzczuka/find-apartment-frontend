@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/step2Fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="25dp"
+    tools:context=".fragments.AddApartmentStep2Fragment">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="5dp"
+        android:text="Krok 2/4"
+        android:textColor="#707070"
+        android:textSize="23sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:paddingBottom="30dp"
+        android:text="Podaj szczegóły na temat mieszkania:"
+        android:textColor="#707070"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/priceTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#979797"
+        android:textStyle="bold"
+        android:text="cena" />
+
+    <EditText
+        android:id="@+id/priceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Podaj cenę"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/propertySizeTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#979797"
+        android:textStyle="bold"
+        android:text="powierzchnia" />
+
+    <EditText
+        android:id="@+id/propertySizeEditText"
+        android:layout_width="match_parent"
+        android:hint="Podaj powierzchnię mieszkania"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/locationTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#979797"
+        android:textStyle="bold"
+        android:text="lokalizacja" />
+
+    <EditText
+        android:id="@+id/locationEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Podaj lokalizację mieszkania"
+        android:ems="10"
+        android:inputType="text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSecondary"
+            android:padding="2sp">
+
+            <Button
+                android:id="@+id/prevStep"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:text="Wróć"
+                android:textAllCaps="false"
+                android:textColor="@color/colorSecondary"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimary"
+            android:padding="2sp">
+
+            <Button
+                android:id="@+id/nextStep"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="#FFFFFF"
+                android:padding="10dp"
+                android:text="Przejdź do następnego kroku"
+                android:textAllCaps="false"
+                android:textColor="#886A9BC5"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

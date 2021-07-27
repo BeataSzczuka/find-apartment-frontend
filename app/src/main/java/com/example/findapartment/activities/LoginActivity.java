@@ -3,7 +3,10 @@ package com.example.findapartment.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private ProgressBar progressBar;
-    private Button createAccountBtn;
+    private Button loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,12 @@ public class LoginActivity extends AppCompatActivity {
         email = findViewById(R.id.loginEmailET);
         password = findViewById(R.id.loginPasswordET);
         progressBar = findViewById(R.id.loginActivityProgressBar);
-        createAccountBtn = findViewById(R.id.navigateToCreateAccount);
+        loginBtn = findViewById(R.id.loginBtn);
+
+        setLoginButtonEnabled(false);
+        setNotEmptyValidator(email);
+        setNotEmptyValidator(password);
+
     }
 
     public void onLoginClick(View view) throws JSONException {
@@ -87,5 +95,65 @@ public class LoginActivity extends AppCompatActivity {
     public void navigateToCreateAccount(View view) {
         Intent i=new Intent(getBaseContext(), AddUserActivity.class);
         startActivity(i);
+    }
+
+    public void onCancelClick(View view) {
+        this.finish();
+    }
+
+    public void setNotEmptyValidator(EditText editText) {
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (email.getText().toString().length() == 0) {
+                    email.setError("To pole nie może być puste");
+                    setLoginButtonEnabled(false);
+                } else {
+                    email.setError(null);
+                    if (password.getText().toString().length() > 0) {
+                        setLoginButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (password.getText().toString().length() == 0) {
+                    password.setError("To pole nie może być puste");
+                    setLoginButtonEnabled(false);
+                } else {
+                    password.setError(null);
+                    if (email.getText().toString().length() > 0) {
+                        setLoginButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+    }
+
+    public void setLoginButtonEnabled(boolean enabled) {
+        if (enabled) {
+            loginBtn.setEnabled(true);
+            loginBtn.setAlpha((float) 1);
+        } else {
+            loginBtn.setEnabled(false);
+            loginBtn.setAlpha((float) 0.6);
+        }
     }
 }

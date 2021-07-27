@@ -76,9 +76,6 @@ public class ApartmentListActivity extends AppCompatActivity {
     private String queryParams = "";
 
 
-//    private final OkHttpClient client = new OkHttpClient();
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,18 +194,23 @@ public class ApartmentListActivity extends AppCompatActivity {
                                 }
                                 apartmentsAdapter.notifyDataSetChanged();
 
-                                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                                 if (apartments.size() == 0) {
                                     noApartmentsTextView.setVisibility(View.VISIBLE);
-                                    filtersFragment.showNoResultsMessage(true);
                                 } else {
                                     noApartmentsTextView.setVisibility(View.GONE);
-                                    if (filtersFragment.isAdded()) {
-                                        ft.remove(filtersFragment);
-                                    }
-                                    filtersFragment.showNoResultsMessage(false);
                                 }
-                                ft.commit();
+
+                                if (filtersFragment.isAdded()) {
+                                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                                    if (apartments.size() == 0) {
+                                        filtersFragment.showNoResultsMessage(true);
+                                    } else {
+                                        ft.remove(filtersFragment);
+                                        filtersFragment.showNoResultsMessage(false);
+                                    }
+                                    ft.commit();
+                                }
+
                             }
                         });
                         progressBarLayout.setVisibility(View.GONE);

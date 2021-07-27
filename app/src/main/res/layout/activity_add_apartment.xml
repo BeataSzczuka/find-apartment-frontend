@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.AddApartmentActivity">
+
         <fragment
             android:id="@+id/navigationbar"
             android:name="com.example.findapartment.fragments.NavigationbarFragment"
@@ -16,14 +20,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
-        </fragment>
+            app:layout_constraintTop_toTopOf="parent"></fragment>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:paddingBottom="100dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,230 +37,261 @@
             app:layout_constraintVertical_bias="0.01999998">
 
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="5dp"
-                android:text="Dodawanie ogłoszenia"
-                android:textSize="25sp" />
-
-            <androidx.cardview.widget.CardView
+                android:text="Chcesz wystawić ogłoszenie?"
+                android:textColor="#E0E0E0"
+                android:textSize="23sp" />
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="5dp"
+                android:text="Dobrze trafiłeś!"
+                android:textColor="#E0E0E0"
+                android:textSize="23sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="typ transakcji"
-                        android:textSize="18sp" />
-
-                    <RadioGroup
-                        android:id="@+id/transactionTypeRadio"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <RadioButton
-                            android:id="@+id/transactionSale"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="sprzedaż" />
-
-                        <RadioButton
-                            android:id="@+id/transactionRent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="wynajem" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
+            <fragment
+                android:id="@+id/fragmentStep1"
+                android:name="com.example.findapartment.fragments.AddApartmentStep1Fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp">
+                android:layout_height="wrap_content" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/infoTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="dane szczegółowe"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/priceTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="cena" />
-
-                    <EditText
-                        android:id="@+id/priceEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" />
-
-                    <TextView
-                        android:id="@+id/propertySizeTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="powierzchnia" />
-
-                    <EditText
-                        android:id="@+id/propertySizeEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number" />
-
-                    <TextView
-                        android:id="@+id/locationTv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="lokalizacja" />
-
-                    <EditText
-                        android:id="@+id/locationEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="text" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
+            <fragment
+                android:id="@+id/fragmentStep2"
+                android:name="com.example.findapartment.fragments.AddApartmentStep2Fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp">
+                android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:id="@+id/descriptionTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="opis"
-                        android:textSize="18sp" />
-
-                    <EditText
-                        android:id="@+id/descriptionEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:gravity="start|top"
-                        android:inputType="textMultiLine"
-                        android:lines="3" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
+            <fragment
+                android:id="@+id/fragmentStep3"
+                android:name="com.example.findapartment.fragments.AddApartmentStep3Fragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="30dp">
+                android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+            <fragment
+                android:id="@+id/fragmentStep4"
+                android:name="com.example.findapartment.fragments.AddApartmentStep4Fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-                    <TextView
-                        android:id="@+id/imagesTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="dodaj zdjęcia"
-                        android:textSize="18sp" />
+            <!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginBottom="30dp">-->
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="10dp">-->
 
-                        <ImageButton
-                            android:id="@+id/imageButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="70dp"
-                            android:layout_marginStart="5sp"
-                            android:layout_marginLeft="5sp"
-                            android:layout_marginTop="5sp"
-                            android:layout_marginEnd="5sp"
-                            android:layout_marginRight="5sp"
-                            android:layout_marginBottom="5sp"
-                            android:background="@android:color/transparent"
-                            android:onClick="uploadImage"
-                            app:srcCompat="@drawable/addimagebtn" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/textView3"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="typ transakcji"-->
+<!--                        android:textSize="18sp" />-->
 
-                        <com.example.findapartment.customviews.CustomGridView
-                            android:id="@+id/uploadedImagesListView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_toEndOf="@+id/imageButton"
-                            android:layout_toRightOf="@+id/imageButton"
-                            android:numColumns="4" />
-                    </RelativeLayout>
+<!--                    <RadioGroup-->
+<!--                        android:id="@+id/transactionTypeRadio"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
 
-                </LinearLayout>
+<!--                        <RadioButton-->
+<!--                            android:id="@+id/transactionSale"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:checked="true"-->
+<!--                            android:text="sprzedaż" />-->
 
-            </androidx.cardview.widget.CardView>
+<!--                        <RadioButton-->
+<!--                            android:id="@+id/transactionRent"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="wynajem" />-->
+<!--                    </RadioGroup>-->
+
+<!--                </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginBottom="30dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/infoTV"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="dane szczegółowe"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/priceTv"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:text="cena" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/priceEditText"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:ems="10"-->
+<!--                        android:inputType="number" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/propertySizeTv"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:text="powierzchnia" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/propertySizeEditText"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:ems="10"-->
+<!--                        android:inputType="number" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/locationTv"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:text="lokalizacja" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/locationEditText"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:ems="10"-->
+<!--                        android:inputType="text" />-->
+
+<!--                </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginBottom="30dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/descriptionTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="opis"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/descriptionEditText"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:ems="10"-->
+<!--                        android:gravity="start|top"-->
+<!--                        android:inputType="textMultiLine"-->
+<!--                        android:lines="3" />-->
+
+<!--                </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginBottom="30dp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:padding="10dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/imagesTv"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="dodaj zdjęcia"-->
+<!--                        android:textSize="18sp" />-->
+
+<!--                    <RelativeLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent">-->
+
+<!--                        <ImageButton-->
+<!--                            android:id="@+id/imageButton"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="70dp"-->
+<!--                            android:layout_marginStart="5sp"-->
+<!--                            android:layout_marginLeft="5sp"-->
+<!--                            android:layout_marginTop="5sp"-->
+<!--                            android:layout_marginEnd="5sp"-->
+<!--                            android:layout_marginRight="5sp"-->
+<!--                            android:layout_marginBottom="5sp"-->
+<!--                            android:background="@android:color/transparent"-->
+<!--                            android:onClick="uploadImage"-->
+<!--                            app:srcCompat="@drawable/addimagebtn" />-->
+
+<!--                        <com.example.findapartment.customviews.CustomGridView-->
+<!--                            android:id="@+id/uploadedImagesListView"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginStart="12dp"-->
+<!--                            android:layout_marginLeft="12dp"-->
+<!--                            android:layout_toEndOf="@+id/imageButton"-->
+<!--                            android:layout_toRightOf="@+id/imageButton"-->
+<!--                            android:numColumns="4" />-->
+<!--                    </RelativeLayout>-->
+
+<!--                </LinearLayout>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
 
             <ProgressBar
                 android:id="@+id/addApartmentActivityProgressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="76dp"
                 android:paddingBottom="20dp"/>
 
-            <Button
-                android:id="@+id/createAccountBtn"
-                android:onClick="onAddApartmentClick"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:text="dodaj ogłoszenie"
-                android:textColor="@android:color/white" />
+<!--            <Button-->
+<!--                android:id="@+id/createAccountBtn"-->
+<!--                android:onClick="onAddApartmentClick"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/colorPrimary"-->
+<!--                android:text="dodaj ogłoszenie"-->
+<!--                android:textColor="@android:color/white" />-->
 
 
         </LinearLayout>
-
-
-        <fragment
-            android:id="@+id/menuFragment"
-            android:name="com.example.findapartment.fragments.ToolbarFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.findapartment.fragments.ToolbarFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

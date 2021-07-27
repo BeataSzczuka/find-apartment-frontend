@@ -188,10 +188,12 @@ public class FiltersFragment extends Fragment {
     }
 
     public void showNoResultsMessage(boolean visible) {
-        if (visible) {
-            noResultsTryAgain.setVisibility(View.VISIBLE);
-        } else {
-            noResultsTryAgain.setVisibility(View.GONE);
+        if (noResultsTryAgain != null) {
+            if (visible) {
+                noResultsTryAgain.setVisibility(View.VISIBLE);
+            } else {
+                noResultsTryAgain.setVisibility(View.GONE);
+            }
         }
     }
 }

@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/apartmentLayout"
+    android:id="@+id/myApartmentLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="110dp"
     android:background="@drawable/shadowrectangle"
     android:elevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <ImageView
@@ -31,7 +31,9 @@
             <TextView
                 android:id="@+id/tvPrice"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
                 android:paddingBottom="5dp"
                 android:shadowColor="@color/colorPrimaryDark"
                 android:shadowDx="0"
@@ -45,7 +47,9 @@
             <TextView
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:paddingBottom="3dp"
                 android:shadowColor="@color/colorPrimaryDark"
                 android:shadowDx="0"
@@ -57,7 +61,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -90,11 +96,11 @@
 
         <ImageButton
             android:id="@+id/moreActionsBtn"
-            android:onClick="showMoreActionsMenu"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
+            android:onClick="showMoreActionsMenu"
             android:padding="5dp"
             app:srcCompat="@drawable/morebtn" />
     </LinearLayout>

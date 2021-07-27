@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -31,6 +34,7 @@ public class AddUserActivity extends AppCompatActivity {
     private EditText repeatedPassword;
     private ProgressBar progressBar;
 
+    private Button createAccountBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +55,12 @@ public class AddUserActivity extends AppCompatActivity {
         password = findViewById(R.id.addUserPasswordET);
         repeatedPassword = findViewById(R.id.addUserRepeatPasswordET);
         progressBar = findViewById(R.id.addUserActivityProgressBar);
+        createAccountBtn = findViewById(R.id.createAccountBtn3);
+        setCreateAccountButtonEnabled(false);
+        setValidators(email);
+        setValidators(phoneNumber);
+        setPasswordValidators(password);
+        setRepeatedPasswordValidators(repeatedPassword);
     }
 
     public void onAddUserClick(View view) throws JSONException {
@@ -89,5 +99,102 @@ public class AddUserActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void onCancelClick(View view) {
+        this.finish();
+    }
+
+    public void setValidators(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (editText.getText().toString().length() == 0) {
+                    editText.setError("To pole nie może być puste");
+                    setCreateAccountButtonEnabled(false);
+                } else {
+                    editText.setError(null);
+                    if (!hasErrors(email) && !hasErrors(phoneNumber) && !hasErrors(password) && !hasErrors(repeatedPassword)) {
+                        setCreateAccountButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+    }
+
+    public void setRepeatedPasswordValidators(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (editText.getText().toString().length() == 0) {
+                    editText.setError("To pole nie może być puste");
+                    setCreateAccountButtonEnabled(false);
+                } else if(!editText.getText().toString().equals(password.getText().toString())) {
+                    editText.setError("Hasła nie mogą się różnić");
+                    setCreateAccountButtonEnabled(false);
+                } else {
+                    editText.setError(null);
+                    if (!hasErrors(email) && !hasErrors(phoneNumber) && !hasErrors(password) && !hasErrors(repeatedPassword)) {
+                        setCreateAccountButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+    }
+
+    public void setPasswordValidators(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (editText.getText().toString().length() == 0) {
+                    editText.setError("To pole nie może być puste");
+                    setCreateAccountButtonEnabled(false);
+                } else if(editText == password && editText.getText().toString().length() < 6) {
+                    editText.setError("Hasło musi mieć co najmniej 6 znaków");
+                    setCreateAccountButtonEnabled(false);
+                } else {
+                    editText.setError(null);
+                    if (!hasErrors(email) && !hasErrors(phoneNumber) && !hasErrors(password) && !hasErrors(repeatedPassword)) {
+                        setCreateAccountButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+    }
+
+    private boolean hasErrors(EditText editText) {
+        return editText.getText().toString().length() == 0 || editText.getError() != null;
+    }
+
+    public void setCreateAccountButtonEnabled(boolean enabled) {
+        if (enabled) {
+            createAccountBtn.setEnabled(true);
+            createAccountBtn.getBackground().setAlpha(255);
+        } else {
+            createAccountBtn.setEnabled(false);
+            createAccountBtn.getBackground().setAlpha(150);
+        }
     }
 }

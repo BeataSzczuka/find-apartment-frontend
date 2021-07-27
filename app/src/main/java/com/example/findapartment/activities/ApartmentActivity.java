@@ -142,34 +142,6 @@ public class ApartmentActivity extends AppCompatActivity {
         mViewPagerAdapter.notifyDataSetChanged();
     }
 
-    public void onDeleteApartmentClick(View view) {
-        progressBar.setVisibility(View.VISIBLE);
-        apartmentClient.deleteApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
-            @Override
-            public void onSuccess(JSONObject response) {
-                Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
-                startActivity(i);
-                ToastService.showSuccessMessage("Ogłoszenie zostało usunięte", getApplicationContext());
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-            @Override
-            public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie można usunąć ogłoszenia", getApplicationContext());
-                progressBar.setVisibility(View.INVISIBLE);
 
-            }
-        });
-    }
-
-    public void onEditApartmentClick(View view) {
-        Intent i=new Intent(getBaseContext(), AddApartmentActivity.class);
-        i.putExtra("editedApartmentId", apartment.getId());
-        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
-        i.putExtra("locationEditText", apartment.getLocation());
-        i.putExtra("descriptionEditText", apartment.getDescription());
-        i.putExtra("priceEditText", apartment.getPrice().toString());
-        i.putExtra("transactionType", apartment.getTransactionType());
-        startActivity(i);
-    }
 
 }
