@@ -243,14 +243,6 @@ public class AddApartmentActivity extends AppCompatActivity {
         call.enqueue(new Callback< ServerResponse >() {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {
-                ServerResponse serverResponse = response.body();
-                if (serverResponse != null) {
-                    if (serverResponse.getSuccess()) {
-                        Toast.makeText(getApplicationContext(), serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
                 progressBar.setVisibility(View.GONE);
 
                 Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
@@ -259,9 +251,9 @@ public class AddApartmentActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call < ServerResponse > call, Throwable t) {
 
-                ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", getApplicationContext());
+                ToastService.showErrorMessage("Wystąpił błąd podczas dodawania ogłoszenia.", findViewById(R.id.rootView));
                 progressBar.setVisibility(View.GONE);
-//                addApartmentBtn.setEnabled(true);
+                addApartmentBtn.setEnabled(true);
             }
         });
     }

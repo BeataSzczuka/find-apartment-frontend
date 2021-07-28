@@ -61,12 +61,17 @@ public class ToolbarFragment extends Fragment {
         });
 
         addMenuBtn = (ImageButton) view.findViewById(R.id.addMenuBtn);
+        if (!userSession.isLoggedIn()) {
+            addMenuBtn.setClickable(false);
+            addMenuBtn.setAlpha((float) 0.2);
+        }
         addMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddApartmentActivity.class);
-                startActivity(intent);
-
+                if (userSession.isLoggedIn()) {
+                    Intent intent = new Intent(getActivity(), AddApartmentActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

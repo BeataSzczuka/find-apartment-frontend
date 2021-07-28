@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@drawable/rectangle_top_shadow"
+    android:elevation="2dp"
     android:layout_alignParentBottom="true"
     android:layout_gravity="bottom"
     app:elevation="4dp">

@@ -87,7 +87,7 @@
                 android:padding="10dp"
                 android:text="Przejdź do następnego kroku"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#886A9BC5"
                 android:textStyle="bold" />
         </FrameLayout>
     </RelativeLayout>

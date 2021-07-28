@@ -125,7 +125,7 @@ public class ApartmentActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage(result, getApplicationContext());
+                ToastService.showErrorMessage(result, findViewById(R.id.rootView));
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });

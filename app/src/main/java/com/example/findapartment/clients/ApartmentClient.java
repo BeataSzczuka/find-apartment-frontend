@@ -35,4 +35,8 @@ public class ApartmentClient {
     public void deleteApartment( String apartmentId, Context applicationContext, IRequestCallback iRequestCallback) {
         RequestService.makeDeleteRequest(API_APARTMENTS_URL + "/" + apartmentId, applicationContext, iRequestCallback);
     }
+
+    public void restoreApartment( String apartmentId, Context applicationContext, IRequestCallback iRequestCallback) {
+        RequestService.makePostRequest("restoreapartment" + "/" + apartmentId, null, applicationContext, iRequestCallback);
+    }
 }

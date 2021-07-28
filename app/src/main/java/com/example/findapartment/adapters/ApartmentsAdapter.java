@@ -117,7 +117,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
                                 } else if (item.getTitle().equals("edytuj ogłoszenie")) {
                                     onEditApartmentClick(apartment);
                                 } else if (item.getTitle().equals("usuń ogłoszenie")) {
-                                    ((MyAccountActivity) c).onDeleteApartmentClick(apartment.getId());
+                                    ((MyAccountActivity) c).onDeleteApartmentClick(apartment.getId(), position);
                                 }
                                 return true;
                             }

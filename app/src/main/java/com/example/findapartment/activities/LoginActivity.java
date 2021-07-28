@@ -73,10 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject user = data.getJSONObject("user");
                         userSession.createSession(user.getString("email"), data.getString("accessToken"), user.getString("role"));
 
-                        // navigate to main activity
                         Intent i=new Intent(getBaseContext(), MyAccountActivity.class);
                         startActivity(i);
-                        ToastService.showSuccessMessage("Zostałeś zalogowany.", getApplicationContext());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie zostałeś zalogowany. Spróbuj ponownie.", getApplicationContext());
+                ToastService.showErrorMessage("Nie zostałeś zalogowany. Spróbuj ponownie.", findViewById(R.id.rootView));
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });

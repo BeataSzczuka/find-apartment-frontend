@@ -65,7 +65,7 @@ public class AddUserActivity extends AppCompatActivity {
 
     public void onAddUserClick(View view) throws JSONException {
         if (!password.getText().toString().equals(repeatedPassword.getText().toString())) {
-            ToastService.showErrorMessage("Te hasła nie pasują do siebie. Spróbuj ponownie. ", getApplicationContext());
+            ToastService.showErrorMessage("Te hasła nie pasują do siebie. Spróbuj ponownie. ", findViewById(R.id.rootView));
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -83,9 +83,6 @@ public class AddUserActivity extends AppCompatActivity {
                         userSession.createSession(data.getString("email"), data.getString("accessToken"), data.getString("role"));
                         Intent i=new Intent(getBaseContext(), MyAccountActivity.class);
                         startActivity(i);
-
-                        ToastService.showSuccessMessage("Zostałeś zalogowany.", getApplicationContext());
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -94,7 +91,7 @@ public class AddUserActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie można utworzyć konta. Spróbuj ponownie.", getApplicationContext());
+                ToastService.showErrorMessage("Nie można utworzyć konta. Spróbuj ponownie.", findViewById(R.id.rootView));
                 progressBar.setVisibility(View.INVISIBLE);
 
             }

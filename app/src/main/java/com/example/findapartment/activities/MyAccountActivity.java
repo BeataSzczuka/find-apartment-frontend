@@ -50,6 +50,8 @@ public class MyAccountActivity extends AppCompatActivity {
     private int pageSize = 15;
     private int totalPages = 1;
 
+    private Apartment lastRemovedItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +140,7 @@ public class MyAccountActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie można załadować ogłoszeń", getApplicationContext());
+                ToastService.showErrorMessage("Nie można załadować ogłoszeń", findViewById(R.id.rootView));
                 myAnnLoading.setVisibility(View.GONE);
                 myAnnEmpty.setVisibility(View.VISIBLE);
             }
@@ -151,32 +153,53 @@ public class MyAccountActivity extends AppCompatActivity {
         userClient.logout(getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
-                if (response != null) {
-                    Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
-                    startActivity(i);
-                    ToastService.showSuccessMessage("Zostałeś wylogowany.", getApplicationContext());
-                }
+                Intent i=new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(i);
                 progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Wystąpił błąd podczas wylogowywania.", getApplicationContext());
+                Intent i=new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(i);
                 progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
 
-    public void onDeleteApartmentClick(String apartmentId) {
+    public void onDeleteApartmentClick(String apartmentId, int position) {
         progressBar.setVisibility(View.VISIBLE);
         apartmentClient.deleteApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
             @Override
             public void onSuccess(JSONObject response) {
-                ToastService.showSuccessMessage("Ogłoszenie zostało usunięte", getApplicationContext());
+                progressBar.setVisibility(View.INVISIBLE);
+                lastRemovedItem = apartmentsAdapter.getItem(position);
+                apartmentsAdapter.remove(lastRemovedItem);
+                apartmentsAdapter.notifyDataSetChanged();
+                setListViewHeight();
+                ToastService.showSnackbar("Ogłoszenie zostało usunięte", MyAccountActivity.this, apartmentId, position);
+            }
+            @Override
+            public void onError(String result) throws Exception {
+                ToastService.showErrorMessage("Nie można usunąć ogłoszenia", findViewById(R.id.rootView));
+                progressBar.setVisibility(View.INVISIBLE);
+
+            }
+        });
+    }
+
+    public void onRestoreApartmentClick(String apartmentId, int position) {
+        progressBar.setVisibility(View.VISIBLE);
+        apartmentClient.restoreApartment(apartmentId, getApplicationContext(), new IRequestCallback(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                apartmentsAdapter.insert(lastRemovedItem, position);
+                apartmentsAdapter.notifyDataSetChanged();
+                setListViewHeight();
                 progressBar.setVisibility(View.INVISIBLE);
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie można usunąć ogłoszenia", getApplicationContext());
+                ToastService.showErrorMessage("Nie można przywrócić ogłoszenia", findViewById(R.id.rootView));
                 progressBar.setVisibility(View.INVISIBLE);
 
             }

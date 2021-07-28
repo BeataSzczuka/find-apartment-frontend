@@ -225,7 +225,7 @@ public class ApartmentListActivity extends AppCompatActivity {
             }
             @Override
             public void onError(String result) throws Exception {
-                ToastService.showErrorMessage("Nie można załadować ogłoszeń", getApplicationContext());
+                ToastService.showErrorMessage("Nie można załadować ogłoszeń", findViewById(R.id.rootView));
                 progressBarLayout.setVisibility(View.GONE);
                 noApartmentsTextView.setVisibility(View.VISIBLE);
                 if (filtersFragment.isAdded()) {
