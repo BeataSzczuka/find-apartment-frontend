@@ -63,7 +63,7 @@ public class ToolbarFragment extends Fragment {
         addMenuBtn = (ImageButton) view.findViewById(R.id.addMenuBtn);
         if (!userSession.isLoggedIn()) {
             addMenuBtn.setClickable(false);
-            addMenuBtn.setAlpha((float) 0.2);
+            addMenuBtn.setAlpha(0.2f);
         }
         addMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override

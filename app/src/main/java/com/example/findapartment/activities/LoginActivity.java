@@ -2,12 +2,14 @@ package com.example.findapartment.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,6 +20,7 @@ import com.example.findapartment.clients.UserClient;
 import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.AppViewNames;
+import com.example.findapartment.helpers.SetupHelpers;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -55,10 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         setLoginButtonEnabled(false);
         setNotEmptyValidator(email);
         setNotEmptyValidator(password);
-
+        SetupHelpers.setKeyboardHideListener(this);
     }
 
     public void onLoginClick(View view) throws JSONException {
+        SetupHelpers.hideSoftKeyboard(this);
         progressBar.setVisibility(View.VISIBLE);
         JSONObject loginData = new JSONObject();
         loginData.put("email", email.getText().toString());
@@ -112,6 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.getText().toString().length() == 0) {
                     email.setError("To pole nie może być puste");
                     setLoginButtonEnabled(false);
+                } else if (!email.getText().toString().contains("@")) {
+                    email.setError("Niepoprawny adres email");
+                    setLoginButtonEnabled(false);
                 } else {
                     email.setError(null);
                     if (password.getText().toString().length() > 0) {
@@ -136,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                     setLoginButtonEnabled(false);
                 } else {
                     password.setError(null);
-                    if (email.getText().toString().length() > 0) {
+                    if (email.getText().toString().length() > 0 || email.getError() != null) {
                         setLoginButtonEnabled(true);
                     }
                 }
@@ -148,10 +155,10 @@ public class LoginActivity extends AppCompatActivity {
     public void setLoginButtonEnabled(boolean enabled) {
         if (enabled) {
             loginBtn.setEnabled(true);
-            loginBtn.setAlpha((float) 1);
+            loginBtn.setAlpha(1f);
         } else {
             loginBtn.setEnabled(false);
-            loginBtn.setAlpha((float) 0.6);
+            loginBtn.setAlpha(0.6f);
         }
     }
 }

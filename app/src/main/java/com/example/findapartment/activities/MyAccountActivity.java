@@ -87,9 +87,9 @@ public class MyAccountActivity extends AppCompatActivity {
                 if (page < totalPages - 1 && myAnnLoading.getVisibility() != View.VISIBLE) {
                     page++;
                     fetchMyApartments();
-//                    if (page == totalPages - 1) {
-//                        loadMoreMyApartments.setVisibility(View.GONE);
-//                    }
+                }
+                if (page == totalPages - 1) {
+                    loadMoreMyApartments.setVisibility(View.GONE);
                 }
             }
         });

@@ -19,4 +19,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_fullscreen_image_gallery">FullscreenActivity</string>
     <string name="m2"><![CDATA[ m<sup><small>2</small></sup> ]]></string>
+    <string name="m2Formatted">m<sup><small>2</small></sup></string>
 </resources>

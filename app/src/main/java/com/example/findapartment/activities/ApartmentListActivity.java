@@ -31,6 +31,7 @@ import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.fragments.FiltersFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.AppViewNames;
+import com.example.findapartment.helpers.SetupHelpers;
 import com.example.findapartment.helpers.SortTypesEnum;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
@@ -120,6 +121,7 @@ public class ApartmentListActivity extends AppCompatActivity {
 
 //        setOrderSpinner();
         fetchApartments();
+        SetupHelpers.setKeyboardHideListener(this);
 
 
     }
@@ -161,7 +163,8 @@ public class ApartmentListActivity extends AppCompatActivity {
     }
 
     public void setFilters(String filters) {
-        this.queryParams = filters;
+        apartmentsAdapter.clear();
+        this.queryParams = filters.substring(1);
         fetchApartments();
     }
 
@@ -172,9 +175,11 @@ public class ApartmentListActivity extends AppCompatActivity {
         Uri.Builder builder = new Uri.Builder();
         builder.appendQueryParameter("page", String.valueOf(page));
         builder.appendQueryParameter("pageSize", String.valueOf(pageSize));
-        builder.appendQueryParameter("sort", sortBy);
-//        builder.appendPath(queryParams);
+        builder.appendQueryParameter("sort", SortTypesEnum.NEWEST.name());
         String paginationParams =  builder.build().toString();
+        if (queryParams != null && queryParams.length() > 0) {
+            paginationParams = paginationParams.concat("&").concat(queryParams);
+        }
 
 
         apartmentClient.getApartments(getApplicationContext(), paginationParams, new IRequestCallback(){

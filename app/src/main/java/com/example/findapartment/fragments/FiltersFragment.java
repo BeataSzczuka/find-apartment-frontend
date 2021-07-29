@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 
 import com.example.findapartment.R;
 import com.example.findapartment.activities.ApartmentListActivity;
+import com.example.findapartment.helpers.SetupHelpers;
 
 public class FiltersFragment extends Fragment {
 
@@ -65,6 +66,8 @@ public class FiltersFragment extends Fragment {
 
         setFilterBtn(view, this);
         setValidators();
+
+        SetupHelpers.setKeyboardHideListener(getActivity());
     }
 
     private void setFilterBtn(View view, FiltersFragment filtersFragment){
@@ -72,6 +75,7 @@ public class FiltersFragment extends Fragment {
         cancelFilteringBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 getActivity().getSupportFragmentManager().beginTransaction().remove(filtersFragment).commit();
 
             }
@@ -81,6 +85,7 @@ public class FiltersFragment extends Fragment {
         filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 Uri.Builder builder = new Uri.Builder();
                 if (priceFrom.getText().toString().length() > 0) builder.appendQueryParameter("priceFrom", priceFrom.getText().toString());
                 if (priceTo.getText().toString().length() > 0) builder.appendQueryParameter("priceTo", priceTo.getText().toString());

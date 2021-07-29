@@ -35,6 +35,7 @@ import com.example.findapartment.fragments.AddApartmentStep4Fragment;
 import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.AppViewNames;
+import com.example.findapartment.helpers.SetupHelpers;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.helpers.UserSession;
@@ -140,6 +141,8 @@ public class AddApartmentActivity extends AppCompatActivity {
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
         } else requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+
+        SetupHelpers.setKeyboardHideListener(this);
     }
 
     public void loadDataIfInEditMode() {
@@ -204,6 +207,7 @@ public class AddApartmentActivity extends AppCompatActivity {
     }
 
     public void onAddApartmentClick() throws JSONException {
+        SetupHelpers.hideSoftKeyboard(this);
         progressBar.setVisibility(View.VISIBLE);
         addApartmentBtn.setEnabled(false);
 

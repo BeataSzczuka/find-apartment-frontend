@@ -17,6 +17,7 @@ import com.example.findapartment.clients.UserClient;
 import com.example.findapartment.fragments.NavigationbarFragment;
 import com.example.findapartment.fragments.ToolbarFragment;
 import com.example.findapartment.helpers.AppViewNames;
+import com.example.findapartment.helpers.SetupHelpers;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.UserSession;
 
@@ -57,13 +58,15 @@ public class AddUserActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.addUserActivityProgressBar);
         createAccountBtn = findViewById(R.id.createAccountBtn3);
         setCreateAccountButtonEnabled(false);
-        setValidators(email);
+        setEmailValidator(email);
         setValidators(phoneNumber);
         setPasswordValidators(password);
         setRepeatedPasswordValidators(repeatedPassword);
+        SetupHelpers.setKeyboardHideListener(this);
     }
 
     public void onAddUserClick(View view) throws JSONException {
+        SetupHelpers.hideSoftKeyboard(this);
         if (!password.getText().toString().equals(repeatedPassword.getText().toString())) {
             ToastService.showErrorMessage("Te hasła nie pasują do siebie. Spróbuj ponownie. ", findViewById(R.id.rootView));
             return;
@@ -118,6 +121,33 @@ public class AddUserActivity extends AppCompatActivity {
                 } else {
                     editText.setError(null);
                     if (!hasErrors(email) && !hasErrors(phoneNumber) && !hasErrors(password) && !hasErrors(repeatedPassword)) {
+                        setCreateAccountButtonEnabled(true);
+                    }
+                }
+
+            }
+        });
+    }
+
+    public void setEmailValidator(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (editText.getText().toString().length() == 0) {
+                    editText.setError("To pole nie może być puste");
+                    setCreateAccountButtonEnabled(false);
+                } else if (!editText.getText().toString().contains("@")) {
+                    editText.setError("Niepoprawny adres email");
+                    setCreateAccountButtonEnabled(false);
+                } else {
+                    editText.setError(null);
+                    if (!hasErrors(phoneNumber) && !hasErrors(password) && !hasErrors(repeatedPassword)) {
                         setCreateAccountButtonEnabled(true);
                     }
                 }
@@ -188,10 +218,10 @@ public class AddUserActivity extends AppCompatActivity {
     public void setCreateAccountButtonEnabled(boolean enabled) {
         if (enabled) {
             createAccountBtn.setEnabled(true);
-            createAccountBtn.getBackground().setAlpha(255);
+            createAccountBtn.setAlpha(1f);
         } else {
             createAccountBtn.setEnabled(false);
-            createAccountBtn.getBackground().setAlpha(150);
+            createAccountBtn.setAlpha(0.6f);
         }
     }
 }
