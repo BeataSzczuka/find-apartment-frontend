@@ -42,8 +42,8 @@ public class Apartment implements Serializable {
 
     private String id;
     private String transactionType;
-    private Integer price;
-    private Integer propertySize;
+    private Float price;
+    private Float propertySize;
     private String location;
     private String description;
     private String publicationDate;
@@ -68,11 +68,11 @@ public class Apartment implements Serializable {
         this.id = id;
     }
 
-    public Integer getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public Integer getPropertySize() {
+    public Float getPropertySize() {
         return propertySize;
     }
 
@@ -114,8 +114,8 @@ public class Apartment implements Serializable {
             apartment.id = jsonObj.getString("_id");
             apartment.description = jsonObj.optString("description");
             apartment.location = jsonObj.optString("location");
-            apartment.propertySize = jsonObj.optInt("propertySize");
-            apartment.price = jsonObj.optInt("price");
+            apartment.propertySize = Float.parseFloat(jsonObj.optString("propertySize"));
+            apartment.price =  Float.parseFloat(jsonObj.optString("price"));
             apartment.transactionType = jsonObj.optString("transactionType");
             apartment.publicationDate = jsonObj.optString("publicationDate");
             apartment.phoneNumber = jsonObj.optString("phoneNumber");

@@ -39,4 +39,8 @@ public class ApartmentClient {
     public void restoreApartment( String apartmentId, Context applicationContext, IRequestCallback iRequestCallback) {
         RequestService.makePostRequest("restoreapartment" + "/" + apartmentId, null, applicationContext, iRequestCallback);
     }
+
+    public void getFilterRanges( Context applicationContext, IRequestCallback iRequestCallback) {
+        RequestService.makeGetRequest(API_APARTMENTS_URL + "/" + "filter-ranges", applicationContext, iRequestCallback);
+    }
 }

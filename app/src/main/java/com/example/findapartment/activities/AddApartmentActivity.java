@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.findapartment.R;
@@ -80,6 +81,8 @@ public class AddApartmentActivity extends AppCompatActivity {
 
     private String editedApartmentId;
 
+    private TextView imagesMessage;
+
     List<String> imagesPaths = new ArrayList<String>();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -90,6 +93,9 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         this.apartmentClient = new ApartmentClient();
         this.userSession = new UserSession(AddApartmentActivity.this);
+
+
+        imagesMessage = findViewById(R.id.addImagesMessage);
 
         ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
         toolbarFragment.setImageTint(AppViewNames.ADD_APARTMENT);
@@ -114,6 +120,12 @@ public class AddApartmentActivity extends AppCompatActivity {
                 uploadedImages.remove(uploadedImagesAdapter.getItem(position));
                 imagesPaths.remove(position);
                 uploadedImagesAdapter.notifyDataSetChanged();
+
+                if (uploadedImages.size() > 0) {
+                    imagesMessage.setVisibility(View.GONE);
+                } else {
+                    imagesMessage.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -161,7 +173,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(View view) {
+    public void uploadImage() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -204,6 +216,18 @@ public class AddApartmentActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+        if (uploadedImages.size() > 0) {
+            imagesMessage.setVisibility(View.GONE);
+        } else {
+            imagesMessage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private float getNumber(EditText editText) {
+        String text = editText.getText().toString();
+        text = text.replaceAll("\\s", "");
+        text = text.replaceAll(",", ".");
+        return Float.parseFloat(text);
     }
 
     public void onAddApartmentClick() throws JSONException {
@@ -228,8 +252,8 @@ public class AddApartmentActivity extends AppCompatActivity {
         } else {
             newApartment.put("transactionType", TransactionTypeEnum.RENT);
         }
-        newApartment.put("price", priceEditText.getText().toString());
-        newApartment.put("propertySize", propertySizeEditText.getText().toString());
+        newApartment.put("price", getNumber(priceEditText));
+        newApartment.put("propertySize", getNumber(propertySizeEditText));
         newApartment.put("location", locationEditText.getText().toString());
         newApartment.put("description", descriptionEditText.getText().toString());
 
@@ -238,7 +262,6 @@ public class AddApartmentActivity extends AppCompatActivity {
 
         ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
         Call<ServerResponse> call;
-//        call = getResponse.uploadMulFile(userSession.getLoggedInUserToken(), surveyImagesParts, name);
         if (editedApartmentId != null && editedApartmentId.length() > 0) {
             call = getResponse.updateApartment(userSession.getLoggedInUserToken(), editedApartmentId, surveyImagesParts, name);
         } else {
@@ -248,7 +271,7 @@ public class AddApartmentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {
                 progressBar.setVisibility(View.GONE);
-
+                ToastService.showSuccessMessage(response.body().getMessage(), getApplicationContext());
                 Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
                 startActivity(i);
             }

@@ -86,6 +86,8 @@ public class AddUserActivity extends AppCompatActivity {
                         userSession.createSession(data.getString("email"), data.getString("accessToken"), data.getString("role"));
                         Intent i=new Intent(getBaseContext(), MyAccountActivity.class);
                         startActivity(i);
+                        ToastService.showSuccessMessage("Konto zostało utworzone", getApplicationContext());
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

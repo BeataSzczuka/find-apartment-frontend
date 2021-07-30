@@ -10,10 +10,13 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.findapartment.R;
 import com.example.findapartment.activities.AddApartmentActivity;
+import com.example.findapartment.helpers.SetupHelpers;
 
 import org.json.JSONException;
 
@@ -42,10 +45,15 @@ public class AddApartmentStep4Fragment extends Fragment {
 
         Fragment thisFragment = this;
 
+        AlphaAnimation btnAnimation = new AlphaAnimation(1F, 0.3F);
+
+
         prevStep = view.findViewById(R.id.prevStep);
         prevStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 Fragment prevFragment = fm.findFragmentById(R.id.fragmentStep3);
                 fm.beginTransaction().hide(thisFragment).commit();
@@ -57,12 +65,23 @@ public class AddApartmentStep4Fragment extends Fragment {
         addApartmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 try {
                     ((AddApartmentActivity) getActivity()).onAddApartmentClick();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+            }
+        });
+
+        ImageButton imageButton = view.findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetupHelpers.hideSoftKeyboard(getActivity());
+                ((AddApartmentActivity) getActivity()).uploadImage();
             }
         });
     }

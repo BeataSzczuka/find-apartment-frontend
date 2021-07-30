@@ -6,9 +6,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,25 @@ import android.widget.RadioGroup;
 
 import com.example.findapartment.R;
 import com.example.findapartment.activities.ApartmentListActivity;
+import com.example.findapartment.clients.ApartmentClient;
+import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.helpers.SetupHelpers;
+import com.example.findapartment.helpers.SortTypesEnum;
+import com.example.findapartment.helpers.ToastService;
+import com.example.findapartment.models.Apartment;
+import com.example.findapartment.models.FilterRanges;
+import com.google.android.material.slider.RangeSlider;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FiltersFragment extends Fragment {
 
@@ -35,7 +55,12 @@ public class FiltersFragment extends Fragment {
     private Button cancelFilteringBtn;
     private Button filterBtn;
 
+    private RangeSlider priceRangeSlider;
+    private RangeSlider propertySizeRangeSlider;
+
     private LinearLayout noResultsTryAgain;
+
+    private ApartmentClient apartmentClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +71,8 @@ public class FiltersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        apartmentClient = new ApartmentClient();
+        getFilterRanges();
         return inflater.inflate(R.layout.fragment_filters, container, false);
     }
 
@@ -62,12 +89,89 @@ public class FiltersFragment extends Fragment {
         transactionSale = view.findViewById(R.id.transactionSale);
         transactionRent = view.findViewById(R.id.transactionRent);
 
+        priceRangeSlider = view.findViewById(R.id.priceRangeSlider);
+        propertySizeRangeSlider = view.findViewById(R.id.propertySizeRangeSlider);
+        setRangeSliderListeners();
+
         noResultsTryAgain = view.findViewById(R.id.noResultsTryAgain);
+
+        setFocusChangeListener(priceFrom);
+        setFocusChangeListener(priceTo);
+        setFocusChangeListener(propertySizeFrom);
+        setFocusChangeListener(propertySizeTo);
 
         setFilterBtn(view, this);
         setValidators();
 
         SetupHelpers.setKeyboardHideListener(getActivity());
+    }
+
+    private String formatAsNumber(double number) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setCurrencySymbol("");
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter.format(number);
+    }
+
+    private void setFocusChangeListener(EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                try {
+                    String content  = editText.getText().toString();
+                    if (!hasFocus && content.length() > 0) {
+                        String cleanString = content.replaceAll(",", ".");
+                        cleanString = cleanString.replaceAll("\\s", "");
+                        double parsed = Double.parseDouble(cleanString);
+                        if (cleanString.indexOf('.') != cleanString.lastIndexOf('.')) {
+                            editText.setError("Niepoprawna wartość");
+                            filterBtn.setEnabled(false);
+                        } else {
+                            filterBtn.setEnabled(true);
+                        }
+
+                        editText.setText(formatAsNumber(parsed));
+                    }
+                }catch (Exception e) {
+                    editText.setError("Niepoprawna wartość");
+                    filterBtn.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    private void setRangeSliderListeners() {
+        priceRangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
+            @Override
+            public void onValueChange(RangeSlider slider, float value, boolean fromUser) {
+                if ( fromUser ) {
+                    List<Float> values = slider.getValues();
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+                    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                    symbols.setCurrencySymbol("");
+                    formatter.setDecimalFormatSymbols(symbols);
+                    priceFrom.setText(formatter.format(values.get(0)));
+                    priceTo.setText(formatter.format(values.get(1)));
+                }
+            }
+        });
+        propertySizeRangeSlider.addOnChangeListener(new RangeSlider.OnChangeListener() {
+            @Override
+            public void onValueChange(RangeSlider slider, float value, boolean fromUser) {
+                if ( fromUser ) {
+                    List<Float> values = slider.getValues();
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+                    DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                    symbols.setCurrencySymbol("");
+                    formatter.setDecimalFormatSymbols(symbols);
+                    propertySizeFrom.setText(formatter.format(values.get(0)));
+                    propertySizeTo.setText(formatter.format(values.get(1)));
+                }
+            }
+        });
     }
 
     private void setFilterBtn(View view, FiltersFragment filtersFragment){
@@ -87,10 +191,10 @@ public class FiltersFragment extends Fragment {
             public void onClick(View v) {
                 SetupHelpers.hideSoftKeyboard(getActivity());
                 Uri.Builder builder = new Uri.Builder();
-                if (priceFrom.getText().toString().length() > 0) builder.appendQueryParameter("priceFrom", priceFrom.getText().toString());
-                if (priceTo.getText().toString().length() > 0) builder.appendQueryParameter("priceTo", priceTo.getText().toString());
-                if (propertySizeFrom.getText().toString().length() > 0) builder.appendQueryParameter("propertySizeFrom", propertySizeFrom.getText().toString());
-                if (propertySizeTo.getText().toString().length() > 0) builder.appendQueryParameter("propertySizeTo", propertySizeTo.getText().toString());
+                if (priceFrom.getText().toString().length() > 0) builder.appendQueryParameter("priceFrom", parseFloatValue(priceFrom));
+                if (priceTo.getText().toString().length() > 0) builder.appendQueryParameter("priceTo", parseFloatValue(priceTo));
+                if (propertySizeFrom.getText().toString().length() > 0) builder.appendQueryParameter("propertySizeFrom", parseFloatValue(propertySizeFrom));
+                if (propertySizeTo.getText().toString().length() > 0) builder.appendQueryParameter("propertySizeTo", parseFloatValue(propertySizeTo));
                 if (location.getText().toString().length() > 0) builder.appendQueryParameter("location", location.getText().toString());
                 if (transactionSale.isChecked() && !transactionRent.isChecked()) builder.appendQueryParameter("transactionType", "SALE");
                 if (transactionRent.isChecked() && !transactionSale.isChecked()) builder.appendQueryParameter("transactionType", "RENT");
@@ -103,6 +207,13 @@ public class FiltersFragment extends Fragment {
 
     }
 
+    private String parseFloatValue(EditText editText) {
+        String value = editText.getText().toString();
+        value = value.replaceAll(",", ".");
+        value = value.replaceAll("\\s", "");
+        return value;
+    }
+
     private void setValidators() {
         setNumberFieldValidator();
         setTransactionTypeValidators();
@@ -110,15 +221,20 @@ public class FiltersFragment extends Fragment {
 
 
     private boolean isNotEmpty(EditText editText) {
-        return editText.getText().toString().trim().length() > 0;
+        String text = editText.getText().toString().trim();
+        return text.length() > 0 && Character.isDigit(text.charAt(0));
     }
 
-    private int getNumber(EditText editText) {
-        return Integer.parseInt(editText.getText().toString());
+    private float getNumber(EditText editText) {
+        String text = editText.getText().toString();
+        text = text.replaceAll("\\s", "");
+        text = text.replaceAll(",", ".");
+        return Float.parseFloat(text);
     }
+
 
     private void setNumberFieldValidator() {
-        TextWatcher proceTW = new TextWatcher() {
+        TextWatcher priceTW = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -127,6 +243,9 @@ public class FiltersFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (s.toString().length() > 0 && !Character.isDigit(s.toString().charAt(0))) {
+                    filterBtn.setEnabled(false);
+                }
                 if (isNotEmpty(priceTo) && isNotEmpty(priceFrom) && getNumber(priceTo) < getNumber(priceFrom)){
                     priceFrom.setError("Niepoprawny zakres liczb");
                     priceTo.setError("Niepoprawny zakres liczb");
@@ -137,12 +256,26 @@ public class FiltersFragment extends Fragment {
                     if (propertySizeFrom.getError() == null) {
                         filterBtn.setEnabled(true);
                     }
-                }
 
+
+                    List<Float> values = priceRangeSlider.getValues();
+                    if ( isNotEmpty(priceFrom) ) {
+                        float fromValue = getNumber(priceFrom);
+                        if (fromValue < priceRangeSlider.getValueFrom())  fromValue = priceRangeSlider.getValueFrom();
+                        values.set(0, fromValue);
+                    }
+                    if ( isNotEmpty(priceTo) ) {
+                        float toValue = getNumber(priceTo);
+                        if (toValue > priceRangeSlider.getValueTo())  toValue = priceRangeSlider.getValueTo();
+                        values.set(1, toValue);
+                    }
+                    priceRangeSlider.setValues( values );
+
+                }
             }
         };
-        priceFrom.addTextChangedListener( proceTW );
-        priceTo.addTextChangedListener ( proceTW );
+        priceFrom.addTextChangedListener( priceTW );
+        priceTo.addTextChangedListener( priceTW );
 
         TextWatcher propertySizeTW = new TextWatcher() {
             @Override
@@ -163,7 +296,25 @@ public class FiltersFragment extends Fragment {
                     if (priceFrom.getError() == null) {
                         filterBtn.setEnabled(true);
                     }
+
+
+
+
+                    List<Float> values = propertySizeRangeSlider.getValues();
+                    if ( isNotEmpty(propertySizeFrom) ) {
+                        float fromValue = getNumber(propertySizeFrom);
+                        if (fromValue < propertySizeRangeSlider.getValueFrom())  fromValue = propertySizeRangeSlider.getValueFrom();
+                        values.set(0, fromValue);
+                    }
+                    if ( isNotEmpty(propertySizeTo) ) {
+                        float toValue = getNumber(propertySizeTo);
+                        if (toValue > propertySizeRangeSlider.getValueTo())  toValue = propertySizeRangeSlider.getValueTo();
+                        values.set(1, toValue);
+                    }
+                    propertySizeRangeSlider.setValues( values );
                 }
+
+
 
             }
         };
@@ -200,5 +351,38 @@ public class FiltersFragment extends Fragment {
                 noResultsTryAgain.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void getFilterRanges() {
+        apartmentClient.getFilterRanges(getActivity().getApplicationContext(), new IRequestCallback(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    JSONObject data = null;
+                    if (response != null) {
+                        data = response.getJSONObject("data");
+                        FilterRanges filterRanges = FilterRanges.fromJSON(data);
+                        priceRangeSlider.setValueFrom(filterRanges.priceFrom);
+                        priceRangeSlider.setValueTo(filterRanges.priceTo);
+                        priceRangeSlider.setValues(filterRanges.priceFrom, filterRanges.priceTo);
+                        priceFrom.setText(String.valueOf(formatAsNumber(filterRanges.priceFrom)));
+                        priceTo.setText(String.valueOf(formatAsNumber(filterRanges.priceTo)));
+
+
+                        propertySizeRangeSlider.setValueFrom(filterRanges.propertySizeFrom);
+                        propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo);
+                        propertySizeRangeSlider.setValues(filterRanges.propertySizeFrom, filterRanges.propertySizeTo);
+                        propertySizeFrom.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeFrom)));
+                        propertySizeTo.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeTo)));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(String result) throws Exception {
+                Log.d("ranges error", result);
+            }
+        });
     }
 }

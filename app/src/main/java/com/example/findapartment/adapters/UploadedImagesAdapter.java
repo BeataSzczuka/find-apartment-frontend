@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.findapartment.R;
 
@@ -43,15 +44,6 @@ public class UploadedImagesAdapter extends ArrayAdapter<Uri> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.uploadedImageIV.setImageURI(uri);
-
-//        FrameLayout deleteImageBtn = (FrameLayout) convertView.findViewById(R.id.deleteUploadedImageBtn);
-//        deleteImageBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                c .this.remove(getItem(position));
-//                UploadedImagesAdapter.this.notifyDataSetChanged();
-//            }
-//        });
 
         return convertView;
     }

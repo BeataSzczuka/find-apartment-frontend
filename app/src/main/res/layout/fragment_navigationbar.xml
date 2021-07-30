@@ -12,14 +12,17 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
+
     <ImageButton
-    android:id="@+id/backBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="63dp"
-    android:background="@android:color/transparent"
-    android:padding="21dp"
-    android:tint="@color/colorPrimary"
-    android:src="@drawable/backarrow"  />
+        android:id="@+id/backBtn"
+        style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="63dp"
+        android:padding="21dp"
+        android:clickable="true"
+        android:scaleType="centerInside"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/backarrow" />
 
     <TextView
         android:id="@+id/currentLocation"

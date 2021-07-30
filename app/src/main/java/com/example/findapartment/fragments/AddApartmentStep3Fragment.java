@@ -12,10 +12,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.findapartment.R;
+import com.example.findapartment.helpers.SetupHelpers;
 
 public class AddApartmentStep3Fragment extends Fragment {
 
@@ -44,11 +46,16 @@ public class AddApartmentStep3Fragment extends Fragment {
         descriptionEditText = view.findViewById(R.id.descriptionEditText);
         setNotEmptyValidator(descriptionEditText);
 
+
+        AlphaAnimation btnAnimation = new AlphaAnimation(1F, 0.3F);
+
         Fragment thisFragment = this;
         nextStep = view.findViewById(R.id.nextStep);
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 if (hasErrors()) {
                     checkErrors(descriptionEditText);
                 } else {
@@ -64,6 +71,8 @@ public class AddApartmentStep3Fragment extends Fragment {
         prevStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 Fragment prevFragment = fm.findFragmentById(R.id.fragmentStep2);
                 fm.beginTransaction().hide(thisFragment).commit();

@@ -9,13 +9,21 @@ import androidx.fragment.app.FragmentManager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.findapartment.R;
+import com.example.findapartment.helpers.SetupHelpers;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 
 public class AddApartmentStep2Fragment extends Fragment {
 
@@ -51,11 +59,18 @@ public class AddApartmentStep2Fragment extends Fragment {
         setNotEmptyValidator(propertySizeEditText);
         setNotEmptyValidator(locationEditText);
 
+        setFocusChangedListener(priceEditText);
+        setFocusChangedListener(propertySizeEditText);
+
+        AlphaAnimation btnAnimation = new AlphaAnimation(1F, 0.3F);
+
         Fragment thisFragment = this;
         nextStep = view.findViewById(R.id.nextStep);
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 if (hasErrors()) {
                     checkErrors(priceEditText);
                     checkErrors(propertySizeEditText);
@@ -73,6 +88,8 @@ public class AddApartmentStep2Fragment extends Fragment {
         prevStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.startAnimation(btnAnimation);
+                SetupHelpers.hideSoftKeyboard(getActivity());
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 Fragment prevFragment = fm.findFragmentById(R.id.fragmentStep1);
                 fm.beginTransaction().hide(thisFragment).commit();
@@ -81,17 +98,66 @@ public class AddApartmentStep2Fragment extends Fragment {
         });
     }
 
+    private void setFocusChangedListener(EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                try {
+                    String content  = editText.getText().toString();
+                    if (!hasFocus && content.length() > 0) {
+                        String cleanString = content.replaceAll(",", ".");
+                        cleanString = cleanString.replaceAll("\\s", "");
+                        double parsed = Double.parseDouble(cleanString);
+                        if (cleanString.indexOf('.') != cleanString.lastIndexOf('.')) {
+                            editText.setError("Niepoprawna wartość");
+                            setNextStepEnabled(false);
+                        } else if (!hasErrors()) {
+                            setNextStepEnabled(true);
+                        }
+                        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+                        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+                        symbols.setCurrencySymbol("");
+                        formatter.setDecimalFormatSymbols(symbols);
+                        String formato = formatter.format(parsed);
+                        editText.setText(formato);
+                    }
+                }catch (Exception e) {
+                    editText.setError("Niepoprawna wartość");
+                    setNextStepEnabled(false);
+                }
+            }
+        });
+    }
+
     private void setNotEmptyValidator(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("before", s.toString());
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                editText.removeTextChangedListener(this);
+//
+//                String cleanString = s.toString().replaceAll(",", ".");
+//
+////                double parsed = Double.parseDouble(cleanString);
+////                String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+//                BigDecimal parsed = new BigDecimal(cleanString).setScale(2,BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100),BigDecimal.ROUND_FLOOR);
+//                String formato = NumberFormat.getCurrencyInstance().format(parsed);
+////
+//////                current = formatted;
+//                editText.setText(formato);
+////                editText.setSelection(formatted.length());
+//
+//                editText.addTextChangedListener(this);
+
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 checkErrors(editText);
             }
         });
@@ -110,7 +176,7 @@ public class AddApartmentStep2Fragment extends Fragment {
     }
 
     private boolean hasErrors() {
-        return priceEditText.getText().length() == 0 || propertySizeEditText.getText().length() == 0 || locationEditText.getText().length() == 0;
+        return priceEditText.getText().length() == 0 || propertySizeEditText.getText().length() == 0 || locationEditText.getText().length() == 0 || priceEditText.getError() != null;
     }
 
     private void setNextStepEnabled(boolean enabled) {

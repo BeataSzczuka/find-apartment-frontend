@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.findapartment.MainActivity">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/showAction"
         android:icon="@drawable/showannicon"
-        app:showAsAction="ifRoom"
         android:title="zobacz ogłoszenie" />
     <item
         android:id="@+id/editAction"
         android:icon="@drawable/editannicon"
         android:title="edytuj ogłoszenie"
-        app:showAsAction="ifRoom"
         android:visible="true" />
     <item
         android:id="@+id/deleteAction"
         android:icon="@drawable/deleteannicon"
-        app:showAsAction="ifRoom"
         android:title="usuń ogłoszenie" />
 
 </menu>

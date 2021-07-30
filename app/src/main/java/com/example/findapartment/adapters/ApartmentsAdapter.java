@@ -33,6 +33,9 @@ import com.example.findapartment.models.Apartment;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
@@ -60,6 +63,14 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         c.startActivity(intent);
     }
 
+    private String formatNumber(Float number) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setCurrencySymbol("");
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter.format(number);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Apartment apartment = getItem(position);
@@ -78,10 +89,10 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
             // Existing view
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        viewHolder.tvPrice.setText(Integer.toString(apartment.getPrice()) + " zł");
+        viewHolder.tvPrice.setText(formatNumber(apartment.getPrice()) + " zł");
         viewHolder.tvLocation.setText(apartment.getLocation());
         viewHolder.tvTransactionType.setText(apartment.getTransactionType().equals("SALE") ? "sprzedaż" : "wynajem");
-        viewHolder.tvPropertySize.setText(Html.fromHtml(apartment.getPropertySize()+ " " + c.getResources().getString(R.string.m2)) );
+        viewHolder.tvPropertySize.setText(Html.fromHtml(formatNumber(apartment.getPropertySize()) + " " + c.getResources().getString(R.string.m2)) );
 
         if (apartment.getImages().size() > 0) {
             byte[] bytes = apartment.getImage(0);
@@ -122,7 +133,6 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
                                 return true;
                             }
                         });
-
                         popup.show();
                     }
                 });

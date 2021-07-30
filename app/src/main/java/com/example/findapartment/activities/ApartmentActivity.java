@@ -29,6 +29,9 @@ import com.example.findapartment.models.Apartment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,6 +88,14 @@ public class ApartmentActivity extends AppCompatActivity {
         fetchApartment();
     }
 
+    private String formatNumber(Float number) {
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setCurrencySymbol("");
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter.format(number);
+    }
+
     private void fetchApartment() {
         progressBar.setVisibility(View.VISIBLE);
         apartmentClient.getApartment(getApplicationContext(), apartmentId, new IRequestCallback(){
@@ -96,8 +107,8 @@ public class ApartmentActivity extends AppCompatActivity {
                         data = response.getJSONObject("data");
                         apartment = Apartment.fromJSON(data);
 
-                        ((TextView) findViewById(R.id.priceTv)).setText(apartment.getPrice().toString() + " zł");
-                        ((TextView) findViewById(R.id.propertySizeTv)).setText(Html.fromHtml(apartment.getPropertySize()+ " " + getResources().getString(R.string.m2)));
+                        ((TextView) findViewById(R.id.priceTv)).setText(formatNumber(apartment.getPrice()) + " zł");
+                        ((TextView) findViewById(R.id.propertySizeTv)).setText(Html.fromHtml(formatNumber(apartment.getPropertySize())+ " " + getResources().getString(R.string.m2)));
                         ((TextView) findViewById(R.id.locationTv)).setText(apartment.getLocation());
 
                         ((TextView) findViewById(R.id.transactionTextView)).setText(TransactionTypeEnum.getEnumValueByName(apartment.getTransactionType()));

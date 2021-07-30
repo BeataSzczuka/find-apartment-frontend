@@ -82,21 +82,22 @@
 
             <Button
                 android:id="@+id/cancelCreateAccountBtn"
-                android:layout_width="172dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="7dp"
-                android:background="@color/colorSecondary"
+                android:backgroundTint="@color/colorSecondary"
                 android:onClick="onCancelClick"
                 android:text="anuluj"
                 android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/loginBtn"
-                android:layout_width="172dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="7dp"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:backgroundTint="@color/colorPrimary"
                 android:onClick="onLoginClick"
                 android:text="zaloguj"
                 android:textColor="@android:color/white" />
@@ -131,7 +132,7 @@
             android:layout_width="match_parent"
             android:onClick="navigateToCreateAccount"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:backgroundTint="@color/colorPrimary"
             android:text="Załóż konto"
             android:textColor="@android:color/white" />
     </LinearLayout>

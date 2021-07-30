@@ -65,7 +65,17 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <LinearLayout
+                    <com.google.android.material.slider.RangeSlider
+                        android:id="@+id/priceRangeSlider"
+                        android:theme="@style/CustomTheme"
+                        android:valueFrom="0.0"
+                        android:valueTo="100.0"
+                        app:values="@array/initial_slider_values"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"/>
+
+
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -84,10 +94,11 @@
 
                             <EditText
                                 android:id="@+id/priceFrom"
-                                android:layout_width="80dp"
+                                android:layout_width="85dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:inputType="numberDecimal"
+                                android:digits="0123456789.," />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -112,10 +123,11 @@
 
                             <EditText
                                 android:id="@+id/priceTo"
-                                android:layout_width="80dp"
+                                android:layout_width="85dp"
                                 android:layout_height="wrap_content"
                                 android:ems="10"
-                                android:inputType="number" />
+                                android:inputType="numberDecimal"
+                                android:digits="0123456789.," />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -142,6 +154,15 @@
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
+                        <com.google.android.material.slider.RangeSlider
+                            android:id="@+id/propertySizeRangeSlider"
+                            android:theme="@style/CustomTheme"
+                            android:valueFrom="0.0"
+                            android:valueTo="100.0"
+                            app:values="@array/initial_slider_values"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"/>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -161,10 +182,11 @@
 
                                 <EditText
                                     android:id="@+id/propertySizeFrom"
-                                    android:layout_width="80dp"
+                                    android:layout_width="85dp"
                                     android:layout_height="wrap_content"
                                     android:ems="10"
-                                    android:inputType="number" />
+                                    android:inputType="numberDecimal"
+                                    android:digits="0123456789.," />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -189,10 +211,11 @@
 
                                 <EditText
                                     android:id="@+id/propertySizeTo"
-                                    android:layout_width="80dp"
+                                    android:layout_width="85dp"
                                     android:layout_height="wrap_content"
                                     android:ems="10"
-                                    android:inputType="number" />
+                                    android:inputType="numberDecimal"
+                                    android:digits="0123456789.," />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -249,7 +272,7 @@
                     android:layout_weight="1"
                     android:scaleType="center"
                     android:src="@android:drawable/ic_dialog_info"
-                    android:tint="@color/colorPrimary" />
+                    app:tint="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -264,7 +287,7 @@
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="200dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:gravity="right"
@@ -272,11 +295,11 @@
 
                     <Button
                         android:id="@+id/cancelFiltering"
-                        android:layout_height="30dp"
+                        android:layout_height="45dp"
                         android:layout_width="0dp"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
-                        android:background="@color/colorSecondary"
+                        android:backgroundTint="@color/colorSecondary"
                         android:drawableLeft="@drawable/iksicon"
                         android:text="anuluj"
                         android:paddingLeft="10dp"
@@ -285,11 +308,11 @@
 
                     <Button
                         android:id="@+id/filterBtn"
-                        android:layout_height="30dp"
+                        android:layout_height="45dp"
                         android:layout_width="0dp"
                         android:layout_margin="10dp"
                         android:layout_weight="1"
-                        android:background="@color/colorPrimary"
+                        android:backgroundTint="@color/colorPrimary"
                         android:drawableLeft="@drawable/accepticon"
                         android:paddingLeft="10dp"
                         android:text="filtruj"
