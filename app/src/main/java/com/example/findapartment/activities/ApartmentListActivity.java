@@ -119,7 +119,6 @@ public class ApartmentListActivity extends AppCompatActivity {
                 footer.findViewById(R.id.pbFooterLoading);
         lvApartments.addFooterView(progressBarLayout);
 
-//        setOrderSpinner();
         fetchApartments();
         SetupHelpers.setKeyboardHideListener(this);
 
@@ -127,29 +126,6 @@ public class ApartmentListActivity extends AppCompatActivity {
     }
 
 
-//    private void setOrderSpinner(){
-//        Spinner spinner = (Spinner) findViewById(R.id.orderSpinner);
-//
-//        ArrayAdapter<SortTypesEnum> adapter = new ArrayAdapter<SortTypesEnum>(this, android.R.layout.simple_spinner_item, SortTypesEnum.values());
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                apartmentsAdapter.clear();
-//                page = 0;
-//                SortTypesEnum selected = SortTypesEnum.values()[position];
-//                sortBy = selected.name();
-//                fetchApartments();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
 
 
     public void onFiltersClick(View view) throws JSONException {

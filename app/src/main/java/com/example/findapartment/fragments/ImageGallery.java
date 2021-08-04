@@ -2,6 +2,7 @@ package com.example.findapartment.fragments;
 
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ public class ImageGallery extends Fragment {
     private ViewPager2 mViewPager;
     private SliderAdapter mViewPagerAdapter;
     private LinearLayout circlesLayout;
+    private ImageView noImagePlaceholder;
 
     private int prevPosition = 0;
 
@@ -40,6 +42,7 @@ public class ImageGallery extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mViewPager = (ViewPager2) view.findViewById(R.id.viewPagerImageSlider);
         circlesLayout = (LinearLayout) view.findViewById(R.id.circlesLayout);
+        noImagePlaceholder = (ImageView) view.findViewById(R.id.noImagePlaceholder);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -67,6 +70,7 @@ public class ImageGallery extends Fragment {
     }
 
     public void showCircles(){
+        noImagePlaceholder.setVisibility(View.GONE);
         for (int i = 0; i < mViewPagerAdapter.getItemCount(); i++) {
             ImageView iv = new ImageView(getActivity());
             iv.setImageResource(R.drawable.circle_shadow);
@@ -75,6 +79,10 @@ public class ImageGallery extends Fragment {
             iv.setLayoutParams(lp);
             circlesLayout.addView(iv);
         }
+    }
+
+    public void showNoImagePlaceholder() {
+        noImagePlaceholder.setVisibility(View.VISIBLE);
     }
 
 }

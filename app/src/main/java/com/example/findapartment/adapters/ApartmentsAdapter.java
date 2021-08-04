@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import com.bumptech.glide.Glide;
 import com.example.findapartment.R;
 import com.example.findapartment.activities.AddApartmentActivity;
 import com.example.findapartment.activities.ApartmentActivity;
@@ -33,6 +36,10 @@ import com.example.findapartment.models.Apartment;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -95,11 +102,17 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         viewHolder.tvPropertySize.setText(Html.fromHtml(formatNumber(apartment.getPropertySize()) + " " + c.getResources().getString(R.string.m2)) );
 
         if (apartment.getImages().size() > 0) {
-            byte[] bytes = apartment.getImage(0);
-            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            viewHolder.ivImage.setImageBitmap(bm);
-        }
 
+            Glide.with(c)
+                    .load(apartment.getImage(0))
+                    .placeholder(new CircularProgressDrawable(c))
+                    .error(R.drawable.imageplaceholder)
+                    .into(viewHolder.ivImage);
+
+
+        } else {
+            viewHolder.ivImage.setImageDrawable(c.getResources().getDrawable(R.drawable.imageplaceholder));
+        }
         RelativeLayout item = (RelativeLayout) convertView.findViewById(R.id.apartmentLayout);
         if (item != null) {
             item.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +154,8 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
 
         return convertView;
     }
+
+
 
     private void onEditApartmentClick(Apartment apartment) {
         Intent i=new Intent(c, AddApartmentActivity.class);

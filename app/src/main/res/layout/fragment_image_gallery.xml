@@ -15,6 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/noImagePlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/imageplaceholder"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/circlesLayout"
         android:layout_width="wrap_content"
@@ -22,7 +29,7 @@
         android:layout_alignLeft="@id/viewPagerImageSlider"
         android:layout_alignRight="@id/viewPagerImageSlider"
         android:layout_alignBottom="@id/viewPagerImageSlider"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:orientation="horizontal" />
 </RelativeLayout>

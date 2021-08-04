@@ -18,8 +18,8 @@
             android:layout_width="160dp"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher"
-            tools:srcCompat="@android:drawable/ic_menu_camera" />
+            android:src="@drawable/imageplaceholder"
+            tools:srcCompat="@drawable/imageplaceholder" />
 
         <LinearLayout
             android:layout_width="207dp"

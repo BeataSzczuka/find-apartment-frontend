@@ -271,6 +271,7 @@ public class AddApartmentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {
                 progressBar.setVisibility(View.GONE);
+//                addApartmentBtn.setEnabled(true);
                 ToastService.showSuccessMessage(response.body().getMessage(), getApplicationContext());
                 Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
                 startActivity(i);

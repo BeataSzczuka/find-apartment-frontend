@@ -24,18 +24,32 @@ public class Apartment implements Serializable {
 
     private static class ImageObject {
 
-        private byte[] data;
+//        private byte[] data;
+//
+//        public ImageObject(byte[] data) {
+//            this.data = data;
+//        }
+//
+//        public byte[] getData() {
+//            return data;
+//        }
+//
+//        public void setData(byte[] data) {
+//            this.data = data;
+//        }
 
-        public ImageObject(byte[] data) {
-            this.data = data;
+        private String filename;
+
+        public ImageObject(String filename) {
+            this.filename = filename;
         }
 
-        public byte[] getData() {
-            return data;
+        public String getFilename() {
+            return filename;
         }
 
-        public void setData(byte[] data) {
-            this.data = data;
+        public void setFilename(String name) {
+            this.filename = name;
         }
 
     }
@@ -56,8 +70,20 @@ public class Apartment implements Serializable {
         return images;
     }
 
-    public byte[] getImage(int i) {
-        return images.get(i).getData();
+    public List<String> getImagesFilenames() {
+        ArrayList<String> paths = new ArrayList<String>();
+        for (int i = 0; i < images.size(); i++) {
+            paths.add(getImage(i));
+        }
+
+        return paths;
+    }
+
+    //    public byte[] getImage(int i) {
+//        return images.get(i).getData();
+//    }
+    public String getImage(int i) {
+        return images.get(i).getFilename();
     }
 
     public String getId() {
@@ -126,12 +152,15 @@ public class Apartment implements Serializable {
             List<ImageObject> images = new ArrayList<ImageObject>();
 
             for (int i = 0; i < arr.length(); i++) {
-                String decoded = ((JSONObject) arr.get(i)).getJSONObject("data").getString("data");
-                Gson gson = new Gson();
-                Type bytesType = new TypeToken<byte[]>(){}.getType();
-                byte[] bytes = gson.fromJson(decoded, bytesType );
+//                String decoded = ((JSONObject) arr.get(i)).getJSONObject("data").getString("data");
+//                Gson gson = new Gson();
+//                Type bytesType = new TypeToken<byte[]>(){}.getType();
+//                byte[] bytes = gson.fromJson(decoded, bytesType );
+//
+//                ImageObject io = new ImageObject(bytes);
+                String im = ((JSONObject) arr.get(i)).getString("filename");
+                ImageObject io = new ImageObject(im);
 
-                ImageObject io = new ImageObject(bytes);
                 images.add(io);
             }
             apartment.images = images;

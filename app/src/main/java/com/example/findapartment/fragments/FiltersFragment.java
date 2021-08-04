@@ -363,14 +363,22 @@ public class FiltersFragment extends Fragment {
                         data = response.getJSONObject("data");
                         FilterRanges filterRanges = FilterRanges.fromJSON(data);
                         priceRangeSlider.setValueFrom(filterRanges.priceFrom);
-                        priceRangeSlider.setValueTo(filterRanges.priceTo);
+                        if (filterRanges.priceFrom == filterRanges.priceTo) {
+                            priceRangeSlider.setValueTo(filterRanges.priceTo + 1);
+                        } else {
+                            priceRangeSlider.setValueTo(filterRanges.priceTo);
+                        }
                         priceRangeSlider.setValues(filterRanges.priceFrom, filterRanges.priceTo);
                         priceFrom.setText(String.valueOf(formatAsNumber(filterRanges.priceFrom)));
                         priceTo.setText(String.valueOf(formatAsNumber(filterRanges.priceTo)));
 
 
                         propertySizeRangeSlider.setValueFrom(filterRanges.propertySizeFrom);
-                        propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo);
+                        if (filterRanges.propertySizeFrom == filterRanges.propertySizeTo) {
+                            propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo + 1);
+                        } else {
+                            propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo);
+                        }
                         propertySizeRangeSlider.setValues(filterRanges.propertySizeFrom, filterRanges.propertySizeTo);
                         propertySizeFrom.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeFrom)));
                         propertySizeTo.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeTo)));

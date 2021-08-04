@@ -44,7 +44,7 @@ public class ApartmentActivity extends AppCompatActivity {
     private String apartmentId;
 
     SliderAdapter mViewPagerAdapter;
-    List<Bitmap> bitmaps;
+    List<String> imagesPaths;
 
     ImageGallery imageGallery;
     ProgressBar progressBar;
@@ -63,9 +63,9 @@ public class ApartmentActivity extends AppCompatActivity {
         ToolbarFragment toolbarFragment = (ToolbarFragment) getSupportFragmentManager().findFragmentById(R.id.menuFragment);
         toolbarFragment.setImageTint(AppViewNames.APARTMENTS_LIST);
 
-        bitmaps = new ArrayList<Bitmap>();
+        imagesPaths = new ArrayList<String>();
 
-        mViewPagerAdapter = new SliderAdapter(bitmaps){
+        mViewPagerAdapter = new SliderAdapter(imagesPaths){
             @Override
             public void onBindViewHolder(@NonNull SliderAdapter.SliderViewHolder holder, int position) {
                 super.onBindViewHolder(holder, position);
@@ -144,13 +144,18 @@ public class ApartmentActivity extends AppCompatActivity {
 
     private void convertToBitmapAndDisplayImages(Apartment apartment){
 
-        for (int i = 0; i < apartment.getImages().size(); i++) {
-            byte[] bytes = apartment.getImage(i);
-            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            bitmaps.add(bm);
+        if (apartment.getImages().size() > 0) {
+            for (int i = 0; i < apartment.getImages().size(); i++) {
+                imagesPaths.add(apartment.getImage(i));
+//            byte[] bytes = apartment.getImage(i);
+//            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//            bitmaps.add(bm);
+            }
+            imageGallery.showCircles();
+            mViewPagerAdapter.notifyDataSetChanged();
+        } else {
+            imageGallery.showNoImagePlaceholder();
         }
-        imageGallery.showCircles();
-        mViewPagerAdapter.notifyDataSetChanged();
     }
 
 
