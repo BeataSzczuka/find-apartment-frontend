@@ -62,6 +62,8 @@ public class FiltersFragment extends Fragment {
 
     private ApartmentClient apartmentClient;
 
+    private boolean rangesUploaded = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -354,43 +356,47 @@ public class FiltersFragment extends Fragment {
     }
 
     private void getFilterRanges() {
-        apartmentClient.getFilterRanges(getActivity().getApplicationContext(), new IRequestCallback(){
-            @Override
-            public void onSuccess(JSONObject response) {
-                try {
-                    JSONObject data = null;
-                    if (response != null) {
-                        data = response.getJSONObject("data");
-                        FilterRanges filterRanges = FilterRanges.fromJSON(data);
-                        priceRangeSlider.setValueFrom(filterRanges.priceFrom);
-                        if (filterRanges.priceFrom == filterRanges.priceTo) {
-                            priceRangeSlider.setValueTo(filterRanges.priceTo + 1);
-                        } else {
-                            priceRangeSlider.setValueTo(filterRanges.priceTo);
-                        }
-                        priceRangeSlider.setValues(filterRanges.priceFrom, filterRanges.priceTo);
-                        priceFrom.setText(String.valueOf(formatAsNumber(filterRanges.priceFrom)));
-                        priceTo.setText(String.valueOf(formatAsNumber(filterRanges.priceTo)));
+        if (!rangesUploaded) {
+            apartmentClient.getFilterRanges(getActivity().getApplicationContext(), new IRequestCallback() {
+                @Override
+                public void onSuccess(JSONObject response) {
+                    try {
+                        JSONObject data = null;
+                        if (response != null) {
+                            data = response.getJSONObject("data");
+                            FilterRanges filterRanges = FilterRanges.fromJSON(data);
+                            priceRangeSlider.setValueFrom(filterRanges.priceFrom);
+                            if (filterRanges.priceFrom == filterRanges.priceTo) {
+                                priceRangeSlider.setValueTo(filterRanges.priceTo + 1);
+                            } else {
+                                priceRangeSlider.setValueTo(filterRanges.priceTo);
+                            }
+                            priceRangeSlider.setValues(filterRanges.priceFrom, filterRanges.priceTo);
+                            priceFrom.setText(String.valueOf(formatAsNumber(filterRanges.priceFrom)));
+                            priceTo.setText(String.valueOf(formatAsNumber(filterRanges.priceTo)));
 
 
-                        propertySizeRangeSlider.setValueFrom(filterRanges.propertySizeFrom);
-                        if (filterRanges.propertySizeFrom == filterRanges.propertySizeTo) {
-                            propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo + 1);
-                        } else {
-                            propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo);
+                            propertySizeRangeSlider.setValueFrom(filterRanges.propertySizeFrom);
+                            if (filterRanges.propertySizeFrom == filterRanges.propertySizeTo) {
+                                propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo + 1);
+                            } else {
+                                propertySizeRangeSlider.setValueTo(filterRanges.propertySizeTo);
+                            }
+                            propertySizeRangeSlider.setValues(filterRanges.propertySizeFrom, filterRanges.propertySizeTo);
+                            propertySizeFrom.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeFrom)));
+                            propertySizeTo.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeTo)));
+                            rangesUploaded = true;
                         }
-                        propertySizeRangeSlider.setValues(filterRanges.propertySizeFrom, filterRanges.propertySizeTo);
-                        propertySizeFrom.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeFrom)));
-                        propertySizeTo.setText(String.valueOf(formatAsNumber(filterRanges.propertySizeTo)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-            @Override
-            public void onError(String result) throws Exception {
-                Log.d("ranges error", result);
-            }
-        });
+
+                @Override
+                public void onError(String result) throws Exception {
+                    Log.d("ranges error", result);
+                }
+            });
+        }
     }
 }

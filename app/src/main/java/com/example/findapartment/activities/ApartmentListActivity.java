@@ -177,8 +177,10 @@ public class ApartmentListActivity extends AppCompatActivity {
 
                                 if (apartments.size() == 0) {
                                     noApartmentsTextView.setVisibility(View.VISIBLE);
+                                    lvApartments.setVisibility(View.GONE);
                                 } else {
                                     noApartmentsTextView.setVisibility(View.GONE);
+                                    lvApartments.setVisibility(View.VISIBLE);
                                 }
 
                                 if (filtersFragment.isAdded()) {
