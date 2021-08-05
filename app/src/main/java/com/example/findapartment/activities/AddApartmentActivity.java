@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -193,7 +194,7 @@ public class AddApartmentActivity extends AppCompatActivity {
                         locationEditText.setText(apartment.getLocation());
                         descriptionEditText.setText(apartment.getDescription());
                         priceEditText.setText(formatNumber(apartment.getPrice().toString()));
-                        if (apartment.getTransactionType() == TransactionTypeEnum.SALE.name()) {
+                        if (apartment.getTransactionType().equals(TransactionTypeEnum.SALE.name())) {
                             transactionTypeRadio.check(R.id.transactionSale);
                         } else {
                             transactionTypeRadio.check(R.id.transactionRent);

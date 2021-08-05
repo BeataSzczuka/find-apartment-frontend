@@ -63,14 +63,6 @@ public class ApartmentListActivity extends AppCompatActivity {
     private int pageSize = 20;
     private int totalPages = 1;
 
-    private String sortBy;
-    private String priceFrom;
-    private String priceTo;
-    private String propertySizeFrom;
-    private String propertySizeTo;
-    private String location;
-    private String transactionType;
-    private Boolean onlyMy;
 
     private UserSession userSession;
 
@@ -196,12 +188,16 @@ public class ApartmentListActivity extends AppCompatActivity {
 
                             }
                         });
-                        progressBarLayout.setVisibility(View.GONE);
-
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    ToastService.showErrorMessage("Nie można załadować ogłoszeń", findViewById(R.id.rootView));
+                    noApartmentsTextView.setVisibility(View.VISIBLE);
+                    if (filtersFragment.isAdded()) {
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.remove(filtersFragment);
+                        ft.commit();
+                    }
                 } finally {
                     progressBarLayout.setVisibility(View.GONE);
                 }

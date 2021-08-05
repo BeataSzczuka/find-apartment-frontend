@@ -58,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
+
             <TextView
                 android:id="@+id/myAnnEmpty"
                 android:layout_width="wrap_content"
@@ -68,6 +69,7 @@
             <LinearLayout
                 android:id="@+id/myAnnData"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -84,13 +86,16 @@
                 <ListView
                     android:id="@+id/lvMyApartments"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="fill_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp">
 
                 </ListView>
 
                 <Button
                     android:id="@+id/loadMoreMyApartments"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="60dp"
                     android:backgroundTint="@color/colorLightGray"
                     android:text="Załaduj więcej ogłoszeń"

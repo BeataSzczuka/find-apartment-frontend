@@ -19,14 +19,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.MyAccountActivity"></activity>
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.AddApartmentActivity" />
-        <activity android:name=".activities.AddUserActivity" />
-        <activity android:name=".activities.ApartmentActivity" />
+        <activity android:name=".activities.MyAccountActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".activities.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".activities.AddApartmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".activities.AddUserActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".activities.ApartmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".activities.WelcomeActivity"
-            android:configChanges="keyboardHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
@@ -35,7 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ApartmentListActivity" />
+        <activity android:name=".activities.ApartmentListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 
 </manifest>

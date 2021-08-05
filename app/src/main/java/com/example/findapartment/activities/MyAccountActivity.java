@@ -130,6 +130,8 @@ public class MyAccountActivity extends AppCompatActivity {
 
                         if (page == totalPages - 1) {
                             loadMoreMyApartments.setVisibility(View.GONE);
+                        } else {
+                            loadMoreMyApartments.setVisibility(View.VISIBLE);
                         }
                     }
                 } catch (JSONException e) {

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="left"
         android:paddingBottom="5dp"
-        android:text="Krok 3/4"
+        android:text="Krok 4/4"
         android:textColor="#707070"
         android:textSize="23sp"
         android:textStyle="bold" />
@@ -35,7 +35,6 @@
         android:textStyle="bold"
         android:text="Najwięcej wyświetleń mają ogłoszenia ze zdjęciami. Fotografuj mieszkanie w naturalnym świetle i nie używaj filtrów. To pozwoli uniknąć rozczarowania osób zainteresowanych i zaoszczędzić Twój czas." />
     <TextView
-        android:id="@+id/priceTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="30dp"
