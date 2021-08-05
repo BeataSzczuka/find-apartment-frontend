@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -124,7 +125,7 @@ public class ApartmentActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.descriptionTv)).setText(apartment.getDescription());
 
 
-                        convertToBitmapAndDisplayImages(apartment);
+                        displayImages(apartment);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -142,14 +143,11 @@ public class ApartmentActivity extends AppCompatActivity {
         });
     }
 
-    private void convertToBitmapAndDisplayImages(Apartment apartment){
+    private void displayImages(Apartment apartment){
 
         if (apartment.getImages().size() > 0) {
             for (int i = 0; i < apartment.getImages().size(); i++) {
                 imagesPaths.add(apartment.getImage(i));
-//            byte[] bytes = apartment.getImage(i);
-//            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//            bitmaps.add(bm);
             }
             imageGallery.showCircles();
             mViewPagerAdapter.notifyDataSetChanged();
@@ -158,6 +156,8 @@ public class ApartmentActivity extends AppCompatActivity {
         }
     }
 
-
-
+    public boolean isGalleryDialogOpened() {
+        ImageGallery f = (ImageGallery)  getSupportFragmentManager().findFragmentById(R.id.galleryDialogFragment);
+        return f != null && f.isAdded();
+    }
 }

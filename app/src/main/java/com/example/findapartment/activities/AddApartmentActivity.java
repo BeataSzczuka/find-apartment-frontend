@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.example.findapartment.adapters.UploadedImagesAdapter;
 import com.example.findapartment.clients.ApartmentClient;
 import com.example.findapartment.clients.ApiConfig;
 import com.example.findapartment.clients.AppConfig;
+import com.example.findapartment.clients.IRequestCallback;
 import com.example.findapartment.clients.ServerResponse;
 import com.example.findapartment.fragments.AddApartmentStep1Fragment;
 import com.example.findapartment.fragments.AddApartmentStep2Fragment;
@@ -40,13 +42,21 @@ import com.example.findapartment.helpers.SetupHelpers;
 import com.example.findapartment.helpers.ToastService;
 import com.example.findapartment.helpers.TransactionTypeEnum;
 import com.example.findapartment.helpers.UserSession;
+import com.example.findapartment.models.Apartment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -78,6 +88,8 @@ public class AddApartmentActivity extends AppCompatActivity {
     private UserSession userSession;
 
     private ArrayList<Uri> uploadedImages;
+
+    private ArrayList<String> unchangedImages = new ArrayList<String>();
 
     private String editedApartmentId;
 
@@ -118,6 +130,7 @@ public class AddApartmentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 uploadedImages.remove(uploadedImagesAdapter.getItem(position));
+                unchangedImages.remove(imagesPaths.get(position));
                 imagesPaths.remove(position);
                 uploadedImagesAdapter.notifyDataSetChanged();
 
@@ -161,16 +174,52 @@ public class AddApartmentActivity extends AppCompatActivity {
         Intent intentNow = getIntent();
         editedApartmentId = intentNow.getStringExtra("editedApartmentId");
         if (editedApartmentId != null && editedApartmentId.length() > 0) {
-            propertySizeEditText.setText(intentNow.getStringExtra("propertySizeEditText"));
-            locationEditText.setText(intentNow.getStringExtra("locationEditText"));
-            descriptionEditText.setText(intentNow.getStringExtra("descriptionEditText"));
-            priceEditText.setText(intentNow.getStringExtra("priceEditText"));
-            if (intentNow.getStringExtra("transactionType") == TransactionTypeEnum.SALE.name()) {
-                transactionTypeRadio.check(R.id.transactionSale);
-            } else {
-                transactionTypeRadio.check(R.id.transactionRent);
-            }
+            fetchApartmentToEdit();
         }
+    }
+
+    private void fetchApartmentToEdit() {
+        progressBar.setVisibility(View.VISIBLE);
+        apartmentClient.getApartment(getApplicationContext(), editedApartmentId, new IRequestCallback(){
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    JSONObject data = null;
+                    if (response != null) {
+                        data = response.getJSONObject("data");
+                        Apartment apartment = Apartment.fromJSON(data);
+
+                        propertySizeEditText.setText(formatNumber(apartment.getPropertySize().toString()));
+                        locationEditText.setText(apartment.getLocation());
+                        descriptionEditText.setText(apartment.getDescription());
+                        priceEditText.setText(formatNumber(apartment.getPrice().toString()));
+                        if (apartment.getTransactionType() == TransactionTypeEnum.SALE.name()) {
+                            transactionTypeRadio.check(R.id.transactionSale);
+                        } else {
+                            transactionTypeRadio.check(R.id.transactionRent);
+                        }
+                        if (apartment.getImages().size() > 0) {
+                            imagesMessage.setVisibility(View.GONE);
+                        }
+                        for (int j = 0; j < apartment.getImages().size(); j++) {
+                            imagesPaths.add(apartment.getImage(j));
+                            uploadedImages.add(Uri.parse(apartment.getImage(j)));
+                            uploadedImagesAdapter.notifyDataSetChanged();
+                            unchangedImages.add(apartment.getImage(j));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+            @Override
+            public void onError(String result) throws Exception {
+                ToastService.showErrorMessage(result, findViewById(R.id.rootView));
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     public void uploadImage() {
@@ -186,7 +235,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == RESULT_OK && null != data) {
             ClipData clipData = data.getClipData();
             if (clipData != null) {
-                for (int i = 0; i < clipData.getItemCount(); i++) {
+                for (int i = 0; i < clipData.getItemCount() && i < 6; i++) {
                     Uri selectedImageUri = clipData.getItemAt(i).getUri();
                     uploadedImagesAdapter.add(selectedImageUri);
 
@@ -238,12 +287,15 @@ public class AddApartmentActivity extends AppCompatActivity {
         MultipartBody.Part[] surveyImagesParts = new MultipartBody.Part[imagesPaths.size()];
 
         for (int i = 0; i < imagesPaths.size(); i++) {
-            File file = new File(imagesPaths.get(i));
+            String imagePath = imagesPaths.get(i);
+            if (!unchangedImages.contains(imagePath)) {
+                File file = new File(imagePath);
 
-            RequestBody requestBody1 = RequestBody.create(MediaType.parse("*/*"), file);
-            MultipartBody.Part fileToUpload1 = MultipartBody.Part.createFormData("uploads", file.getName(), requestBody1);
+                RequestBody requestBody1 = RequestBody.create(MediaType.parse("*/*"), file);
+                MultipartBody.Part fileToUpload1 = MultipartBody.Part.createFormData("uploads", file.getName(), requestBody1);
 
-            surveyImagesParts[i] = fileToUpload1;
+                surveyImagesParts[i] = fileToUpload1;
+            }
         }
 
         JSONObject newApartment = new JSONObject();
@@ -256,6 +308,7 @@ public class AddApartmentActivity extends AppCompatActivity {
         newApartment.put("propertySize", getNumber(propertySizeEditText));
         newApartment.put("location", locationEditText.getText().toString());
         newApartment.put("description", descriptionEditText.getText().toString());
+        newApartment.put("unchangedImages", new JSONArray(unchangedImages));
 
 
         RequestBody name = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), newApartment.toString());
@@ -271,7 +324,7 @@ public class AddApartmentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call < ServerResponse > call, Response < ServerResponse > response) {
                 progressBar.setVisibility(View.GONE);
-//                addApartmentBtn.setEnabled(true);
+                addApartmentBtn.setEnabled(true);
                 ToastService.showSuccessMessage(response.body().getMessage(), getApplicationContext());
                 Intent i=new Intent(getBaseContext(), ApartmentListActivity.class);
                 startActivity(i);
@@ -284,6 +337,21 @@ public class AddApartmentActivity extends AppCompatActivity {
                 addApartmentBtn.setEnabled(true);
             }
         });
+    }
+
+
+    private String formatNumber(String content) {
+        if (content.length() > 0) {
+            String cleanString = content.replaceAll(",", ".");
+            cleanString = cleanString.replaceAll("\\s", "");
+            double parsed = Double.parseDouble(cleanString);
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance();
+            DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+            symbols.setCurrencySymbol("");
+            formatter.setDecimalFormatSymbols(symbols);
+            return formatter.format(parsed);
+        }
+        return "";
     }
 
 

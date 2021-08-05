@@ -133,26 +133,10 @@ public class AddApartmentStep2Fragment extends Fragment {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.d("before", s.toString());
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                editText.removeTextChangedListener(this);
-//
-//                String cleanString = s.toString().replaceAll(",", ".");
-//
-////                double parsed = Double.parseDouble(cleanString);
-////                String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-//                BigDecimal parsed = new BigDecimal(cleanString).setScale(2,BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100),BigDecimal.ROUND_FLOOR);
-//                String formato = NumberFormat.getCurrencyInstance().format(parsed);
-////
-//////                current = formatted;
-//                editText.setText(formato);
-////                editText.setSelection(formatted.length());
-//
-//                editText.addTextChangedListener(this);
-
             }
 
             @Override

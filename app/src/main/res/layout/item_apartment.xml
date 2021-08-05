@@ -5,7 +5,6 @@
     android:id="@+id/apartmentLayout"
     android:layout_width="match_parent"
     android:background="@drawable/shadowrectangle"
-    android:elevation="2dp"
     android:layout_height="310dp">
 
     <ImageView
@@ -16,6 +15,13 @@
         android:scaleType="centerCrop"
         android:src="@drawable/imageplaceholder"
         tools:srcCompat="@drawable/imageplaceholder" />
+
+    <ProgressBar
+        android:id="@+id/imageProgressBar"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="80dp"
+        android:layout_marginTop="70dp"></ProgressBar>
 
     <LinearLayout
         android:layout_width="match_parent"

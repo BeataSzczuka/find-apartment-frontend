@@ -2,16 +2,26 @@ package com.example.findapartment.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.findapartment.R;
+import com.example.findapartment.activities.ApartmentActivity;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
@@ -19,6 +29,7 @@ import java.util.List;
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder>  {
 
     private List<String> sliderItems;
+    public ProgressBar imageProgressBar;
     private Context context;
 
     public SliderAdapter(List<String> sliderItems) {
@@ -39,7 +50,12 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
     @Override
     public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
         if (sliderItems.size() > position) {
-            holder.setImage(sliderItems.get(position));
+            if (context instanceof ApartmentActivity && !((ApartmentActivity) context).isGalleryDialogOpened()) {
+                holder.setApartmentImage(sliderItems.get(position));
+            } else {
+                holder.setGalleryDialogImage(sliderItems.get(position));
+            }
+
         }
     }
 
@@ -55,21 +71,53 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         public SliderViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.itemImageView);
+            imageProgressBar = (ProgressBar) itemView.findViewById(R.id.imageProgressBar);
         }
 
-        void setImage(String sliderItem) {
+        void setApartmentImage(String sliderItem) {
+            imageProgressBar.setVisibility(View.VISIBLE);
             Glide.with(context)
                     .load(sliderItem)
-                    .placeholder(new CircularProgressDrawable(context))
+                    .optionalCenterCrop()
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .error(R.drawable.imageplaceholder)
                     .into(imageView);
 
         }
 
-//        void setPlaceholder() {
-//            imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.imageplaceholder));
-//        }
+        void setGalleryDialogImage(String sliderItem) {
+            imageProgressBar.setVisibility(View.VISIBLE);
+            Glide.with(context)
+                    .load(sliderItem)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
 
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .error(R.drawable.imageplaceholder)
+                    .into(imageView);
+
+        }
     }
 
 }

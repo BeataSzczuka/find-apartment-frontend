@@ -6,21 +6,24 @@
     android:layout_height="fill_parent"
     android:layout_gravity="center"
     android:clickable="true"
-    android:gravity="center"
     tools:context=".fragments.ImageGallery">
 
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerImageSlider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <ImageView
         android:id="@+id/noImagePlaceholder"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/imageplaceholder"
-        android:visibility="gone"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/imageplaceholder" />
 
     <LinearLayout
         android:id="@+id/circlesLayout"

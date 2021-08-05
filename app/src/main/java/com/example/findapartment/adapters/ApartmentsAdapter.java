@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
@@ -17,14 +18,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.findapartment.R;
 import com.example.findapartment.activities.AddApartmentActivity;
 import com.example.findapartment.activities.ApartmentActivity;
@@ -56,6 +63,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         public TextView tvTransactionType;
         public TextView tvPropertySize;
         public ImageView ivImage;
+        public ProgressBar imageProgressBar;
     }
 
     public ApartmentsAdapter(Context context, ArrayList<Apartment> apartments, @LayoutRes int resource) {
@@ -91,6 +99,7 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
             viewHolder.tvTransactionType = (TextView) convertView.findViewById(R.id.tvTransactionType);
             viewHolder.tvPropertySize = (TextView) convertView.findViewById(R.id.tvPropertySize);
             viewHolder.ivImage = (ImageView) convertView.findViewById(R.id.ivImage);
+            viewHolder.imageProgressBar = (ProgressBar) convertView.findViewById(R.id.imageProgressBar);
             convertView.setTag(viewHolder);
         } else {
             // Existing view
@@ -102,10 +111,22 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
         viewHolder.tvPropertySize.setText(Html.fromHtml(formatNumber(apartment.getPropertySize()) + " " + c.getResources().getString(R.string.m2)) );
 
         if (apartment.getImages().size() > 0) {
-
+            viewHolder.imageProgressBar.setVisibility(View.VISIBLE);
             Glide.with(c)
                     .load(apartment.getImage(0))
-                    .placeholder(new CircularProgressDrawable(c))
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            viewHolder.imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            viewHolder.imageProgressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .error(R.drawable.imageplaceholder)
                     .into(viewHolder.ivImage);
 
@@ -160,11 +181,11 @@ public class ApartmentsAdapter extends ArrayAdapter<Apartment> {
     private void onEditApartmentClick(Apartment apartment) {
         Intent i=new Intent(c, AddApartmentActivity.class);
         i.putExtra("editedApartmentId", apartment.getId());
-        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
-        i.putExtra("locationEditText", apartment.getLocation());
-        i.putExtra("descriptionEditText", apartment.getDescription());
-        i.putExtra("priceEditText", apartment.getPrice().toString());
-        i.putExtra("transactionType", apartment.getTransactionType());
+//        i.putExtra("propertySizeEditText", apartment.getPropertySize().toString());
+//        i.putExtra("locationEditText", apartment.getLocation());
+//        i.putExtra("descriptionEditText", apartment.getDescription());
+//        i.putExtra("priceEditText", apartment.getPrice().toString());
+//        i.putExtra("transactionType", apartment.getTransactionType());
         c.startActivity(i);
     }
 }

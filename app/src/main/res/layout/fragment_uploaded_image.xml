@@ -18,6 +18,14 @@
         android:scaleType="fitCenter"
         android:src="@android:drawable/ic_menu_report_image" />
 
+    <ProgressBar
+        android:id="@+id/imageProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"></ProgressBar>
+
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

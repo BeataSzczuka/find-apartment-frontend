@@ -31,11 +31,17 @@
         android:id="@+id/priceTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="30dp"
         android:textColor="#979797"
         android:textStyle="bold"
         android:text="Najwięcej wyświetleń mają ogłoszenia ze zdjęciami. Fotografuj mieszkanie w naturalnym świetle i nie używaj filtrów. To pozwoli uniknąć rozczarowania osób zainteresowanych i zaoszczędzić Twój czas." />
-
+    <TextView
+        android:id="@+id/priceTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
+        android:textColor="#979797"
+        android:textStyle="bold"
+        android:text="Możesz dodać maksymalnie 6 zdjęć."/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
